@@ -42,7 +42,7 @@ const props = defineProps({
     },
     error: {
         type: String,
-        default: '',
+        default: undefined,
     },
 });
 

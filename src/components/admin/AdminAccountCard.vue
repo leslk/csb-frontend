@@ -4,7 +4,7 @@
             <div class="account-card-header">
                 <i class="fa-solid fa-user account-card-header-icon" />
                 <div class="account-card-header-pending" v-if="account.status === 'pending'">
-                    <i class="fa-solid fa-circle-info" />
+                    <i class="fa-regular fa-clock"></i>
                     <p>En attente</p>
                 </div>
                 <div class="account-card-header-edit">

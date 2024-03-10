@@ -48,6 +48,7 @@ import AdminInfosModal from '@/components/admin/AdminInfosModal.vue';
 import AdminPasswordModal from '@/components/admin/AdminPasswordModal.vue';
 import { useServicesStore } from '@/stores/services';
 import { useAuthStore } from '@/stores/auth';
+import {toast} from 'vue3-toastify';
 import { ref } from 'vue';
 
 interface AdminAccount {
@@ -92,7 +93,7 @@ function resetAccount() {
 }
 
 async function getAccounts() {
-    const response = await Admin.getAccounts();
+    const response: any = await Admin.getAccounts();
     return response.data;
 }
 
@@ -109,12 +110,14 @@ async function updatePassword(password: any) {
     try {
         await Admin.updatePassword(account.value._id, password);
         showEditPasswordModal.value = false;
+        toast.success('Mot de passe modifié');
     } catch (error) {
-        console.error(error);
+        toast.error('Erreur lors de la modification du mot de passe');
     }
 }
 
 async function updateAdmin(adminAccount: AdminAccount) {
+    const toastText = adminAccount._id ? 'Compte modifié' : 'Compte créé';
     try {
         if (adminAccount._id) {
             await Admin.updateAdmin(adminAccount);
@@ -124,8 +127,9 @@ async function updateAdmin(adminAccount: AdminAccount) {
         }
         showEditInfosModal.value = false;
         await updateAccount(adminAccount._id);
+        toast.success(toastText);
     } catch (error) {
-        console.error(error);
+        toast.error('Erreur lors de la modification du compte');
     }
 }
 
@@ -135,8 +139,9 @@ async function deleteAccount(accountId: string) {
         showDeleteModal.value = false;
         resetAccount();
         await updateAccount(accountId);
+        toast.success('Compte supprimé');
     } catch (error) {
-        console.error(error);
+        toast.error('Erreur lors de la suppression du compte');
     }
 }
 

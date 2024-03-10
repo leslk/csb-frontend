@@ -10,12 +10,14 @@
                             :value="form.lastName" 
                             label="Nom" 
                             @update:value="form.lastName = $event"
+                            :error="accountValidate.lastName?.$errors[0]?.$message"
                         />
                     <div class="admin-modal-form-group">
                         <CsbInput 
                             :value="form.firstName" 
                             label="Prénom" 
                             @update:value="form.firstName = $event"
+                            :error="accountValidate.firstName?.$errors[0]?.$message"
                         />
                     </div>
                     <div class="admin-modal-form-group">
@@ -23,6 +25,7 @@
                             :value="form.email" 
                             label="Email" 
                             @update:value="form.email = $event"
+                            :error="accountValidate.email?.$errors[0]?.$message"
                         />
                     </div>
                     <div class="admin-modal-form-group">
@@ -48,26 +51,19 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, ref, watch } from 'vue';
+    import { computed, onUnmounted, ref, watch } from 'vue';
     import CsbModal from '@/components/common/CsbModal.vue';
     import CsbInput from '@/components/common/CsbInput.vue';
     import CsbButton from '@/components/common/CsbButton.vue';
     import CsbCheckBox from '@/components/common/CsbCheckbox.vue';
     import { useAuthStore } from '@/stores/auth';
+    import { useVuelidate } from '@vuelidate/core';
+    import { required, helpers } from '@vuelidate/validators';
 
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
     const buttonText = computed(() => props.account._id ? "Modifier" : "Créer");
     const headerText = computed(() => props.account._id ? "Modification du compte" : "Création d'un compte");
-
-    interface AdminAccount {
-        email: string;
-        firstName: string;
-        lastName: string;
-        _id: string;
-        isSuperAdmin: boolean;
-        status: string;
-    };
     const props = defineProps({
         account: {
             type: Object as () => AdminAccount,
@@ -88,6 +84,26 @@
         isSuperAdmin: props.account.isSuperAdmin,
         status: props.account.status
     });
+
+    const accountRules = {
+        email: { required: helpers.withMessage('Veuillez entrer un email', required) },
+        firstName: { required: helpers.withMessage('Veuillez entrer un prénom', required) },
+        lastName: { required: helpers.withMessage('Veuillez entrer un nom', required) },
+        _id: {},
+        isSuperAdmin: {},
+        status: {},
+    };
+
+    const accountValidate = useVuelidate(accountRules, form);
+
+    interface AdminAccount {
+        email: string;
+        firstName: string;
+        lastName: string;
+        _id: string;
+        isSuperAdmin: boolean;
+        status: string;
+    };
     function close() {
         emit('close');
     }
@@ -96,7 +112,10 @@
         form.value.isSuperAdmin = status;
     }
 
-    function updateAdmin() {
+    async function updateAdmin() {
+        accountValidate.value.$reset();
+        const valid = await accountValidate.value.$validate();
+        if (!valid) return;
         emit('confirm', form.value);
     }
 
@@ -109,6 +128,10 @@
             isSuperAdmin: newValue.isSuperAdmin,
             status: newValue.status
         }
+    });
+
+    onUnmounted(() => {
+        accountValidate.value.$reset();
     });
 </script>
 
