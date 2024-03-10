@@ -55,8 +55,6 @@
     const emit = defineEmits(['showPasswordModal', 'showAccountModal']);
     const user = computed(() => useAuthStore().user);
     const showMenu = ref<boolean>(false);
-    const showEditPasswordModal = ref<boolean>(false);
-    const showEditInfosModal = ref<boolean>(false);
     const adminStatus = computed(() => props.account.isSuperAdmin ? "Super Admin" : "Admin");
     const menu = ref<HTMLElement | null>(null);
     const menuIcon = ref<HTMLElement | null>(null);
@@ -74,7 +72,7 @@
         if (modal === 'infos') {
             emit('showAccountModal', props.account);
         } else {
-            emit('showPasswordModal');
+            emit('showPasswordModal', props.account._id);
         }
     }
 
