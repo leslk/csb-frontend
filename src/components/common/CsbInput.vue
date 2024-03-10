@@ -9,6 +9,10 @@
             :placeholder="placeholder"
             @input="($event) =>  updateValue($event)"
         />
+        <div v-if="error" class="csb-input-error">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>{{ error }}</p>
+        </div>
     </div>
 </template>
 
@@ -33,6 +37,10 @@ const props = defineProps({
         default: 'text',
     },
     label: {
+        type: String,
+        default: '',
+    },
+    error: {
         type: String,
         default: '',
     },
@@ -63,17 +71,20 @@ watch(() => props.value, (newValue: string | number) => {
     width: 100%;
     border: 1px solid $darkGrey;
     background-color: $white;
-    &-error {
-        color: red;
-        padding-left: 10px;
-        font-size: 0.875rem;
-    }
     &-label {
         color: $darkGrey;
     }
     &:active, &:focus {
         outline: none;
         box-shadow: 0 0 0 2px rgba($secondaryColor, 0.3);
+    }
+    &-error {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        color: $errorColor;
+        padding-left: 10px;
+        font-size: 0.875rem;
     }
 }
 </style>

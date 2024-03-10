@@ -10,6 +10,7 @@
                     type="text" 
                     placeholder="Email"
                     @update:value="userCredentials.email = $event"
+                    :error="emailError"
                  />
                 <CsbInput 
                     class="login-view-form-input"
@@ -17,6 +18,7 @@
                     :value="userCredentials.password" 
                     type="password" 
                     placeholder="Password" 
+                    :error="passwordError"
                 />
                 <CsbButton label="Se connecter" @click="login"/>
             </div>
@@ -30,11 +32,13 @@ import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTitle from '@/components/common/CsbTitle.vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { computed } from 'vue';
-import  { auth } from '@/services/auth';
+import { computed, ref } from 'vue';
+import  { Auth, ErrorMessage } from '@/services/services';
 import CsbInput from '@/components/common/CsbInput.vue';
 
 const authStore = useAuthStore();
+const emailError = ref("");
+const passwordError = ref("");
 const router = useRouter();
 const userCredentials = computed(() => {
     return {
@@ -44,12 +48,22 @@ const userCredentials = computed(() => {
 });
 
 async function login() {
+    emailError.value = "";
+    passwordError.value = "";
     try {
-        const response = await auth.login(userCredentials.value);
+        const response = await Auth.login(userCredentials.value);
         authStore.login(response.data.user);
         router.push({ name: 'Accueil' });
     } catch (error: any) {
-        console.error(error);
+        const errorMessage = ErrorMessage.getErrorMessage(error);
+        for (const error of errorMessage.message) {
+            if (error.error.includes("EMAIL")) {
+                emailError.value = "Email invalide";
+            }
+            if (error.error.includes("PASSWORD")) {
+                passwordError.value = "Mot de passe invalide";
+            } 
+        }
     }   
 }
 </script>
@@ -91,4 +105,4 @@ async function login() {
         padding: 0;
     }
 }
-</style>
+</style>@/services/services

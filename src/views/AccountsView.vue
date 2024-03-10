@@ -30,7 +30,7 @@ import CsbButton from '@/components/common/CsbButton.vue';
 import CsbEmptyState from '@/components/common/CsbEmptyState.vue';
 import CsbSection from '@/components/common/CsbSection.vue';
 import { onMounted, computed } from 'vue';
-import { admin } from '@/services/auth';
+import { Admin } from '@/services/services';
 import AdminAccountCard from '@/components/admin/AdminAccountCard.vue';
 import AdminInfosModal from '@/components/admin/AdminInfosModal.vue';
 import AdminPasswordModal from '@/components/admin/AdminPasswordModal.vue';
@@ -64,7 +64,7 @@ function setShowAccountModal(accountToUpdate: AdminAccount) {
 }
 
 async function getAccounts() {
-    const response = await admin.getAccounts();
+    const response = await Admin.getAccounts();
     return response.data;
 }
 
@@ -79,7 +79,7 @@ async function updateAccount(AccountId: string) {
 
 async function updateAdmin(adminAccount: AdminAccount) {
         try {
-            await admin.updateAdmin(adminAccount);
+            await Admin.updateAdmin(adminAccount);
             showEditInfosModal.value = false;
         } catch (error) {
             console.error(error);
@@ -112,4 +112,4 @@ onMounted(async () => {
         grid-template-columns: 1fr;
     }
 }
-</style>
+</style>@/services/services
