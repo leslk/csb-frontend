@@ -10,7 +10,7 @@
             </template>
             <template #content>
                 <div class="accounts-view-accounts">
-                    <AdminAccountCard v-if="yourAccount" @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="yourAccount"/>
+                    <AdminAccountCard v-if="yourAccount" @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="yourAccount" @delete-account="setShowDeleteModal"/>
                 </div>
             </template>
         </CsbSection>
@@ -22,7 +22,7 @@
                 <div v-if="adminAccounts.length > 0">
                     <div class="accounts-view-accounts">
                         <template v-for="(account, index) in filteredAdminAccounts" :key="index">
-                            <AdminAccountCard @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="account"/>
+                            <AdminAccountCard @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="account" @delete-account="setShowDeleteModal"/>
                         </template>
                     </div>
                 </div>
@@ -31,6 +31,7 @@
         </CsbSection>
         <AdminInfosModal :show="showEditInfosModal" :account="account" @close="showEditInfosModal = false" @confirm="updateAdmin"/>
         <AdminPasswordModal :show="showEditPasswordModal" @close="showEditPasswordModal = false" @update-password="updatePassword"/>
+        <AdminDeleteModal :show="showDeleteModal" :account="account" @close="showDeleteModal = false" @confirm="deleteAccount"/>
     </div>
 </template>
 
@@ -39,6 +40,7 @@ import CsbTitle from '@/components/common/CsbTitle.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import CsbEmptyState from '@/components/common/CsbEmptyState.vue';
 import CsbSection from '@/components/common/CsbSection.vue';
+import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue';
 import { onMounted, computed } from 'vue';
 import { Admin } from '@/services/services';
 import AdminAccountCard from '@/components/admin/AdminAccountCard.vue';
@@ -63,6 +65,7 @@ const yourAccount = computed(() => adminAccounts.value.find((account: any) => ac
 const filteredAdminAccounts = computed(() => adminAccounts.value.filter((account: any) => account._id !== yourAccount.value._id));
 const showEditPasswordModal = ref<boolean>(false);
 const showEditInfosModal = ref<boolean>(false);
+const showDeleteModal = ref<boolean>(false);
 const servicesStore = useServicesStore();
 const authStore = useAuthStore();
 
@@ -76,6 +79,16 @@ function setShowAccountModal(accountToUpdate: AdminAccount) {
 function setShowPasswordModal(accountId: string) {
     account.value._id = accountId;
     showEditPasswordModal.value = true;
+}
+
+function setShowDeleteModal(accountToDelete: AdminAccount) {
+    account.value = accountToDelete;
+    console.log(account.value);
+    showDeleteModal.value = true;
+}
+
+function resetAccount() {
+    account.value = { email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false, status: 'pending' };
 }
 
 async function getAccounts() {
@@ -102,19 +115,30 @@ async function updatePassword(password: any) {
 }
 
 async function updateAdmin(adminAccount: AdminAccount) {
-        try {
-            if (adminAccount._id) {
-                await Admin.updateAdmin(adminAccount);
-            } else {
-                await Admin.createAdmin(adminAccount);
-                account.value = { email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false, status: 'pending' };
-            }
-            showEditInfosModal.value = false;
-            await updateAccount(adminAccount._id);
-        } catch (error) {
-            console.error(error);
+    try {
+        if (adminAccount._id) {
+            await Admin.updateAdmin(adminAccount);
+        } else {
+            await Admin.createAdmin(adminAccount);
+            resetAccount();
         }
+        showEditInfosModal.value = false;
+        await updateAccount(adminAccount._id);
+    } catch (error) {
+        console.error(error);
     }
+}
+
+async function deleteAccount(accountId: string) {
+    try {
+        await Admin.deleteAdmin(accountId);
+        showDeleteModal.value = false;
+        resetAccount();
+        await updateAccount(accountId);
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 onMounted(async () => {
     adminAccounts.value = await getAccounts();

@@ -74,6 +74,22 @@ export class Admin {
         return response;
     }
 
+    static async deleteAdmin(adminId: string) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        const response = await axios.delete(
+            `${import.meta.env.VITE_API_URL}api/admins/${adminId}`,
+            {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+        servicesStore.setLoading(false);
+        return response;
+    }
+
     static async updatePassword(adminId: string, passwordData: any) {
         const servicesStore = useServicesStore();
         servicesStore.setLoading(true);

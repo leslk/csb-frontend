@@ -60,7 +60,8 @@ const emit = defineEmits(['close']);
         padding: 1.25rem;
     }
     &-footer {
-        padding: 1.25rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid $lighterGrey;
         display: flex;
         justify-content: flex-end;
         gap: 0.625rem;
