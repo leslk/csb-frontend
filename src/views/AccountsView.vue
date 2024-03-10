@@ -1,25 +1,35 @@
 <template>
     <div class="accounts-view">
         <div class="accounts-view-header">
-            <CsbTitle title="Accounts" />
-            <CsbButton :is-icon-button="isSmallScreen" icon="fa-solid fa-plus" label="Créer un nouveau compte" />
+            <CsbTitle title="Comptes" />
+            <CsbButton :is-icon-button="isSmallScreen" icon="fa-solid fa-plus" label="Créer un nouveau compte" @click="setShowAccountModal(account)"/>
         </div>
         <CsbSection>
             <template #header>
-                <h2>Comptes actifs</h2>
+                <h2>Votre Compte</h2>
+            </template>
+            <template #content>
+                <div class="accounts-view-accounts">
+                    <AdminAccountCard v-if="yourAccount" @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="yourAccount"/>
+                </div>
+            </template>
+        </CsbSection>
+        <CsbSection>
+            <template #header>
+                <h2>Liste des comptes</h2>
             </template>
             <template #content>
                 <div v-if="adminAccounts.length > 0">
                     <div class="accounts-view-accounts">
-                        <template v-for="(account, index) in adminAccounts" :key="index">
+                        <template v-for="(account, index) in filteredAdminAccounts" :key="index">
                             <AdminAccountCard @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="account"/>
                         </template>
                     </div>
                 </div>
-                <CsbEmptyState v-else text="Aucun compte actif"/>
+                <CsbEmptyState v-else text="Aucun compte"/>
             </template>
         </CsbSection>
-        <AdminInfosModal :show="showEditInfosModal" :account="account" @close="showEditInfosModal = false" @update-admin="updateAdmin"/>
+        <AdminInfosModal :show="showEditInfosModal" :account="account" @close="showEditInfosModal = false" @confirm="updateAdmin"/>
         <AdminPasswordModal :show="showEditPasswordModal" @close="showEditPasswordModal = false" @update-password="updatePassword"/>
     </div>
 </template>
@@ -44,12 +54,13 @@ interface AdminAccount {
     lastName: string;
     _id: string;
     isSuperAdmin: boolean;
+    status: string;
 };
 
 const adminAccounts = ref<any>([]);
-const account = ref<AdminAccount>({ email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false });
-const activeAdminAccounts = ref<any>([]);
-const awaitingAdminAccounts = ref<any>([]);
+const account = ref<AdminAccount>({ email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false, status: 'pending' });
+const yourAccount = computed(() => adminAccounts.value.find((account: any) => account._id === authStore.user._id));
+const filteredAdminAccounts = computed(() => adminAccounts.value.filter((account: any) => account._id !== yourAccount.value._id));
 const showEditPasswordModal = ref<boolean>(false);
 const showEditInfosModal = ref<boolean>(false);
 const servicesStore = useServicesStore();
@@ -92,7 +103,12 @@ async function updatePassword(password: any) {
 
 async function updateAdmin(adminAccount: AdminAccount) {
         try {
-            await Admin.updateAdmin(adminAccount);
+            if (adminAccount._id) {
+                await Admin.updateAdmin(adminAccount);
+            } else {
+                await Admin.createAdmin(adminAccount);
+                account.value = { email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false, status: 'pending' };
+            }
             showEditInfosModal.value = false;
             await updateAccount(adminAccount._id);
         } catch (error) {
@@ -107,11 +123,13 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .accounts-view {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
     &-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 3.75rem;
     }
     &-accounts {
         display: grid;

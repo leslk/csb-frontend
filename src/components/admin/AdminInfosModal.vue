@@ -1,7 +1,7 @@
 <template>
     <CsbModal :show="show" @close="close" class="admin-modal">
         <template #header>
-            <h2>Modifier les informations</h2>
+            <h2>{{ headerText }}</h2>
         </template>
         <template #content>
             <form>
@@ -31,7 +31,8 @@
                             :checked="form.isSuperAdmin" 
                             id="admin-status" 
                             @toggle="toggleStatus($event)" 
-                            :label="label" :disabled="!user.isSuperAdmin"
+                            :label="label" 
+                            :disabled="!user.isSuperAdmin"
                         />
                     </div>
                 </div>
@@ -40,7 +41,7 @@
         <template #footer>
             <div class="admin-modal-footer">
                 <CsbButton label="Annuler" @click="close">Annuler</CsbButton>
-                <CsbButton label="Modifier" @click="updateAdmin">Modifier</CsbButton>
+                <CsbButton :label="buttonText" @click="updateAdmin">Modifier</CsbButton>
             </div>
         </template>
     </CsbModal>
@@ -56,6 +57,8 @@
 
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
+    const buttonText = computed(() => props.account._id ? "Modifier" : "Créer");
+    const headerText = computed(() => props.account._id ? "Modification du compte" : "Création d'un compte");
 
     interface AdminAccount {
         email: string;
@@ -63,6 +66,7 @@
         lastName: string;
         _id: string;
         isSuperAdmin: boolean;
+        status: string;
     };
     const props = defineProps({
         account: {
@@ -74,14 +78,15 @@
             required: true
         }
     });
-    const emit = defineEmits(['close', 'updateAdmin']);
+    const emit = defineEmits(['close', 'confirm']);
     const label = computed(() => form.value.isSuperAdmin ? "Super Admin" : "Admin");
     const form = ref({
         _id: props.account._id,
         email: props.account.email,
         firstName: props.account.firstName,
         lastName: props.account.lastName,
-        isSuperAdmin: props.account.isSuperAdmin
+        isSuperAdmin: props.account.isSuperAdmin,
+        status: props.account.status
     });
     function close() {
         emit('close');
@@ -92,7 +97,7 @@
     }
 
     function updateAdmin() {
-        emit('updateAdmin', form.value);
+        emit('confirm', form.value);
     }
 
     watch(() => props.account, (newValue: AdminAccount) => {
@@ -101,7 +106,8 @@
             email: newValue.email,
             firstName: newValue.firstName,
             lastName: newValue.lastName,
-            isSuperAdmin: newValue.isSuperAdmin
+            isSuperAdmin: newValue.isSuperAdmin,
+            status: newValue.status
         }
     });
 </script>

@@ -57,6 +57,23 @@ export class Admin {
         return response;
     }
 
+    static async createAdmin(admin: any) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}api/admins/create`,
+            admin,
+            {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+        servicesStore.setLoading(false);
+        return response;
+    }
+
     static async updatePassword(adminId: string, passwordData: any) {
         const servicesStore = useServicesStore();
         servicesStore.setLoading(true);
