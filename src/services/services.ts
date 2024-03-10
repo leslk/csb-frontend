@@ -6,7 +6,7 @@ interface Credentials {
     password: string
 }
 
-export class auth {
+export class Auth {
 
   static async login(userCredentials: Credentials) {
     const response = await axios.post(
@@ -23,7 +23,7 @@ export class auth {
   }
 }
 
-export class admin {
+export class Admin {
     static async getAccounts() {
         const servicesStore = useServicesStore();
         servicesStore.setLoading(true);
@@ -55,5 +55,11 @@ export class admin {
         )
         servicesStore.setLoading(false);
         return response;
+    }
+}
+
+export class ErrorMessage {
+    static getErrorMessage(error: any) {
+        return error.response.data.error;
     }
 }

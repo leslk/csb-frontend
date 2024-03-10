@@ -6,7 +6,7 @@
         <template #content>
             <form>
                 <div class="admin-modal-form">
-                        <CsbInput :value="form.lastName" label="Mom" @update:value="form.lastName = $event"/>
+                        <CsbInput :value="form.lastName" label="Nom" @update:value="form.lastName = $event"/>
                     <div class="admin-modal-form-group">
                         <CsbInput :value="form.firstName" label="Prénom" @update:value="form.firstName = $event"/>
                     </div>

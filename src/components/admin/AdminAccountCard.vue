@@ -37,7 +37,6 @@
 <script setup lang="ts">
     import { computed, ref } from 'vue';
     import CsbCard from '@/components/common/CsbCard.vue';
-    import { admin } from '@/services/auth';
     import { useAuthStore } from '@/stores/auth';
 
     interface AdminAccount {
