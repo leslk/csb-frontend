@@ -3,12 +3,16 @@
         <template #content>
             <div class="account-card-header">
                 <i class="fa-solid fa-user account-card-header-icon" />
+                <div class="account-card-header-pending" v-if="account.status === 'pending'">
+                    <i class="fa-solid fa-circle-info" />
+                    <p>En attente</p>
+                </div>
                 <div class="account-card-header-edit">
                     <i v-if="isUpdateAuthorized" class="fa-solid fa-ellipsis" @click="setShowMenu" ref="menuIcon"/>
                 </div>
                 <div v-if="showMenu" class="account-card-header-menu" ref="menu">
                     <p @click="setShowModal('infos')">Editer les informations</p>
-                    <p @click="setShowModal('password')">Modifier le mot de passe</p>
+                    <p v-if="account._id === user._id" @click="setShowModal('password')">Modifier le mot de passe</p>
                     <p>Supprimer</p>
                 </div>
             </div>
@@ -45,6 +49,7 @@
         lastName: string;
         _id: string;
         isSuperAdmin: boolean;
+        status: string;
     };
     const props = defineProps({
         account: {
@@ -117,6 +122,18 @@
     &-header-icon {
         font-size: 3rem;
         color: $darkGrey;
+    }
+    &-header-pending {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        background-color: $darkerGrey;
+        border-radius: 20px;
+        padding: 0.2rem 0.5rem;
+        top: 20px;
+        left: 20px;
+        gap: 0.5rem;
+        color: $white;
     }
     &-header-edit {
         position: absolute;

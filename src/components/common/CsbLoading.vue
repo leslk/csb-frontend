@@ -2,7 +2,7 @@
     <div v-if="loading" class="csb-loading">
         <div class="csb-loading-spinner">
             <i class="fa-solid fa-basketball"></i>
-            <p class="csb-loading-spinner-text">Chargement des données</p>
+            <p class="csb-loading-spinner-text">Chargement...</p>
         </div>
     </div>
 </template>
@@ -27,7 +27,7 @@ const props = defineProps({
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100000;
     &-spinner {
         color: $secondaryColor;
         text-align: center;
