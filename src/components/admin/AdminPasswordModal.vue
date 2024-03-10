@@ -5,22 +5,38 @@
         </template>
         <template #content>
             <div class="admin-password-modal-body">
-                <CsbInput type="password" label="Ancien mot de passe" v-model="form.oldPassword"/>
-                <CsbInput type="password" label="Nouveau mot de passe" v-model="form.newPassword"/>
-                <CsbInput type="password" label="Confirmer le nouveau mot de passe" v-model="form.confirmPassword"/>
+                <CsbInput 
+                    type="password" 
+                    label="Ancien mot de passe" 
+                    :value="form.oldPassword"
+                    @update:value="form.oldPassword = $event"
+                />
+                <CsbInput 
+                    type="password" 
+                    label="Nouveau mot de passe" 
+                    :value="form.newPassword"
+                    @update:value="form.newPassword = $event"
+                />
+                <CsbInput 
+                    type="password" 
+                    label="Confirmer le nouveau mot de passe" 
+                    :value="form.confirmPassword"
+                    :error="passwordError"
+                    @update:value="form.confirmPassword = $event"
+                />
             </div>
         </template>
         <template #footer>
             <div class="admin-password-modal-footer">
-                <CsbButton label="Annuler" @click="close">Annuler</CsbButton>
-                <CsbButton label="Modifier" @click="changePassword">Sauvegarder</CsbButton>
+                <CsbButton label="Annuler" @click="close"/>
+                <CsbButton label="Modifier" @click="changePassword"/>
             </div>
         </template>
     </CsbModal>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbInput from '@/components/common/CsbInput.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
@@ -38,6 +54,12 @@ const form = ref({
     oldPassword: '',
     newPassword: '',
     confirmPassword: ''
+});
+const passwordError = computed(() => {
+    if (form.value.newPassword !== form.value.confirmPassword) {
+        return "Les mots de passe ne correspondent pas";
+    }
+    return "";
 });
 
 function close() {

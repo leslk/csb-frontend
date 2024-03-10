@@ -6,16 +6,33 @@
         <template #content>
             <form>
                 <div class="admin-modal-form">
-                        <CsbInput :value="form.lastName" label="Nom" @update:value="form.lastName = $event"/>
+                        <CsbInput 
+                            :value="form.lastName" 
+                            label="Nom" 
+                            @update:value="form.lastName = $event"
+                        />
                     <div class="admin-modal-form-group">
-                        <CsbInput :value="form.firstName" label="Prénom" @update:value="form.firstName = $event"/>
+                        <CsbInput 
+                            :value="form.firstName" 
+                            label="Prénom" 
+                            @update:value="form.firstName = $event"
+                        />
                     </div>
                     <div class="admin-modal-form-group">
-                        <CsbInput :value="form.email" label="Email" @update:value="form.email = $event"/>
+                        <CsbInput 
+                            :value="form.email" 
+                            label="Email" 
+                            @update:value="form.email = $event"
+                        />
                     </div>
                     <div class="admin-modal-form-group">
                         <p class="admin-modal-form-label">Statut</p>
-                        <CsbCheckBox :checked="form.isSuperAdmin" id="admin-status" @toggle="toggleStatus($event)" :label="label" :disabled="!user.isSuperAdmin"/>
+                        <CsbCheckBox 
+                            :checked="form.isSuperAdmin" 
+                            id="admin-status" 
+                            @toggle="toggleStatus($event)" 
+                            :label="label" :disabled="!user.isSuperAdmin"
+                        />
                     </div>
                 </div>
             </form>
@@ -30,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { computed, ref, watch } from 'vue';
     import CsbModal from '@/components/common/CsbModal.vue';
     import CsbInput from '@/components/common/CsbInput.vue';
     import CsbButton from '@/components/common/CsbButton.vue';
@@ -60,11 +77,11 @@
     const emit = defineEmits(['close', 'updateAdmin']);
     const label = computed(() => form.value.isSuperAdmin ? "Super Admin" : "Admin");
     const form = ref({
-        _id: props.account._id ? props.account._id : null,
-        email: props.account.email ? props.account.email : "",
-        firstName: props.account.firstName ? props.account.firstName : "",
-        lastName: props.account.lastName  ? props.account.lastName : "",
-        isSuperAdmin: props.account.isSuperAdmin ? props.account.isSuperAdmin : false
+        _id: props.account._id,
+        email: props.account.email,
+        firstName: props.account.firstName,
+        lastName: props.account.lastName,
+        isSuperAdmin: props.account.isSuperAdmin
     });
     function close() {
         emit('close');
@@ -77,6 +94,16 @@
     function updateAdmin() {
         emit('updateAdmin', form.value);
     }
+
+    watch(() => props.account, (newValue: AdminAccount) => {
+        form.value = {
+            _id: newValue._id,
+            email: newValue.email,
+            firstName: newValue.firstName,
+            lastName: newValue.lastName,
+            isSuperAdmin: newValue.isSuperAdmin
+        }
+    });
 </script>
 
 <style scoped lang="scss">

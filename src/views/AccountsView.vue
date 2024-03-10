@@ -12,7 +12,7 @@
                 <div v-if="adminAccounts.length > 0">
                     <div class="accounts-view-accounts">
                         <template v-for="(account, index) in adminAccounts" :key="index">
-                            <AdminAccountCard @showAccountModal="setShowAccountModal" :account="account"/>
+                            <AdminAccountCard @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="account"/>
                         </template>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             </template>
         </CsbSection>
         <AdminInfosModal :show="showEditInfosModal" :account="account" @close="showEditInfosModal = false" @update-admin="updateAdmin"/>
-        <AdminPasswordModal :show="showEditPasswordModal" @close="showEditPasswordModal = false"/>
+        <AdminPasswordModal :show="showEditPasswordModal" @close="showEditPasswordModal = false" @update-password="updatePassword"/>
     </div>
 </template>
 
@@ -58,9 +58,13 @@ const authStore = useAuthStore();
 const isSmallScreen = computed(() => servicesStore.getSmallDeviceScreen);
 
 function setShowAccountModal(accountToUpdate: AdminAccount) {
-    console.log(accountToUpdate)
     account.value = accountToUpdate;
     showEditInfosModal.value = true;
+}
+
+function setShowPasswordModal(accountId: string) {
+    account.value._id = accountId;
+    showEditPasswordModal.value = true;
 }
 
 async function getAccounts() {
@@ -77,10 +81,20 @@ async function updateAccount(AccountId: string) {
     }
 }
 
+async function updatePassword(password: any) {
+    try {
+        await Admin.updatePassword(account.value._id, password);
+        showEditPasswordModal.value = false;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function updateAdmin(adminAccount: AdminAccount) {
         try {
             await Admin.updateAdmin(adminAccount);
             showEditInfosModal.value = false;
+            await updateAccount(adminAccount._id);
         } catch (error) {
             console.error(error);
         }
@@ -88,7 +102,6 @@ async function updateAdmin(adminAccount: AdminAccount) {
 
 onMounted(async () => {
     adminAccounts.value = await getAccounts();
-    // activeAdminAccounts.value = adminAccounts.value.filter((account: any) => );
 });
 </script>
 
