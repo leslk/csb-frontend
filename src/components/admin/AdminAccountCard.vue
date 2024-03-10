@@ -13,7 +13,7 @@
                 <div v-if="showMenu" class="account-card-header-menu" ref="menu">
                     <p @click="setShowModal('infos')">Editer les informations</p>
                     <p v-if="account._id === user._id" @click="setShowModal('password')">Modifier le mot de passe</p>
-                    <p>Supprimer</p>
+                    <p class="account-card-header-menu-delete" @click="deleteAccount">Supprimer</p>
                 </div>
             </div>
             <div class="account-card-content">
@@ -57,7 +57,7 @@
             required: true
         }
     });
-    const emit = defineEmits(['showPasswordModal', 'showAccountModal']);
+    const emit = defineEmits(['showPasswordModal', 'showAccountModal', 'deleteAccount']);
     const user = computed(() => useAuthStore().user);
     const showMenu = ref<boolean>(false);
     const adminStatus = computed(() => props.account.isSuperAdmin ? "Super Admin" : "Admin");
@@ -92,6 +92,11 @@
     function setShowMenu() {
         showMenu.value = true;
         window.addEventListener('click', closeMenu);
+    }
+
+    function deleteAccount() {
+        showMenu.value = false;
+        emit('deleteAccount', props.account);
     }
 </script>
 
@@ -162,6 +167,12 @@
             cursor: pointer;
             &:hover {
                 background-color: rgba($secondaryColor, 0.2);
+            }
+        }
+        &-delete {
+            color: $errorColor;
+            &:hover {
+                background-color: rgba($errorColor, 0.2) !important;
             }
         }
     }
