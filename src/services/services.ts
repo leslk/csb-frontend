@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useServicesStore } from "@/stores/services"
+import { useAuthStore } from "@/stores/auth"
 
 interface Credentials {
     email: string
@@ -13,7 +14,7 @@ export class Auth {
     servicesStore.setLoading(true);
     try {
         const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}api/users/login`,
+            `${import.meta.env.VITE_API_URL}api/admins/login`,
             userCredentials,
             {
                 withCredentials: true,
@@ -22,8 +23,29 @@ export class Auth {
                 },
             }
         )
+        const authStore = useAuthStore();
+        authStore.logout();
         return response;
 
+    } finally {
+        servicesStore.setLoading(false);
+    }
+  }
+
+  static async logout() {
+    const servicesStore = useServicesStore();
+    servicesStore.setLoading(true);
+    try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}api/admins/logout`,
+            {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+        return response;
     } finally {
         servicesStore.setLoading(false);
     }

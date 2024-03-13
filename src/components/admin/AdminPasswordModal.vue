@@ -10,19 +10,24 @@
                     label="Ancien mot de passe" 
                     :value="form.oldPassword"
                     @update:value="form.oldPassword = $event"
+                    :error="passwordValidate?.oldPassword.$errors[0]?.$message"
+                    password
                 />
                 <CsbInput 
                     type="password" 
                     label="Nouveau mot de passe" 
                     :value="form.newPassword"
                     @update:value="form.newPassword = $event"
+                    :error="passwordValidate?.newPassword.$errors[0]?.$message"
+                    password
                 />
                 <CsbInput 
                     type="password" 
                     label="Confirmer le nouveau mot de passe" 
                     :value="form.confirmPassword"
-                    :error="passwordError"
+                    :error="passwordValidate?.confirmPassword.$errors[0]?.$message"
                     @update:value="form.confirmPassword = $event"
+                    password
                 />
             </div>
         </template>
@@ -36,12 +41,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref, watch } from 'vue';
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbInput from '@/components/common/CsbInput.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required, helpers, sameAs } from '@vuelidate/validators';
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         required: true
@@ -55,20 +62,45 @@ const form = ref({
     newPassword: '',
     confirmPassword: ''
 });
-const passwordError = computed(() => {
-    if (form.value.newPassword !== form.value.confirmPassword) {
-        return "Les mots de passe ne correspondent pas";
-    }
-    return "";
-});
+
+const passwordRules = {
+        oldPassword: { required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required) },
+        newPassword: { required: helpers.withMessage('Veuillez entrer un nouveau mot de passe', required) },
+        confirmPassword: { required: helpers.withMessage('Les mots de passe ne correspondent pas', () => {
+            return form.value.newPassword === form.value.confirmPassword;
+        }) },
+    };
+
+const passwordValidate = useVuelidate(passwordRules, form);
 
 function close() {
     emit('close');
+    passwordValidate.value.$reset();
 }
 
-function changePassword() {
+function resetForm() {
+    form.value = {
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    };
+}
+
+async function changePassword() {
+    const valid = await passwordValidate.value.$validate();
+    if (!valid) return;
     emit('updatePassword', form.value);
 }
+
+watch(() => props.show, () => {
+    resetForm();
+    passwordValidate.value.$reset();
+});
+
+watch(() => form.value, (newValue) => {
+    if (newValue.newPassword.length > 3 && newValue.newPassword !== newValue.confirmPassword)
+    passwordValidate.value.confirmPassword.$touch();
+}, {deep: true});
 
 </script>
 

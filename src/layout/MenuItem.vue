@@ -15,9 +15,10 @@ import { computed } from 'vue';
 
 const props = defineProps(['item']);
 const route = useRoute();
+console.log(route.path, props.item.path);
 
 const isActive = computed(() => {
-    return route.path === props.item.path;
+    return route.path.includes(props.item.path);
 });
 
 </script>
@@ -28,10 +29,13 @@ const isActive = computed(() => {
     display: flex;
     align-items: center;
     gap: 10px;
+    &:hover {
+        background-color: rgba($primaryColor, 0.1);
+    }
 }
 
 .menu-item.is-active {
-    background-color: rgba($secondaryColor, 0.2);
-    color: $secondaryColor;
+    background-color: rgba($primaryColor, 0.2);
+    color: $primaryColor;
 }
 </style>

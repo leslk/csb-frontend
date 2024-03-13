@@ -2,7 +2,7 @@
     <div class="login-view">
         <img :src="Logo" alt="logo" />
         <div class="login-view-content">
-            <CsbTitle class="login-view-title" title="Bienvenue sur le tableau de bord de Caen Street Ball" />
+            <CsbTitle class="login-view-title" title="Tableau de bord de Caen Street Ball" />
             <div class="login-view-form">
                 <CsbInput 
                     class="login-view-form-input"
@@ -11,7 +11,8 @@
                     placeholder="Email"
                     @update:value="userCredentials.email = $event"
                     :error="emailError"
-                 />
+                    icon="fa-solid fa-user"
+                />
                 <CsbInput 
                     class="login-view-form-input"
                     @update:value="userCredentials.password = $event"
@@ -19,8 +20,9 @@
                     type="password" 
                     placeholder="Password" 
                     :error="passwordError"
+                    :password="true"
                 />
-                <CsbButton label="Se connecter" @click="login"/>
+                <CsbButton class="login-view-button" label="Connexion" @click="login" color="#000000"/>
             </div>
         </div>
     </div>
@@ -30,6 +32,7 @@
 import Logo from '@/assets/logo.jpeg';
 import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTitle from '@/components/common/CsbTitle.vue';
+import CsbCard from '@/components/common/CsbCard.vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { computed, ref } from 'vue';
@@ -75,11 +78,27 @@ async function login() {
     align-items: center;
     padding: 40px;
     gap: 1.25rem;
-    height: calc(100vh - (1.25rem * 2));
+    height: 100vh;
     justify-content: center;
     &-title {
         max-width: 600px;
         text-align: center;
+    }
+    &-button {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 2px;
+    }
+    &-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(black, 0.5);
+        box-shadow: none;
+        border-radius: 0;
+        &:hover {
+            box-shadow: none;
+        }
     }
     img {
         width: 150px;
@@ -105,4 +124,5 @@ async function login() {
         padding: 0;
     }
 }
-</style>@/services/services
+
+</style>

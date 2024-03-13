@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, onUnmounted, ref, watch } from 'vue';
+    import { computed, ref, watch } from 'vue';
     import CsbModal from '@/components/common/CsbModal.vue';
     import CsbInput from '@/components/common/CsbInput.vue';
     import CsbButton from '@/components/common/CsbButton.vue';
@@ -104,7 +104,9 @@
         isSuperAdmin: boolean;
         status: string;
     };
+
     function close() {
+        accountValidate.value.$reset();
         emit('close');
     }
 
@@ -130,9 +132,13 @@
         }
     });
 
-    onUnmounted(() => {
+    watch(() => props.show, () => {
         accountValidate.value.$reset();
     });
+
+    watch(() => form.value, () => {
+       accountValidate.value.$touch();
+    }, { deep: true });
 </script>
 
 <style scoped lang="scss">
