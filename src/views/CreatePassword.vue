@@ -1,8 +1,8 @@
 <template>
     <div class="create-password-view">
-        <img :src="Logo" alt="logo" />
         <div class="create-password-view-content">
-            <CsbTitle class="create-password-view-title" title="Votre compte Administrateur Caen street ball vient d'être créer, merci de compléter votre mot de passe pour le valider" />
+        <img :src="Logo" alt="logo" class="create-password-view-logo"/>
+            <CsbTitle class="create-password-view-title" title="Bienvenue sur CAEN STREET BALL Créez votre mot de passe pour accéder à votre compte" />
             <div class="create-password-view-form">
                 <CsbInput 
                     class="create-password-view-form-input"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import Logo from '@/assets/logo.jpeg';
+import Logo from '@/assets/csb_logo.png';
 import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTitle from '@/components/common/CsbTitle.vue';
 import { useRouter } from 'vue-router';
@@ -82,52 +82,56 @@ async function createPassword() {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 40px;
     gap: 1.25rem;
     height: 100vh;
+    width: 100%;
     justify-content: center;
     &-title {
         max-width: 600px;
         text-align: center;
+        font-size: 2rem;
     }
     &-button {
         width: 100%;
-        max-width: 400px;
         border-radius: 2px;
     }
-    &-card {
+    &-content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: rgba(black, 0.5);
-        box-shadow: none;
-        border-radius: 0;
-        &:hover {
-            box-shadow: none;
-        }
+        max-width: 500px;
+        width: 100%;
+        gap: 1.25rem;
     }
-    img {
-        width: 150px;
-        height: 150px;
+    &-logo {
+        width: 300px;
+        height: 300px;
         border-radius: 50%;
-    }
-    h1 {
-        font-size: 2rem;
-        margin: 1rem 0;
     }
     &-form {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        width: 100%;
         padding: 3.75rem 1rem;
         &-input {
             width: 100%;
-            max-width: 400px;
         }
     }
     @media (max-width: 1024px) {
         padding: 0;
+    }
+    @media (max-width: 768px) {
+        &-content {
+            max-width: 100vw;
+        }
+        &-title {
+            max-width: 200px;
+            font-size: 1.5rem;
+        }
     }
 }
 

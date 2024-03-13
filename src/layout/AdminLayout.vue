@@ -53,6 +53,9 @@ const viewStyle = computed(() => isAuth.value ? 'view' : 'view no-auth');
             margin-top: 100px;
             margin-left: 0;
         }
+        .no-auth {
+            margin-top: 0px;
+        }
         flex-direction: column;
     }
 }

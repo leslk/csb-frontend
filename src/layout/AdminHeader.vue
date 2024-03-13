@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import Logo from '@/assets/logo.jpeg';
+import Logo from '@/assets/csb_logo.png';
 import MenuItem from '@/layout/MenuItem.vue';
 import  {useRouter}  from 'vue-router';
 import { onBeforeMount, onUnmounted, ref, computed } from 'vue';
@@ -94,8 +94,6 @@ onUnmounted(() => {
         img {
             height: 100%;
             width: 100%;
-            object-fit: cover;
-            border-radius: 50%;
         }
     }
     &-menu {

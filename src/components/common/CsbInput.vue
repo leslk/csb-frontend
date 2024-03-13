@@ -21,13 +21,15 @@
         </div>
         <div v-if="error" class="csb-input-error">
             <i class="fa-solid fa-circle-info"></i>
-            <p>{{ error }}</p>
+            <p>{{ errorMessage }}</p>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, type Ref, type PropType, unref } from 'vue';
+
+type StringOrRef = string | Ref<string>;
 
 const props = defineProps({
     value: {
@@ -55,7 +57,7 @@ const props = defineProps({
         default: '',
     },
     error: {
-        type: String,
+        type: Object as PropType<StringOrRef>,
         default: undefined,
     },
     icon: {
@@ -67,6 +69,7 @@ const props = defineProps({
 
 
 const emit = defineEmits(['update:value', 'blur']);
+const errorMessage = computed(() => unref(props.error));
 const textValue = ref(props.value);
 const typeOfPasswordInput = computed(() => props.password && showPassword.value ? 'text' : props.password && !showPassword.value ? 'password' : props.type);
 const showPassword = ref(false);

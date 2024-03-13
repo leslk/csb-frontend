@@ -8,11 +8,11 @@
 .csb-card {
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 0 rgba($secondaryColor, 0.1);
     background-color: $white;
     z-index: 0;
     &:hover {
-        box-shadow: 0 0 10px 0 $darkGrey;
+        box-shadow:0 0 10px 0 rgba($secondaryColor, 0.5);
     }
 }
 </style>

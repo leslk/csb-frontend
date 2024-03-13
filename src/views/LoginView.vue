@@ -1,8 +1,8 @@
 <template>
     <div class="login-view">
-        <img :src="Logo" alt="logo" />
         <div class="login-view-content">
-            <CsbTitle class="login-view-title" title="Tableau de bord de Caen Street Ball" />
+            <img :src="Logo" alt="logo" class="login-view-logo"/>
+            <CsbTitle class="login-view-title" title="CAEN STREET BALL © Connexion" /> 
             <form class="login-view-form" @submit.prevent="login">
                 <CsbInput 
                     class="login-view-form-input"
@@ -29,10 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import Logo from '@/assets/logo.jpeg';
+import Logo from '@/assets/csb_logo.png';
 import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTitle from '@/components/common/CsbTitle.vue';
-import CsbCard from '@/components/common/CsbCard.vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { computed, ref } from 'vue';
@@ -76,52 +75,56 @@ async function login() {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 40px;
     gap: 1.25rem;
     height: 100vh;
+    width: 100%;
     justify-content: center;
     &-title {
         max-width: 600px;
         text-align: center;
+        font-size: 2rem;
     }
     &-button {
         width: 100%;
-        max-width: 400px;
         border-radius: 2px;
     }
-    &-card {
+    &-content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: rgba(black, 0.5);
-        box-shadow: none;
-        border-radius: 0;
-        &:hover {
-            box-shadow: none;
-        }
+        max-width: 400px;
+        width: 100%;
+        gap: 1.25rem;
     }
-    img {
-        width: 150px;
-        height: 150px;
+    &-logo {
+        width: 300px;
+        height: 300px;
         border-radius: 50%;
-    }
-    h1 {
-        font-size: 2rem;
-        margin: 1rem 0;
     }
     &-form {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        width: 100%;
         padding: 3.75rem 1rem;
         &-input {
             width: 100%;
-            max-width: 400px;
         }
     }
     @media (max-width: 1024px) {
         padding: 0;
+    }
+    @media (max-width: 768px) {
+        &-content {
+            max-width: 100vw;
+        }
+        &-title {
+            max-width: 200px;
+            font-size: 1.5rem;
+        }
     }
 }
 
