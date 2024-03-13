@@ -10,16 +10,15 @@ const router = createRouter({
       path: '/',
       name: 'home',
       redirect: () => {
-        const hostname = window.location.hostname;
-        if (hostname.includes('admin')) {
-          return { name: 'AdminHome' }
+        const url = window.location.origin;
+        if (url.includes('admin')) {
+          return { name: 'Admin' }
         }
         return { name: 'home' }
       }
     },
     adminRouter,
   ]
-  
 })
 
 

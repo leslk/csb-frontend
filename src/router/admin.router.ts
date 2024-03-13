@@ -8,12 +8,13 @@ import LoginView from '@/views/LoginView.vue';
 const adminRouter = {
     path: '/admin',
     component: AdminLayout,
+    name: 'Admin',
     meta: {
         title: 'CSB - Admin'
     },
     children: [
         {
-            path: '/home',
+            path: 'home',
             name: 'Accueil',
             component: HomeView,
             meta: {
@@ -23,7 +24,7 @@ const adminRouter = {
             }
         },
         {
-            path: '/accounts',
+            path: 'accounts',
             name: 'Comptes',
             component: AccountsView,
             meta: {
@@ -33,7 +34,7 @@ const adminRouter = {
             }
         },
         {
-            path: '/tournaments',
+            path: 'tournaments',
             name: 'Tournois',
             component: TournamentsView,
             meta: {
@@ -43,7 +44,7 @@ const adminRouter = {
             }
         },
         {
-            path: '/site-content',
+            path: 'site-content',
             name: 'Contenu du site',
             component: SiteContentView,
             meta: {

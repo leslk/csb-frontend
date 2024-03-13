@@ -14,19 +14,18 @@
                 </div>
             </template>
         </CsbSection>
-        <CsbSection>
+        <CsbSection v-if="filteredAdminAccounts.length > 0">
             <template #header>
                 <h2>Liste des comptes</h2>
             </template>
             <template #content>
-                <div v-if="adminAccounts.length > 0">
+                <div>
                     <div class="accounts-view-accounts">
                         <template v-for="(account, index) in filteredAdminAccounts" :key="index">
                             <AdminAccountCard @show-password-modal="setShowPasswordModal" @show-account-modal="setShowAccountModal" :account="account" @delete-account="setShowDeleteModal"/>
                         </template>
                     </div>
                 </div>
-                <CsbEmptyState v-else text="Aucun compte"/>
             </template>
         </CsbSection>
         <AdminInfosModal :show="showEditInfosModal" :account="account" @close="showEditInfosModal = false" @confirm="updateAdmin"/>
@@ -38,10 +37,9 @@
 <script setup lang="ts">
 import CsbTitle from '@/components/common/CsbTitle.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
-import CsbEmptyState from '@/components/common/CsbEmptyState.vue';
 import CsbSection from '@/components/common/CsbSection.vue';
 import AdminDeleteModal from '@/components/admin/AdminDeleteModal.vue';
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 import { Admin } from '@/services/services';
 import AdminAccountCard from '@/components/admin/AdminAccountCard.vue';
 import AdminInfosModal from '@/components/admin/AdminInfosModal.vue';
@@ -50,6 +48,7 @@ import { useServicesStore } from '@/stores/services';
 import { useAuthStore } from '@/stores/auth';
 import {toast} from 'vue3-toastify';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 interface AdminAccount {
     email: string;
@@ -61,6 +60,7 @@ interface AdminAccount {
 };
 
 const adminAccounts = ref<any>([]);
+const router = useRouter();
 const account = ref<AdminAccount>({ email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false, status: 'pending' });
 const yourAccount = computed(() => adminAccounts.value.find((account: any) => account._id === authStore.user._id));
 const filteredAdminAccounts = computed(() => adminAccounts.value.filter((account: any) => account._id !== yourAccount.value._id));
@@ -84,7 +84,6 @@ function setShowPasswordModal(accountId: string) {
 
 function setShowDeleteModal(accountToDelete: AdminAccount) {
     account.value = accountToDelete;
-    console.log(account.value);
     showDeleteModal.value = true;
 }
 
@@ -123,8 +122,8 @@ async function updateAdmin(adminAccount: AdminAccount) {
             await Admin.updateAdmin(adminAccount);
         } else {
             await Admin.createAdmin(adminAccount);
-            resetAccount();
         }
+        resetAccount();
         showEditInfosModal.value = false;
         await updateAccount(adminAccount._id);
         toast.success(toastText);
@@ -137,9 +136,13 @@ async function deleteAccount(accountId: string) {
     try {
         await Admin.deleteAdmin(accountId);
         showDeleteModal.value = false;
-        resetAccount();
-        await updateAccount(accountId);
-        toast.success('Compte supprimé');
+        if (authStore.user?._id === accountId) {
+            authStore.logout();
+            router.push({ name: 'Login' });
+        } else {
+            await updateAccount(accountId);
+            toast.success('Compte supprimé');
+        }
     } catch (error) {
         toast.error('Erreur lors de la suppression du compte');
     }
@@ -147,6 +150,12 @@ async function deleteAccount(accountId: string) {
 
 onMounted(async () => {
     adminAccounts.value = await getAccounts();
+});
+
+watch(() => showEditInfosModal.value, (newValue: boolean) => {
+    if (!newValue) {
+        resetAccount();
+    }
 });
 </script>
 

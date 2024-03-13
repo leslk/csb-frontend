@@ -29,17 +29,24 @@ const viewStyle = computed(() => isAuth.value ? 'view' : 'view no-auth');
 .admin-layout {
     position: relative;
     display: flex;
+    min-height: 100vh;
 
     .view {
         padding: 1.25rem;
         flex-grow: 1;
         margin-left: 300px;
         background-color: $lighterGrey;
-        border-right: 2px solid $lightGrey;
+        background-image: linear-gradient(rgba($white, 0.6), rgba($white, 0.6)), url("../assets/csb_tournament2.jpeg");
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
     .no-auth {
-        width: 100%;
+        width: 100vw;
         margin-left: 0;
+        padding: 0;
+        background-image: linear-gradient(rgba($white, 0.3), rgba($white, 0.3)), url("../assets/csb_tournament2.jpeg");
     }
     @media (max-width: 1024px) {
         .view {

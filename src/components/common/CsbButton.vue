@@ -1,12 +1,14 @@
 <template>
-    <button :class="['csb-button', {iconButton: isIconButton}]">
+    <button :class="['csb-button', {iconButton: isIconButton}]" :style="{'--color': color}">
         <i v-if="icon" :class="icon"></i>
         <span v-if="!isIconButton">{{ label }}</span>
     </button>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
     label: {
         type: String,
         required: false
@@ -19,20 +21,27 @@ defineProps({
         type: Boolean,
         required: false,
         default: false
-    }
+    },
+    color: {
+        type: String,
+        required: false,
+        default: '#161617'
+    },
 });
+
+const color = computed(() => props.color);
 </script>
 
 <style scoped lang="scss">
 .csb-button {
     padding: 0.625rem 1.25rem;
-    border-radius: 10px;
-    background-color: $secondaryColor;
+    border-radius: 16.75px;
+    background-color: var(--color);
     color: $white;
     cursor: pointer;
     transition: background-color 0.3s;
     display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 0.625rem;
     i {
         font-size: 1.2rem;

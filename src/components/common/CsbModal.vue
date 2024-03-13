@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import { onUnmounted } from 'vue';
+
 defineProps({
     show: {
         type: Boolean,
@@ -33,7 +35,7 @@ const emit = defineEmits(['close']);
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($darkerGrey, 0.6);
+    background-color: rgba($secondaryColor, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;

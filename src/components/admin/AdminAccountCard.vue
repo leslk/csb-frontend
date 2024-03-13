@@ -105,13 +105,13 @@
     padding: 0.2rem 0.5rem;
     border-radius: 20px;
     color: $white;
-    background-color: rgba($successColor, 0.6);
+    background-color: $successColor;
 }
 .admin {
     padding: 0.2rem 0.5rem;
     border-radius: 20px;
     color: $white;
-    background-color: rgba($secondaryColor, 0.5);
+    background-color: $primaryColor;
 }
 .account-card {
     &-header {

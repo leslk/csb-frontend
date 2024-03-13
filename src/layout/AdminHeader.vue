@@ -71,7 +71,8 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .header {
-    background-color: $white;
+    background-color: $secondaryColor;
+    color: $white;
     position: fixed;
     padding: 1.25rem 0;
     width: 300px;
@@ -134,7 +135,7 @@ onUnmounted(() => {
             position: absolute;
             top: 90px;
             left: 0;
-            background-color: $white;
+            background-color: $secondaryColor;
             width: 30%;
             height: calc(100vh - 90px);
         }
