@@ -54,7 +54,7 @@ interface AdminAccount {
     email: string;
     firstName: string;
     lastName: string;
-    _id: string;
+    _id?: string | null;
     isSuperAdmin: boolean;
     status: string;
 };
@@ -88,7 +88,7 @@ function setShowDeleteModal(accountToDelete: AdminAccount) {
 }
 
 function resetAccount() {
-    account.value = { email: '', firstName: '', lastName: '', _id: '', isSuperAdmin: false, status: 'pending' };
+    account.value = { email: '', firstName: '', lastName: '', _id: null, isSuperAdmin: false, status: 'pending' };
 }
 
 async function getAccounts() {
@@ -107,7 +107,7 @@ async function updateAccount(AccountId: string) {
 
 async function updatePassword(password: any) {
     try {
-        await Admin.updatePassword(account.value._id, password);
+        await Admin.updatePassword(account.value._id!, password);
         showEditPasswordModal.value = false;
         toast.success('Mot de passe modifié');
     } catch (error) {
@@ -117,6 +117,7 @@ async function updatePassword(password: any) {
 
 async function updateAdmin(adminAccount: AdminAccount) {
     const toastText = adminAccount._id ? 'Compte modifié' : 'Compte créé';
+    const toastErrorText = adminAccount._id ? 'Erreur lors de la modification du compte' : 'Erreur lors de la création du compte';
     try {
         if (adminAccount._id) {
             await Admin.updateAdmin(adminAccount);
@@ -125,10 +126,10 @@ async function updateAdmin(adminAccount: AdminAccount) {
         }
         resetAccount();
         showEditInfosModal.value = false;
-        await updateAccount(adminAccount._id);
+        await updateAccount(adminAccount._id!);
         toast.success(toastText);
     } catch (error) {
-        toast.error('Erreur lors de la modification du compte');
+        toast.error(toastErrorText);
     }
 }
 

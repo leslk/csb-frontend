@@ -4,11 +4,13 @@ import AccountsView from '@/views/AccountsView.vue';
 import TournamentsView from '@/views/TournamentsView.vue';
 import SiteContentView from '@/views/SiteContentView.vue';
 import LoginView from '@/views/LoginView.vue';
+import CreatePassword from '@/views/CreatePassword.vue';
 
 const adminRouter = {
     path: '/admin',
     component: AdminLayout,
     name: 'Admin',
+    redirect: { name: 'Accueil' },
     meta: {
         title: 'CSB - Admin'
     },
@@ -18,6 +20,7 @@ const adminRouter = {
             name: 'Accueil',
             component: HomeView,
             meta: {
+            isInTheMenu: true,
             title: 'Home',
             metaIcon: 'fa-solid fa-house',
             requiresAuth: true
@@ -28,8 +31,9 @@ const adminRouter = {
             name: 'Comptes',
             component: AccountsView,
             meta: {
+            isInTheMenu: true,
             title: 'Accounts',
-            metaIcon: 'fa-solid fa-user',
+            metaIcon: 'fa-regular fa-address-card',
             requiresAuth: true
             }
         },
@@ -38,6 +42,7 @@ const adminRouter = {
             name: 'Tournois',
             component: TournamentsView,
             meta: {
+            isInTheMenu: true,
             title: 'Tournaments',
             metaIcon: 'fa-solid fa-trophy',
             requiresAuth: true
@@ -48,22 +53,36 @@ const adminRouter = {
             name: 'Contenu du site',
             component: SiteContentView,
             meta: {
+            isInTheMenu: true,
             title: 'Site Content',
             metaIcon: 'fa-solid fa-pager',
             requiresAuth: true
             }
         },
         {
-            path: '/login',
+            path: 'login',
             name: 'Login',
             component: LoginView,
             meta: {
+                isInTheMenu: false,
                 title: 'Login',
+                requiresAuth: false
+            }
+
+        },
+        {
+            path: 'create-password/:id',
+            name: 'create-password',
+            component: CreatePassword,
+            meta: {
+                isInTheMenu: false,
+                title: 'Create Password',
                 requiresAuth: false
             }
 
         }
     ]
+
 }
 
 export default adminRouter;

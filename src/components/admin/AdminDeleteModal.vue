@@ -25,7 +25,7 @@ interface AdminAccount {
     email: string;
     firstName: string;
     lastName: string;
-    _id: string;
+    _id?: string | null;
     isSuperAdmin: boolean;
     status: string;
 };

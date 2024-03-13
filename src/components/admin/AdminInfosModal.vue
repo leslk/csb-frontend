@@ -60,6 +60,15 @@
     import { useVuelidate } from '@vuelidate/core';
     import { required, helpers } from '@vuelidate/validators';
 
+    interface AdminAccount {
+        email: string;
+        firstName: string;
+        lastName: string;
+        _id?: string | null;
+        isSuperAdmin: boolean;
+        status: string;
+    };
+
     const authStore = useAuthStore();
     const user = computed(() => authStore.user);
     const buttonText = computed(() => props.account._id ? "Modifier" : "Créer");
@@ -96,15 +105,6 @@
 
     const accountValidate = useVuelidate(accountRules, form);
 
-    interface AdminAccount {
-        email: string;
-        firstName: string;
-        lastName: string;
-        _id: string;
-        isSuperAdmin: boolean;
-        status: string;
-    };
-
     function close() {
         accountValidate.value.$reset();
         emit('close');
@@ -136,9 +136,6 @@
         accountValidate.value.$reset();
     });
 
-    watch(() => form.value, () => {
-       accountValidate.value.$touch();
-    }, { deep: true });
 </script>
 
 <style scoped lang="scss">

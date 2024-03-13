@@ -3,7 +3,7 @@
         <img :src="Logo" alt="logo" />
         <div class="login-view-content">
             <CsbTitle class="login-view-title" title="Tableau de bord de Caen Street Ball" />
-            <div class="login-view-form">
+            <form class="login-view-form" @submit.prevent="login">
                 <CsbInput 
                     class="login-view-form-input"
                     :value="userCredentials.email" 
@@ -20,10 +20,10 @@
                     type="password" 
                     placeholder="Password" 
                     :error="passwordError"
-                    :password="true"
+                    password
                 />
                 <CsbButton class="login-view-button" label="Connexion" @click="login" color="#000000"/>
-            </div>
+            </form>
         </div>
     </div>
 </template>

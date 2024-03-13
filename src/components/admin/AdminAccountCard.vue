@@ -2,7 +2,7 @@
     <CsbCard>
         <template #content>
             <div class="account-card-header">
-                <i class="fa-solid fa-user account-card-header-icon" />
+                <i class="fa-regular fa-address-card account-card-header-icon"/>
                 <div class="account-card-header-pending" v-if="account.status === 'pending'">
                     <i class="fa-regular fa-clock"></i>
                     <p>En attente</p>
@@ -90,7 +90,7 @@
     }
 
     function setShowMenu() {
-        showMenu.value = true;
+        showMenu.value = !showMenu.value;
         window.addEventListener('click', closeMenu);
     }
 
@@ -116,17 +116,17 @@
 .account-card {
     &-header {
         position: relative;
+        background-color: $lighterGrey;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 1rem;
         height: 100px;
-        background-color: $lighterGrey;
         border-radius: 12px 12px 0 0;
     }
     &-header-icon {
-        font-size: 3rem;
-        color: $darkGrey;
+        font-size: 4rem;
+        color: $darkerGrey;
     }
     &-header-pending {
         display: flex;

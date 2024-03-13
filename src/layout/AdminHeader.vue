@@ -52,7 +52,7 @@ function logout() {
     router.push({ name: 'Login' });
 }
 const adminRoutes = router.options.routes.filter(
-    (route: any) => route.path === '/admin')[0].children?.filter((route: any) => route.name !== 'Login');
+    (route: any) => route.path === '/admin')[0].children?.filter((route: any) => route.meta.isInTheMenu);
     
 
 
@@ -112,7 +112,8 @@ onUnmounted(() => {
     @media (max-width: 1024px) {
         width: 100%;
         height: auto;
-        position: relative;
+        position: fixed;
+        z-index: 1000;
         &-main-content {  
             gap: 1.25rem;
         }
@@ -132,7 +133,7 @@ onUnmounted(() => {
         }
         &-main-content {
             z-index: 1000;
-            position: absolute;
+            position: fixed;
             top: 90px;
             left: 0;
             background-color: $secondaryColor;

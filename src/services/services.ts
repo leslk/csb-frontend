@@ -77,7 +77,7 @@ export class Admin {
         servicesStore.setLoading(true);
         try {
             const response = await axios.put(
-                `${import.meta.env.VITE_API_URL}api/admins/${admin._id}/update`,
+                `${import.meta.env.VITE_API_URL}api/admins/${admin._id}`,
                 admin,
                 {
                     withCredentials: true,
@@ -97,7 +97,7 @@ export class Admin {
         servicesStore.setLoading(true);
         try {
             const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}api/admins/create`,
+                `${import.meta.env.VITE_API_URL}api/admins`,
                 admin,
                 {
                     withCredentials: true,
@@ -138,7 +138,27 @@ export class Admin {
         servicesStore.setLoading(true);
         try {
             const response = await axios.put(
-                `${import.meta.env.VITE_API_URL}api/admins/${adminId}/password/update`,
+                `${import.meta.env.VITE_API_URL}api/admins/${adminId}/password`,
+                passwordData,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+
+    static async createPassword(adminId: string, passwordData: any) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}api/admins/${adminId}/password`,
                 passwordData,
                 {
                     withCredentials: true,

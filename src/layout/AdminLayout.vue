@@ -50,6 +50,7 @@ const viewStyle = computed(() => isAuth.value ? 'view' : 'view no-auth');
     }
     @media (max-width: 1024px) {
         .view {
+            margin-top: 100px;
             margin-left: 0;
         }
         flex-direction: column;
