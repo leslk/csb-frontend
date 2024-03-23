@@ -4,7 +4,8 @@ import AccountsView from '@/views/AccountsView.vue';
 import TournamentsView from '@/views/TournamentsView.vue';
 import SiteContentView from '@/views/SiteContentView.vue';
 import LoginView from '@/views/LoginView.vue';
-import CreatePassword from '@/views/CreatePassword.vue';
+import CreatePasswordView from '@/views/CreatePasswordView.vue';
+import ForgetPasswordView from '@/views/ForgetPasswordView.vue';
 
 const adminRouter = {
     path: '/admin',
@@ -20,10 +21,10 @@ const adminRouter = {
             name: 'Accueil',
             component: HomeView,
             meta: {
-            isInTheMenu: true,
-            title: 'Home',
-            metaIcon: 'fa-solid fa-house',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Home',
+                metaIcon: 'fa-solid fa-house',
+                requiresAuth: true
             }
         },
         {
@@ -31,10 +32,10 @@ const adminRouter = {
             name: 'Comptes',
             component: AccountsView,
             meta: {
-            isInTheMenu: true,
-            title: 'Accounts',
-            metaIcon: 'fa-regular fa-address-card',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Accounts',
+                metaIcon: 'fa-regular fa-address-card',
+                requiresAuth: true
             }
         },
         {
@@ -42,10 +43,10 @@ const adminRouter = {
             name: 'Tournois',
             component: TournamentsView,
             meta: {
-            isInTheMenu: true,
-            title: 'Tournaments',
-            metaIcon: 'fa-solid fa-trophy',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Tournaments',
+                metaIcon: 'fa-solid fa-trophy',
+                requiresAuth: true
             }
         },
         {
@@ -53,10 +54,10 @@ const adminRouter = {
             name: 'Contenu du site',
             component: SiteContentView,
             meta: {
-            isInTheMenu: true,
-            title: 'Site Content',
-            metaIcon: 'fa-solid fa-pager',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Site Content',
+                metaIcon: 'fa-solid fa-pager',
+                requiresAuth: true
             }
         },
         {
@@ -68,21 +69,28 @@ const adminRouter = {
                 title: 'Login',
                 requiresAuth: false
             }
-
         },
         {
-            path: 'create-password/:id',
+            path: 'create-password/:id/:token',
             name: 'create-password',
-            component: CreatePassword,
+            component: CreatePasswordView,
             meta: {
                 isInTheMenu: false,
                 title: 'Create Password',
                 requiresAuth: false
             }
-
+        },
+        {
+            path: 'forget-password/:id/:token',
+            name: 'forget-password',
+            component: ForgetPasswordView,
+            meta: {
+                isInTheMenu: false,
+                title: 'Create Password',
+                requiresAuth: false
+            }
         }
     ]
-
-}
+};
 
 export default adminRouter;

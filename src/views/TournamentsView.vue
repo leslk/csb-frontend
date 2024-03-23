@@ -2,7 +2,12 @@
     <div class="tournaments-view">
         <div class="tournaments-view-header">
             <CsbTitle title="Tournaments" />
-            <CsbButton :is-icon-button="isSmallScreen" icon="fa-solid fa-plus" label="Créer un nouveau tournoi" @click="showCreateTournamentModal = true"/>
+            <CsbButton
+                :is-icon-button="isSmallScreen"
+                icon="fa-solid fa-plus"
+                label="Créer un nouveau tournoi"
+                @click="showCreateTournamentModal = true"
+            />
         </div>
         <section>
             <h2>Tournois à venir</h2>
@@ -11,7 +16,7 @@
                     <p>{{ tournament.name }}</p>
                 </div>
             </div>
-            <CsbEmptyState v-else text="Aucun tournoi en cours"/>
+            <CsbEmptyState v-else text="Aucun tournoi en cours" />
         </section>
         <section>
             <h2>Tournois passés</h2>
@@ -20,10 +25,10 @@
                     <p>{{ tournament.name }}</p>
                 </div>
             </div>
-            <CsbEmptyState v-else text="Aucun tournoi en cours"/>
+            <CsbEmptyState v-else text="Aucun tournoi en cours" />
         </section>
     </div>
-    <CsbModal :show="showCreateTournamentModal" @close="showCreateTournamentModal = false" >
+    <CsbModal :show="showCreateTournamentModal" @close="showCreateTournamentModal = false">
         <template #header>
             <h2>Créer un nouveau tournoi</h2>
         </template>
@@ -62,5 +67,4 @@ const isSmallScreen = computed(() => servicesStore.getSmallDeviceScreen);
         margin-bottom: 60px;
     }
 }
-
 </style>

@@ -18,6 +18,10 @@
     height: 100vh;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 @media (max-width: 768px) {
     * {
     }

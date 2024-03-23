@@ -96,7 +96,7 @@ watch(() => props.value, (newValue: string | number) => {
 }
 .csb-input {
     padding: 0.625rem 1rem;
-    border-radius: 2px;
+    border-radius: $borderRadius;
     width: 100%;
     border: 1px solid $lightGrey;
     border-left: 4px solid $secondaryColor;

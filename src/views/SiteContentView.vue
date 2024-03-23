@@ -2,7 +2,11 @@
     <div class="site-content-view">
         <div class="site-content-view-header">
             <CsbTitle title="Contenu du site" />
-            <CsbButton :is-icon-button="isSmallScreen" icon="fa-solid fa-plus" label="Créer un nouveau contenu" />
+            <CsbButton
+                :is-icon-button="isSmallScreen"
+                icon="fa-solid fa-plus"
+                label="Créer un nouveau contenu"
+            />
         </div>
         <section>
             <h2>Description</h2>
@@ -11,7 +15,7 @@
                     <p>{{ siteContent.name }}</p>
                 </div>
             </div>
-            <CsbEmptyState v-else text="Aucun contenu actif"/>
+            <CsbEmptyState v-else text="Aucun contenu actif" />
         </section>
         <section>
             <h2>Membres</h2>
@@ -20,7 +24,7 @@
                     <p>{{ member.name }}</p>
                 </div>
             </div>
-            <CsbEmptyState v-else text="Aucun membres"/>
+            <CsbEmptyState v-else text="Aucun membres" />
         </section>
         <section>
             <h2>Contact</h2>
@@ -29,7 +33,7 @@
                     <p>{{ contact }}</p>
                 </div>
             </div>
-            <CsbEmptyState v-else text="Aucun contact"/>
+            <CsbEmptyState v-else text="Aucun contact" />
         </section>
     </div>
 </template>

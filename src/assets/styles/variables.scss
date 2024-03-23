@@ -11,3 +11,23 @@ $white: #ffffff;
 $successColor: #00C853;
 $warningColor: #FF6D00;
 $errorColor: #D50000;
+
+$borderRadius: 5px;
+
+@keyframes slideToRight {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

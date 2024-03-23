@@ -1,55 +1,91 @@
-import axios from "axios"
-import { useServicesStore } from "@/stores/services"
-import { useAuthStore } from "@/stores/auth"
+import axios from 'axios';
+import { useServicesStore } from '@/stores/services';
+import { useAuthStore } from '@/stores/auth';
 
 interface Credentials {
-    email: string
-    password: string
+    email: string;
+    password: string;
 }
 
 export class Auth {
+    static async login(userCredentials: Credentials) {
+        console.log('userCredentials', userCredentials);
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}api/admins/login`,
+                userCredentials,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            const authStore = useAuthStore();
+            authStore.logout();
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
 
-  static async login(userCredentials: Credentials) {
-    const servicesStore = useServicesStore();
-    servicesStore.setLoading(true);
-    try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}api/admins/login`,
-            userCredentials,
-            {
+    static async resetPassword(adminId: string, passwordData: any) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_API_URL}api/admins/${adminId}/resetPassword`,
+                passwordData,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+
+    static async forgetPassword(email: string) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}api/admins/forgetPassword`,
+                { email },
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+
+    static async logout() {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/admins/logout`, {
                 withCredentials: true,
                 headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-        const authStore = useAuthStore();
-        authStore.logout();
-        return response;
-
-    } finally {
-        servicesStore.setLoading(false);
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
     }
-  }
-
-  static async logout() {
-    const servicesStore = useServicesStore();
-    servicesStore.setLoading(true);
-    try {
-        const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}api/admins/logout`,
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-        return response;
-    } finally {
-        servicesStore.setLoading(false);
-    }
-  }
 }
 
 export class Admin {
@@ -57,15 +93,32 @@ export class Admin {
         const servicesStore = useServicesStore();
         servicesStore.setLoading(true);
         try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}api/admins/`,
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/admins/`, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+
+    static async resendInvitation(adminId: string) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}api/admins/${adminId}/sendInvitation`,
+                {},
                 {
                     withCredentials: true,
                     headers: {
-                        "Content-Type": "application/json",
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
-            )
+            );
             return response;
         } finally {
             servicesStore.setLoading(false);
@@ -82,10 +135,10 @@ export class Admin {
                 {
                     withCredentials: true,
                     headers: {
-                        "Content-Type": "application/json",
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
-            )
+            );
             return response;
         } finally {
             servicesStore.setLoading(false);
@@ -96,19 +149,33 @@ export class Admin {
         const servicesStore = useServicesStore();
         servicesStore.setLoading(true);
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}api/admins`,
-                admin,
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}api/admins`, admin, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            )
+            });
             return response;
+        } finally {
+            servicesStore.setLoading(false);
         }
-        finally {
+    }
+
+    static async checkToken(id: string, token: string) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}api/admins/checkToken/${id}/${token}`,
+                {
+                    withCredentials: false,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
             servicesStore.setLoading(false);
         }
     }
@@ -122,14 +189,13 @@ export class Admin {
                 {
                     withCredentials: true,
                     headers: {
-                        "Content-Type": "application/json",
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
-            )
+            );
             return response;
         } finally {
             servicesStore.setLoading(false);
-
         }
     }
 
@@ -143,10 +209,10 @@ export class Admin {
                 {
                     withCredentials: true,
                     headers: {
-                        "Content-Type": "application/json",
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
-            )
+            );
             return response;
         } finally {
             servicesStore.setLoading(false);
@@ -163,10 +229,10 @@ export class Admin {
                 {
                     withCredentials: true,
                     headers: {
-                        "Content-Type": "application/json",
-                    },
+                        'Content-Type': 'application/json'
+                    }
                 }
-            )
+            );
             return response;
         } finally {
             servicesStore.setLoading(false);
@@ -176,6 +242,7 @@ export class Admin {
 
 export class ErrorMessage {
     static getErrorMessage(error: any) {
+        console.log('error', error);
         return error.response.data.error;
     }
 }

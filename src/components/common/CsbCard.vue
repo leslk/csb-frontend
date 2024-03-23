@@ -7,7 +7,7 @@
 <style scoped lang="scss">
 .csb-card {
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: $borderRadius;
     box-shadow: 0 0 10px 0 rgba($secondaryColor, 0.1);
     background-color: $white;
     z-index: 0;
