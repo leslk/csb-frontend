@@ -40,7 +40,7 @@ const props = defineProps({
     align-items: center;
     z-index: 100000;
     &-spinner {
-        color: $primaryColor;
+        color: $white;
         text-align: center;
         i {
             animation: spinbounce 2s ease-in-out infinite;

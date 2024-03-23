@@ -1,17 +1,21 @@
 <template>
     <CsbModal :show="show" @close="close">
         <template #header>
-            <h2>Suppression d'un compte</h2>
+            <h2>Renvoyer une invitation</h2>
         </template>
         <template #content>
             <div class="admin-password-modal-body">
-                <p>{{ `Êtes-vous sûr de vouloir supprimer le compte de ${account.firstName} ${account.lastName}?`}}</p>
+                <p>
+                    {{
+                        `Êtes-vous sûr de vouloir envoyer de nouveau une invitation à  ${account.firstName} ${account.lastName}?`
+                    }}
+                </p>
             </div>
         </template>
         <template #footer>
             <div class="admin-password-modal-footer">
-                <CsbButton label="Annuler" @click="close"/>
-                <CsbButton label="Confirmer" @click="changePassword"/>
+                <CsbButton label="Annuler" @click="close" />
+                <CsbButton label="Confirmer" @click="resendInvitation" />
             </div>
         </template>
     </CsbModal>
@@ -28,7 +32,7 @@ interface AdminAccount {
     _id?: string | null;
     isSuperAdmin: boolean;
     status: string;
-};
+}
 
 const props = defineProps({
     show: {
@@ -47,29 +51,28 @@ function close() {
     emit('close');
 }
 
-function changePassword() {
+function resendInvitation() {
     emit('confirm', props.account._id);
 }
-
 </script>
 
 <style scoped lang="scss">
-    .admin-password-modal-body {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        * {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.admin-password-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    * {
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+}
 
-    .admin-password-modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.625rem;
-        .csb-button:first-child {
-            background-color: lighten($errorColor, 30%);
-        }
+.admin-password-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.625rem;
+    .csb-button:first-child {
+        background-color: lighten($errorColor, 30%);
     }
+}
 </style>

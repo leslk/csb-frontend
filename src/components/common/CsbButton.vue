@@ -35,7 +35,7 @@ const color = computed(() => props.color);
 <style scoped lang="scss">
 .csb-button {
     padding: 0.625rem 1.25rem;
-    border-radius: 16.75px;
+    border-radius: $borderRadius;
     background-color: var(--color);
     color: $white;
     cursor: pointer;

@@ -21,6 +21,7 @@
                     :error="passwordValidate?.newPassword.$errors[0]?.$message"
                     password
                 />
+                <CsbPasswordProgressBar :password="form.newPassword"/>
                 <CsbInput 
                     type="password" 
                     label="Confirmer le nouveau mot de passe" 
@@ -47,6 +48,7 @@ import CsbInput from '@/components/common/CsbInput.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers, sameAs } from '@vuelidate/validators';
+import CsbPasswordProgressBar from '../common/CsbPasswordProgressBar.vue';
 
 const props = defineProps({
     show: {
@@ -64,12 +66,15 @@ const form = ref({
 });
 
 const passwordRules = {
-        oldPassword: { required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required) },
-        newPassword: { required: helpers.withMessage('Veuillez entrer un nouveau mot de passe', required) },
-        confirmPassword: { required: helpers.withMessage('Les mots de passe ne correspondent pas', () => {
-            return form.value.newPassword === form.value.confirmPassword;
-        }) },
-    };
+    oldPassword: { required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required) },
+    newPassword: { required: helpers.withMessage('Veuillez entrer un nouveau mot de passe', required) },
+    confirmPassword: { required: helpers.withMessage('Les mots de passe ne correspondent pas', () => {
+        if (form.value.confirmPassword.length === 0) {
+            return true;
+        }
+        return form.value.newPassword === form.value.confirmPassword;
+    }) },
+};
 
 const passwordValidate = useVuelidate(passwordRules, form);
 

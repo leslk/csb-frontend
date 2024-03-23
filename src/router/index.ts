@@ -28,8 +28,11 @@ router.beforeEach((to, from, next) => {
   const isAuth = authStore.isLoggedIn;
   
   if (to.meta.requiresAuth && !isAuth) {
-    next({ name: 'Login' });
+    router.push({ name: 'Login' });
   } else {
+    if (to.name === 'Login' && isAuth) {
+      next({ name: 'Admin' });
+    }
     next();
   } 
 });

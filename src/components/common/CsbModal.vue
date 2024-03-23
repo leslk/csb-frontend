@@ -16,9 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
+import { watch } from 'vue';
 
-defineProps({
+
+const props = defineProps({
     show: {
         type: Boolean,
         required: true
@@ -26,6 +27,14 @@ defineProps({
 });
 
 const emit = defineEmits(['close']);
+
+watch(() => props.show, () => {
+    if (props.show) {
+        document.body.classList.add("modal-open");
+    } else {
+        document.body.classList.remove("modal-open");
+    }
+});
 </script>
 
 <style scoped lang="scss">
@@ -43,7 +52,7 @@ const emit = defineEmits(['close']);
     &-content {
         padding: 1rem;
         background-color: $white;
-        border-radius: 10px;
+        border-radius: $borderRadius;
         width: 80%;
         max-width: 600px;
     }
@@ -60,6 +69,7 @@ const emit = defineEmits(['close']);
     }
     &-body {
         padding: 1.25rem;
+        overflow: hidden;
     }
     &-footer {
         padding-top: 1.25rem;

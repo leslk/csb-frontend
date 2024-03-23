@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import CsbTitle from '@/components/common/CsbTitle.vue';
+import CsbTitle from '@/components/common/CsbTitle.vue'
 </script>
