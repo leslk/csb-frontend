@@ -9,7 +9,6 @@ interface Credentials {
 
 export class Auth {
     static async login(userCredentials: Credentials) {
-        console.log('userCredentials', userCredentials);
         const servicesStore = useServicesStore();
         servicesStore.setLoading(true);
         try {
@@ -233,6 +232,44 @@ export class Admin {
                     }
                 }
             );
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+}
+
+export class Tournament {
+    static async createTournament(tournament: any) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}api/tournaments`,
+                tournament,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+
+    static async getTournaments() {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/tournaments`, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             return response;
         } finally {
             servicesStore.setLoading(false);

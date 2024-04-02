@@ -45,7 +45,7 @@ const adminRouter = {
             meta: {
                 isInTheMenu: true,
                 title: 'Tournaments',
-                metaIcon: 'fa-solid fa-trophy',
+                metaIcon: 'fa-solid fa-basketball',
                 requiresAuth: true
             }
         },

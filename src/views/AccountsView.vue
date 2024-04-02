@@ -241,29 +241,12 @@ watch(
 
 <style scoped lang="scss">
 .accounts-view {
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-    gap: 3rem;
+    @include view-layout;
     &-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include header-layout;
     }
     &-accounts {
-        display: grid;
-        grid-template-columns: repeat(2, calc(50% - 0.5rem));
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .accounts-view {
-        max-width: 100M;
-    }
-    .accounts-view-accounts {
-        grid-template-columns: 100%;
+        @include card-container;
     }
 }
 </style>
-@/services/services
