@@ -1,28 +1,17 @@
 <template>
-    <div class="csb-input-container">
-        <label :for="label" class="csb-input-label">{{ label }}</label>
-        <div class="csb-input-content">
+    <div class="csb-date-input-container">
+        <label :for="label" class="csb-date-input-label">{{ label }}</label>
+        <div class="csb-date-input-content">
             <input
-                class="csb-input"
-                v-model="textValue"
-                :type="typeOfPasswordInput"
+                class="csb-date-input"
+                v-model="dateValue"
+                type="datetime-local"
                 :disabled="disabled"
-                :placeholder="placeholder"
                 @input="($event) => updateValue($event)"
                 @blur="($event) => blur($event)"
-                :min="min"
-                :max="max"
-                :pattern="pattern"
             />
-            <div v-if="password && !showPassword" @click="showPassword = true">
-                <i class="fa fa-solid fa-eye" />
-            </div>
-            <div v-if="password && showPassword" @click="showPassword = false">
-                <i class="fa fa-solid fa-eye-slash" />
-            </div>
-            <i :class="icon"></i>
         </div>
-        <div v-if="error" class="csb-input-error">
+        <div v-if="error" class="csb-date-input-error">
             <i class="fa-solid fa-circle-info"></i>
             <p>{{ errorMessage }}</p>
         </div>
@@ -30,13 +19,14 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment';
 import { computed, ref, watch, type Ref, type PropType, unref } from 'vue';
 
 type StringOrRef = string | Ref<string>;
 
 const props = defineProps({
     value: {
-        type: [String, Number],
+        type: String,
         default: null
     },
     password: {
@@ -66,32 +56,12 @@ const props = defineProps({
     icon: {
         type: String,
         default: ''
-    },
-    min: {
-        type: Number,
-        default: ''
-    },
-    max: {
-        type: Number,
-        default: ''
-    },
-    pattern: {
-        type: String,
-        default: ''
     }
 });
 
 const emit = defineEmits(['update:value', 'blur']);
 const errorMessage = computed(() => unref(props.error));
-const textValue = ref(props.value);
-const typeOfPasswordInput = computed(() =>
-    props.password && showPassword.value
-        ? 'text'
-        : props.password && !showPassword.value
-          ? 'password'
-          : props.type
-);
-const showPassword = ref(false);
+const dateValue = ref(moment(props.value).format('YYYY-MM-DDTHH:mm'));
 
 const updateValue = (event: any) => {
     const value = event?.target?.value;
@@ -104,39 +74,33 @@ const blur = (event: any) => {
 
 watch(
     () => props.value,
-    (newValue: string | number) => {
-        textValue.value = newValue;
+    (newValue: string) => {
+        dateValue.value = moment(newValue).format('YYYY-MM-DDTHH:mm');
     }
 );
 </script>
 
 <style scoped lang="scss">
-.csb-input-container {
+.csb-date-input-container {
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
 }
-.csb-input {
+.csb-date-input {
     padding: 0.625rem 1rem;
     border-radius: $borderRadius;
     width: 100%;
+    border: 1px solid $lightGrey;
+    border-left: 4px solid $secondaryColor;
     background-color: $white;
     &-content {
-        display: flex;
-        border-radius: $borderRadius;
-        justify-content: space-between;
-        border: 1px solid $lightGrey;
-        border-left: 4px solid $secondaryColor;
-        background-color: $white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        position: relative;
         i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
             color: $secondaryColor;
-            margin-right: 1rem;
-        }
-        &:focus-within {
-            box-shadow: 0 0 0 2px rgba($secondaryColor, 0.3);
+            transform: translate(-50%, -50%);
         }
     }
     &-label {
@@ -145,6 +109,7 @@ watch(
     &:active,
     &:focus {
         outline: none;
+        box-shadow: 0 0 0 2px rgba($secondaryColor, 0.3);
     }
     &-error {
         display: flex;

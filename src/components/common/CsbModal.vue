@@ -18,23 +18,25 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 
-
 const props = defineProps({
     show: {
         type: Boolean,
         required: true
-    },
+    }
 });
 
 const emit = defineEmits(['close']);
 
-watch(() => props.show, () => {
-    if (props.show) {
-        document.body.classList.add("modal-open");
-    } else {
-        document.body.classList.remove("modal-open");
+watch(
+    () => props.show,
+    () => {
+        if (props.show) {
+            document.body.classList.add('modal-open');
+        } else {
+            document.body.classList.remove('modal-open');
+        }
     }
-});
+);
 </script>
 
 <style scoped lang="scss">
@@ -55,6 +57,8 @@ watch(() => props.show, () => {
         border-radius: $borderRadius;
         width: 80%;
         max-width: 600px;
+        max-height: 90vh;
+        overflow-y: scroll;
     }
     &-header {
         display: flex;
@@ -69,7 +73,8 @@ watch(() => props.show, () => {
     }
     &-body {
         padding: 1.25rem;
-        overflow: hidden;
+        height: 100%;
+        overflow: scroll;
     }
     &-footer {
         padding-top: 1.25rem;
@@ -78,6 +83,10 @@ watch(() => props.show, () => {
         justify-content: flex-end;
         gap: 0.625rem;
     }
+    @include mobile-break-point {
+        &-content {
+            width: 95%;
+        }
+    }
 }
-
 </style>

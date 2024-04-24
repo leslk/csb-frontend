@@ -2,10 +2,7 @@
     <CsbCard class="account-card">
         <template #content>
             <div class="account-card-header">
-                <div :class="status.class">
-                    <i :class="status.icon" />
-                    <p>{{ status.text }}</p>
-                </div>
+                <CsbStatus :icon="status.icon" :text="status.text" :color="status.color" />
                 <div class="account-card-header-edit">
                     <i
                         v-if="isUpdateAuthorized"
@@ -52,15 +49,9 @@
 import { computed, ref } from 'vue';
 import CsbCard from '@/components/common/CsbCard.vue';
 import { useAuthStore } from '@/stores/auth';
+import CsbStatus from '@/components//common/CsbStatus.vue';
+import { type AdminAccount } from '@/services/types';
 
-interface AdminAccount {
-    email: string;
-    firstName: string;
-    lastName: string;
-    _id: string;
-    isSuperAdmin: boolean;
-    status: string;
-}
 const props = defineProps({
     account: {
         type: Object as () => AdminAccount,
@@ -93,19 +84,19 @@ const isUpdateAuthorized = computed(() => {
 const status = computed(() => {
     if (props.account.status === 'pending') {
         return {
-            class: 'account-card-header-pending',
+            color: '#b1b1b1',
             icon: 'fa-regular fa-clock',
             text: 'En attente'
         };
     } else if (props.account.status === 'expired') {
         return {
-            class: 'account-card-header-expired',
+            color: '#d1000f',
             icon: 'fa-solid fa-circle-exclamation',
             text: 'Expiré'
         };
     } else {
         return {
-            class: 'account-card-header-active',
+            color: '#00c853',
             icon: 'fa-regular fa-circle-check',
             text: 'Actif'
         };
@@ -164,49 +155,10 @@ function deleteAccount() {
     flex-direction: column;
     gap: 1rem;
     &-header {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        padding: 0.5rem;
-        align-items: center;
-        border-radius: $borderRadius $borderRadius 0 0;
-        border-bottom: 1px solid $lighterGrey;
+        @include card-header;
     }
     &-icon {
-        margin: auto;
-        font-size: 3rem;
-        color: $lightGrey;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    &-header-pending {
-        display: flex;
-        align-items: center;
-        background-color: darken($lightGrey, 15%);
-        border-radius: $borderRadius;
-        padding: 0.2rem 0.5rem;
-        gap: 0.5rem;
-        color: $white;
-    }
-    &-header-expired {
-        display: flex;
-        align-items: center;
-        background-color: lighten($errorColor, 30%);
-        border-radius: $borderRadius;
-        padding: 0.2rem 0.5rem;
-        gap: 0.5rem;
-        color: $white;
-    }
-    &-header-active {
-        display: flex;
-        align-items: center;
-        background-color: rgba($successColor, 0.8);
-        border-radius: $borderRadius;
-        padding: 0.2rem 0.5rem;
-        gap: 0.5rem;
-        color: $white;
+        @include card-icon;
     }
     &-header-edit {
         display: flex;
@@ -242,11 +194,7 @@ function deleteAccount() {
         }
     }
     &-content {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        gap: 1rem;
+        @include card-content;
     }
     &-data {
         overflow: hidden;
