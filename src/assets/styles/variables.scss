@@ -78,6 +78,7 @@ $borderRadius: 5px;
     align-items: center;
     border-top: 1px solid $lightGrey;
     padding-top: 1rem;
+    gap: 1rem;
 }
 
 @mixin card-layout {
@@ -115,4 +116,11 @@ $borderRadius: 5px;
     flex-direction: column;
     max-width: 100%;
     gap: 3rem;
+}
+@mixin modal-footer {
+    display: flex;
+    gap: 0.625rem;
+    .csb-button:first-child {
+        background-color: lighten($errorColor, 30%);
+    }
 }

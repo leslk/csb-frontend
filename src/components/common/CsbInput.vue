@@ -2,14 +2,17 @@
     <div class="csb-input-container">
         <label :for="label" class="csb-input-label">{{ label }}</label>
         <div class="csb-input-content">
-            <input 
+            <input
                 class="csb-input"
                 v-model="textValue"
-                :type="typeOfPasswordInput"  
-                :disabled="disabled" 
+                :type="typeOfPasswordInput"
+                :disabled="disabled"
                 :placeholder="placeholder"
-                @input="($event) =>  updateValue($event)"
+                @input="($event) => updateValue($event)"
                 @blur="($event) => blur($event)"
+                :min="min"
+                :max="max"
+                :pattern="pattern"
             />
             <div v-if="password && !showPassword" @click="showPassword = true">
                 <i class="fa fa-solid fa-eye" />
@@ -34,44 +37,60 @@ type StringOrRef = string | Ref<string>;
 const props = defineProps({
     value: {
         type: [String, Number],
-        default: null,
+        default: null
     },
     password: {
         type: Boolean,
-        default: false,
+        default: false
     },
     disabled: {
         type: Boolean,
-        default: false,
+        default: false
     },
     placeholder: {
         type: String,
-        default: '',
+        default: ''
     },
     type: {
         type: String,
-        default: 'text',
+        default: 'text'
     },
     label: {
         type: String,
-        default: '',
+        default: ''
     },
     error: {
         type: Object as PropType<StringOrRef>,
-        default: undefined,
+        default: undefined
     },
     icon: {
         type: String,
         default: ''
     },
+    min: {
+        type: Number,
+        default: ''
+    },
+    max: {
+        type: Number,
+        default: ''
+    },
+    pattern: {
+        type: String,
+        default: ''
+    }
 });
-
-
 
 const emit = defineEmits(['update:value', 'blur']);
 const errorMessage = computed(() => unref(props.error));
 const textValue = ref(props.value);
-const typeOfPasswordInput = computed(() => props.password && showPassword.value ? 'text' : props.password && !showPassword.value ? 'password' : props.type);
+const typeOfPasswordInput = computed(() =>
+    props.password && showPassword.value
+        ? 'text'
+        : props.password && !showPassword.value
+          ? 'password'
+          : props.type
+);
 const showPassword = ref(false);
 
 const updateValue = (event: any) => {
@@ -83,9 +102,12 @@ const blur = (event: any) => {
     emit('blur', event);
 };
 
-watch(() => props.value, (newValue: string | number) => {
-    textValue.value = newValue;
-});
+watch(
+    () => props.value,
+    (newValue: string | number) => {
+        textValue.value = newValue;
+    }
+);
 </script>
 
 <style scoped lang="scss">
@@ -98,25 +120,31 @@ watch(() => props.value, (newValue: string | number) => {
     padding: 0.625rem 1rem;
     border-radius: $borderRadius;
     width: 100%;
-    border: 1px solid $lightGrey;
-    border-left: 4px solid $secondaryColor;
     background-color: $white;
     &-content {
-        position: relative;
+        display: flex;
+        border-radius: $borderRadius;
+        justify-content: space-between;
+        border: 1px solid $lightGrey;
+        border-left: 4px solid $secondaryColor;
+        background-color: $white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
             color: $secondaryColor;
-            transform: translate(-50%, -50%);
+            margin-right: 1rem;
+        }
+        &:focus-within {
+            box-shadow: 0 0 0 2px rgba($secondaryColor, 0.3);
         }
     }
     &-label {
         color: $darkerGrey;
     }
-    &:active, &:focus {
+    &:active,
+    &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px rgba($secondaryColor, 0.3);
     }
     &-error {
         display: flex;

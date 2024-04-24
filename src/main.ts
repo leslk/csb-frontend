@@ -9,12 +9,11 @@ import 'vue3-toastify/dist/index.css';
 import App from './App.vue';
 import router from './router';
 
-const app = createApp(App)
+const app = createApp(App);
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+app.use(pinia);
+app.use(Vue3Toasity, { autoClose: 3000, position: 'top-right' } as ToastContainerOptions);
+app.use(router);
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-app.use(pinia)
-app.use(Vue3Toasity, {autoClose: 3000, position: "top-right"} as ToastContainerOptions)
-app.use(router)
-
-app.mount('#app')
+app.mount('#app');

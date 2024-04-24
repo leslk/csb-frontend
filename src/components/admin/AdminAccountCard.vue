@@ -50,15 +50,8 @@ import { computed, ref } from 'vue';
 import CsbCard from '@/components/common/CsbCard.vue';
 import { useAuthStore } from '@/stores/auth';
 import CsbStatus from '@/components//common/CsbStatus.vue';
+import { type AdminAccount } from '@/services/types';
 
-interface AdminAccount {
-    email: string;
-    firstName: string;
-    lastName: string;
-    _id: string;
-    isSuperAdmin: boolean;
-    status: string;
-}
 const props = defineProps({
     account: {
         type: Object as () => AdminAccount,

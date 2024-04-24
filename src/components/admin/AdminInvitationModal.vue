@@ -24,15 +24,7 @@
 <script setup lang="ts">
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
-
-interface AdminAccount {
-    email: string;
-    firstName: string;
-    lastName: string;
-    _id?: string | null;
-    isSuperAdmin: boolean;
-    status: string;
-}
+import { type AdminAccount } from '@/services/types';
 
 const props = defineProps({
     show: {
@@ -68,11 +60,6 @@ function resendInvitation() {
 }
 
 .admin-password-modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.625rem;
-    .csb-button:first-child {
-        background-color: lighten($errorColor, 30%);
-    }
+    @include modal-footer;
 }
 </style>

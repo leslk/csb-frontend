@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, type Ref, type PropType, unref } from 'vue';
+import { ref, watch, type Ref, type PropType, unref, computed } from 'vue';
 
 type StringOrRef = string | Ref<string>;
 
@@ -52,7 +52,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:value', 'blur']);
 
-const errorMessage = unref(props.error);
+const errorMessage = computed(() => unref(props.error));
 const textValue = ref(props.value);
 
 const updateValue = (event: any) => {

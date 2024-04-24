@@ -19,13 +19,14 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment';
 import { computed, ref, watch, type Ref, type PropType, unref } from 'vue';
 
 type StringOrRef = string | Ref<string>;
 
 const props = defineProps({
     value: {
-        type: Date,
+        type: String,
         default: null
     },
     password: {
@@ -60,7 +61,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:value', 'blur']);
 const errorMessage = computed(() => unref(props.error));
-const dateValue = ref(props.value);
+const dateValue = ref(moment(props.value).format('YYYY-MM-DDTHH:mm'));
 
 const updateValue = (event: any) => {
     const value = event?.target?.value;
@@ -73,8 +74,8 @@ const blur = (event: any) => {
 
 watch(
     () => props.value,
-    (newValue: Date) => {
-        dateValue.value = newValue;
+    (newValue: string) => {
+        dateValue.value = moment(newValue).format('YYYY-MM-DDTHH:mm');
     }
 );
 </script>

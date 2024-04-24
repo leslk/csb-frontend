@@ -5,26 +5,26 @@
         </template>
         <template #content>
             <div class="admin-password-modal-body">
-                <CsbInput 
-                    type="password" 
-                    label="Ancien mot de passe" 
+                <CsbInput
+                    type="password"
+                    label="Ancien mot de passe"
                     :value="form.oldPassword"
                     @update:value="form.oldPassword = $event"
                     :error="passwordValidate?.oldPassword.$errors[0]?.$message"
                     password
                 />
-                <CsbInput 
-                    type="password" 
-                    label="Nouveau mot de passe" 
+                <CsbInput
+                    type="password"
+                    label="Nouveau mot de passe"
                     :value="form.newPassword"
                     @update:value="form.newPassword = $event"
                     :error="passwordValidate?.newPassword.$errors[0]?.$message"
                     password
                 />
-                <CsbPasswordProgressBar :password="form.newPassword"/>
-                <CsbInput 
-                    type="password" 
-                    label="Confirmer le nouveau mot de passe" 
+                <CsbPasswordProgressBar :password="form.newPassword" />
+                <CsbInput
+                    type="password"
+                    label="Confirmer le nouveau mot de passe"
                     :value="form.confirmPassword"
                     :error="passwordValidate?.confirmPassword.$errors[0]?.$message"
                     @update:value="form.confirmPassword = $event"
@@ -34,8 +34,8 @@
         </template>
         <template #footer>
             <div class="admin-password-modal-footer">
-                <CsbButton label="Annuler" @click="close"/>
-                <CsbButton label="Modifier" @click="changePassword"/>
+                <CsbButton label="Annuler" @click="close" />
+                <CsbButton label="Modifier" @click="changePassword" />
             </div>
         </template>
     </CsbModal>
@@ -66,14 +66,20 @@ const form = ref({
 });
 
 const passwordRules = {
-    oldPassword: { required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required) },
-    newPassword: { required: helpers.withMessage('Veuillez entrer un nouveau mot de passe', required) },
-    confirmPassword: { required: helpers.withMessage('Les mots de passe ne correspondent pas', () => {
-        if (form.value.confirmPassword.length === 0) {
-            return true;
-        }
-        return form.value.newPassword === form.value.confirmPassword;
-    }) },
+    oldPassword: {
+        required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required)
+    },
+    newPassword: {
+        required: helpers.withMessage('Veuillez entrer un nouveau mot de passe', required)
+    },
+    confirmPassword: {
+        required: helpers.withMessage('Les mots de passe ne correspondent pas', () => {
+            if (form.value.confirmPassword.length === 0) {
+                return true;
+            }
+            return form.value.newPassword === form.value.confirmPassword;
+        })
+    }
 };
 
 const passwordValidate = useVuelidate(passwordRules, form);
@@ -97,31 +103,32 @@ async function changePassword() {
     emit('updatePassword', form.value);
 }
 
-watch(() => props.show, () => {
-    resetForm();
-    passwordValidate.value.$reset();
-});
+watch(
+    () => props.show,
+    () => {
+        resetForm();
+        passwordValidate.value.$reset();
+    }
+);
 
-watch(() => form.value, (newValue) => {
-    if (newValue.newPassword.length > 3 && newValue.newPassword !== newValue.confirmPassword)
-    passwordValidate.value.confirmPassword.$touch();
-}, {deep: true});
-
+watch(
+    () => form.value,
+    (newValue) => {
+        if (newValue.newPassword.length > 3 && newValue.newPassword !== newValue.confirmPassword)
+            passwordValidate.value.confirmPassword.$touch();
+    },
+    { deep: true }
+);
 </script>
 
 <style scoped lang="scss">
-    .admin-password-modal-body {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+.admin-password-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-    .admin-password-modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.625rem;
-        .csb-button:first-child {
-            background-color: lighten($errorColor, 30%);
-        }
-    }
+.admin-password-modal-footer {
+    @include modal-footer;
+}
 </style>

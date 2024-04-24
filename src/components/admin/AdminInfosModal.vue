@@ -59,15 +59,7 @@ import CsbCheckBox from '@/components/common/CsbCheckbox.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
-
-interface AdminAccount {
-    email: string;
-    firstName: string;
-    lastName: string;
-    _id?: string | null;
-    isSuperAdmin: boolean;
-    status: string;
-}
+import { type AdminAccount } from '@/services/types';
 
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
@@ -148,11 +140,7 @@ watch(
 <style scoped lang="scss">
 .admin-modal {
     &-footer {
-        display: flex;
-        gap: 0.625rem;
-        .csb-button:first-child {
-            background-color: lighten($errorColor, 30%);
-        }
+        @include modal-footer;
     }
     &-form {
         @include form-layout;
