@@ -14,6 +14,7 @@ export interface TournamentHistory {
     content: string | null;
     images: string[];
     title: string | null;
+    _id?: string;
 }
 
 export interface Participant {
@@ -29,7 +30,7 @@ export interface AdminAccount {
     email: string;
     firstName: string;
     lastName: string;
-    _id: string;
+    _id?: string;
     isSuperAdmin: boolean;
     status: string;
 }
@@ -38,6 +39,7 @@ export interface Member {
     firstName: string;
     lastName: string;
     role: string;
+    image: string;
     _id?: string;
 }
 

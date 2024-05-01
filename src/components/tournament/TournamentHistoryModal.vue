@@ -1,5 +1,5 @@
 <template>
-    <CsbModal :show="show" @close="close">
+    <CsbModal :show="show" @close="close()">
         <template #header>
             <h2>{{ headerText }}</h2>
         </template>
@@ -7,7 +7,7 @@
             <div class="tournament-history-form">
                 <div class="tournament-history-form-group">
                     <CsbInput
-                        :value="tournamentHistory.title"
+                        :value="tournamentHistory.title!"
                         label="Titre"
                         placeholder="Titre"
                         @update:value="tournamentHistory.title = $event"
@@ -16,7 +16,7 @@
                 </div>
                 <div class="tournament-history-form-group">
                     <CsbTextArea
-                        :value="tournamentHistory.content"
+                        :value="tournamentHistory.content!"
                         label="Contenu"
                         placeholder="Contenu"
                         @update:value="tournamentHistory.content = $event"
@@ -44,7 +44,7 @@
                 >
                     Supprimer le contenu
                 </p>
-                <CsbButton label="Annuler" @click="close" />
+                <CsbButton label="Annuler" @click="close()" />
                 <CsbButton :label="buttonLabel" @click="addHistory" />
             </div>
         </template>
@@ -58,7 +58,7 @@ import CsbImageUploader from '@/components/common/CsbImageUploader.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTextArea from '@/components/common/CsbTextArea.vue';
 import { Upload } from '@/services/services';
-import { type Tournament as TournamentType } from '@/services/types';
+import type { TournamentHistory, Tournament as TournamentType } from '@/services/types';
 import { computed, ref, watch } from 'vue';
 import { required, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
@@ -82,10 +82,11 @@ const emit = defineEmits([
 ]);
 const headerText = 'Contenu du tournoi affiché sur le site';
 
-const tournamentHistory = ref({
+const tournamentHistory = ref<TournamentHistory>({
     content: props.tournament.tournamentHistory.content || '',
     images: props.tournament.tournamentHistory.images || [],
-    title: props.tournament.tournamentHistory.title || ''
+    title: props.tournament.tournamentHistory.title || '',
+    _id: props.tournament.tournamentHistory._id || ''
 });
 
 const isTournamentHistory = computed(() => {
@@ -143,11 +144,14 @@ async function addHistory() {
         return;
     }
     emit('addHistory', tournamentHistory.value);
+    emit('close');
 }
 
 const close = () => {
-    for (const image of tournamentHistory.value.images) {
-        Upload.deleteImage(image);
+    if (!tournamentHistory.value._id && tournamentHistory.value.images.length > 0) {
+        for (const image of tournamentHistory.value.images) {
+            removeImage(image);
+        }
     }
     resetTournamentHistory();
     emit('close');
@@ -157,7 +161,8 @@ const resetTournamentHistory = () => {
     tournamentHistory.value = {
         content: '',
         images: [],
-        title: ''
+        title: '',
+        _id: ''
     };
 };
 
@@ -174,8 +179,9 @@ watch(
 watch(
     () => props.show,
     (value) => {
-        if (value) {
+        if (!value) {
             tournamentHistoryValidate.value.$reset();
+            resetTournamentHistory();
         }
     }
 );

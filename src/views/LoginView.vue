@@ -75,8 +75,9 @@ async function login() {
     try {
         const response = await Auth.login(userCredentials.value);
         authStore.login(response.data.user);
-        router.push({ name: 'Accueil' });
+        router.push({ name: 'Comptes' });
     } catch (error: any) {
+        console.log(error);
         const errorMessage = ErrorMessage.getErrorMessage(error);
         for (const error of errorMessage.message) {
             if (error.error.includes('EMAIL')) {

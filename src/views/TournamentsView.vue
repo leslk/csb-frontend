@@ -141,7 +141,8 @@ const participantToDelete = ref<ParticipantType>();
 const tournamentHistory = ref<TournamentHistoryType>({
     content: '',
     images: [],
-    title: ''
+    title: '',
+    _id: ''
 });
 const tournament = ref<TournamentType>({
     location: '',
@@ -324,7 +325,6 @@ async function addHistory(history: TournamentHistoryType) {
     tournament.value.tournamentHistory = history;
     try {
         await TournamentActions.addTournamentHistory(tournament.value._id!, history);
-        closeTournamentHistoryModal();
         await getTournaments();
         toast.success(toastText);
     } catch (error) {

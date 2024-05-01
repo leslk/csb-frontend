@@ -1,5 +1,4 @@
 import AdminLayout from '@/layout/AdminLayout.vue';
-import HomeView from '@/views/HomeView.vue';
 import AccountsView from '@/views/AccountsView.vue';
 import TournamentsView from '@/views/TournamentsView.vue';
 import SiteContentView from '@/views/SiteContentView.vue';
@@ -11,22 +10,11 @@ const adminRouter = {
     path: '/admin',
     component: AdminLayout,
     name: 'Admin',
-    redirect: { name: 'Accueil' },
+    redirect: { name: 'Comptes' },
     meta: {
         title: 'CSB - Admin'
     },
     children: [
-        {
-            path: 'home',
-            name: 'Accueil',
-            component: HomeView,
-            meta: {
-                isInTheMenu: true,
-                title: 'Home',
-                metaIcon: 'fa-solid fa-house',
-                requiresAuth: true
-            }
-        },
         {
             path: 'accounts',
             name: 'Comptes',
