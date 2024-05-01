@@ -4,18 +4,18 @@
             <h2>Suppression d'un compte</h2>
         </template>
         <template #content>
-            <div class="admin-password-modal-body">
+            <div class="site-content-member-delete">
                 <p>
                     {{
-                        `Êtes-vous sûr de vouloir supprimer le compte de ${account.firstName} ${account.lastName}?`
+                        `Êtes-vous sûr de vouloir supprimer le membre ${member.firstName} ${member.lastName}?`
                     }}
                 </p>
             </div>
         </template>
         <template #footer>
-            <div class="admin-password-modal-footer">
+            <div class="site-content-member-delete-footer">
                 <CsbButton label="Annuler" @click="close" />
-                <CsbButton label="Confirmer" @click="deleteAccount" />
+                <CsbButton label="Confirmer" @click="deleteMember" />
             </div>
         </template>
     </CsbModal>
@@ -24,15 +24,15 @@
 <script setup lang="ts">
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
-import { type AdminAccount } from '@/services/types';
+import { type Member } from '@/services/types';
 
 const props = defineProps({
     show: {
         type: Boolean,
         required: true
     },
-    account: {
-        type: Object as () => AdminAccount,
+    member: {
+        type: Object as () => Member,
         required: true
     }
 });
@@ -43,13 +43,14 @@ function close() {
     emit('close');
 }
 
-function deleteAccount() {
-    emit('confirm', props.account._id);
+function deleteMember() {
+    emit('confirm', props.member._id);
+    close();
 }
 </script>
 
 <style scoped lang="scss">
-.admin-password-modal-body {
+.site-content-member-delete {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -59,7 +60,7 @@ function deleteAccount() {
     }
 }
 
-.admin-password-modal-footer {
+.site-content-member-delete-footer {
     @include modal-footer;
 }
 </style>

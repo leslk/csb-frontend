@@ -432,3 +432,41 @@ export class DateUtils {
         }
     }
 }
+
+export class SiteContent {
+    static async getSiteContent() {
+        const serviceStore = useServicesStore();
+        serviceStore.setLoading(true);
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/siteContent`, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response;
+        } finally {
+            serviceStore.setLoading(false);
+        }
+    }
+
+    static async updateSiteContent(siteContent: any) {
+        const serviceStore = useServicesStore();
+        serviceStore.setLoading(true);
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_API_URL}api/siteContent`,
+                siteContent,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
+            serviceStore.setLoading(false);
+        }
+    }
+}

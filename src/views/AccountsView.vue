@@ -87,15 +87,7 @@ import { useAuthStore } from '@/stores/auth';
 import { toast } from 'vue3-toastify';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-interface AdminAccount {
-    email: string;
-    firstName: string;
-    lastName: string;
-    _id?: string | null;
-    isSuperAdmin: boolean;
-    status: string;
-}
+import type { AdminAccount } from '@/services/types';
 
 const adminAccounts = ref<any>([]);
 const router = useRouter();
@@ -147,7 +139,7 @@ function resetAccount() {
         email: '',
         firstName: '',
         lastName: '',
-        _id: null,
+        _id: undefined,
         isSuperAdmin: false,
         status: 'pending'
     };
