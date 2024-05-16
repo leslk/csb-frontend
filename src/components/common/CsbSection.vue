@@ -14,5 +14,8 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    &-content {
+        width: 100%;
+    }
 }
 </style>

@@ -278,6 +278,25 @@ export class Tournament {
         }
     }
 
+    static async getTournament(tournamentId: string) {
+        const servicesStore = useServicesStore();
+        servicesStore.setLoading(true);
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}api/tournaments/${tournamentId}`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
+            servicesStore.setLoading(false);
+        }
+    }
+
     static async updateTournament(tournament: any) {
         const serviceStore = useServicesStore();
         serviceStore.setLoading(true);
@@ -400,6 +419,7 @@ export class Upload {
 
 export class ErrorMessage {
     static getErrorMessage(error: any) {
+        console.log(error);
         return error.response.data.error;
     }
 }
@@ -430,6 +450,16 @@ export class DateUtils {
         } else {
             return targetDate.format('DD MMM YYYY à HH:mm');
         }
+    }
+
+    // get the date in the format YYYY-MM-DD
+    static getDate(date: string) {
+        return moment(date).format('DD/MM/YYYY');
+    }
+
+    // get the time in the format HH:mm
+    static getTime(date: string) {
+        return moment(date).format('HH:mm');
     }
 }
 

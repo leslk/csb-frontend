@@ -19,7 +19,7 @@
                     <i class="fa-solid fa-basketball tournament-card-icon" />
                     <div class="tournament-card-value">
                         <p class="tournament-card-label">Lieu:</p>
-                        <p class="tournament-card-data">{{ tournament.location }}</p>
+                        <p class="tournament-card-data">{{ address }}</p>
                     </div>
                     <div class="tournament-card-value">
                         <p class="tournament-card-label">Participants:</p>
@@ -43,7 +43,8 @@
                 <div class="tournament-card-footer">
                     <CsbButton label="Voir les détails" @click="setShowModal('infos')" />
                     <CsbButton
-                        color="#f0c346"
+                        color="#f9ee57"
+                        text-color="#000000"
                         v-if="!isOpenTournament && !isCancelledTournament"
                         :label="historyButtonLabel"
                         @click="setShowHistoryModal"
@@ -83,6 +84,9 @@ const historyButtonLabel = computed(() => {
     } else {
         return 'Ajouter du contenu';
     }
+});
+const address = computed(() => {
+    return `${props.tournament.address}, ${props.tournament.zipCode} ${props.tournament.city}`;
 });
 
 const status = computed(() => {

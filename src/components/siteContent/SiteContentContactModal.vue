@@ -46,7 +46,7 @@ const props = defineProps({
         required: true
     },
     contact: {
-        type: Object as () => PropType<Contact>,
+        type: Object as () => Contact,
         required: true
     }
 });

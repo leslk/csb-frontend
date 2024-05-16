@@ -10,14 +10,14 @@ const adminRouter = {
     path: '/admin',
     component: AdminLayout,
     name: 'Admin',
-    redirect: { name: 'Comptes' },
+    redirect: { name: 'Les comptes' },
     meta: {
         title: 'CSB - Admin'
     },
     children: [
         {
             path: 'accounts',
-            name: 'Comptes',
+            name: 'Les comptes',
             component: AccountsView,
             meta: {
                 isInTheMenu: true,
@@ -28,7 +28,7 @@ const adminRouter = {
         },
         {
             path: 'tournaments',
-            name: 'Tournois',
+            name: 'Les tournois',
             component: TournamentsView,
             meta: {
                 isInTheMenu: true,
@@ -39,7 +39,7 @@ const adminRouter = {
         },
         {
             path: 'site-content',
-            name: 'Contenu du site',
+            name: 'Le contenu du site',
             component: SiteContentView,
             meta: {
                 isInTheMenu: true,

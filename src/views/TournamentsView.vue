@@ -145,7 +145,9 @@ const tournamentHistory = ref<TournamentHistoryType>({
     _id: ''
 });
 const tournament = ref<TournamentType>({
-    location: '',
+    city: '',
+    address: '',
+    zipCode: '',
     availablePlaces: 0,
     participants: [],
     startDate: moment(new Date()).format(),
@@ -234,9 +236,13 @@ function addImage(image: string) {
     tournament.value.tournamentHistory.images.push(image);
 }
 
-function removeImage(image: string) {
+async function removeImage(image: string) {
     const index = tournament.value.tournamentHistory.images.findIndex((img) => img === image);
     tournament.value.tournamentHistory.images.splice(index, 1);
+    if (tournament.value._id) {
+        await TournamentActions.updateTournament(tournament.value);
+    }
+
 }
 
 function setShowHistoryModal(tournamentToUpdate: TournamentType) {
@@ -278,10 +284,10 @@ async function deleteParticipant(participantId: string, tournamentId: string) {
 async function deleteTournamentHistory(tournamentToUpdate: TournamentType) {
     const toastText = 'Historique supprimé';
     const toastErrorText = 'Erreur lors de la suppression du contenu';
-    for (let image of tournamentToUpdate.tournamentHistory.images) {
-        await Upload.deleteImage(image);
-    }
     try {
+        for (let image of tournamentToUpdate.tournamentHistory.images) {
+            await Upload.deleteImage(image);
+        }
         tournamentToUpdate.tournamentHistory = {
             content: null,
             images: [],
@@ -334,7 +340,9 @@ async function addHistory(history: TournamentHistoryType) {
 
 function resetTournament() {
     tournament.value = {
-        location: '',
+        city: '',
+        address: '',
+        zipCode: '',
         availablePlaces: 0,
         participants: [],
         startDate: moment(new Date()).format('JJ-MM-AAAATHH:MM'),

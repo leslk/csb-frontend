@@ -1,26 +1,24 @@
 <template>
     <div>
-        <component :is="'router-link'" :to="item.path">
-            <div :class="['menu-item', {'is-active': isActive}]">
-              <i :class="item.meta?.metaIcon"></i>
-              <p>{{ item.name }}</p>
+        <component :is="'router-link'" :to="item.path" class="item">
+            <div :class="['menu-item', { 'is-active': isActive }]" tabindex="0">
+                <i v-if="showIcon" :class="item.meta?.metaIcon"></i>
+                <p>{{ item.name }}</p>
             </div>
-          </component>
+        </component>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 
-const props = defineProps(['item']);
+const props = defineProps(['item', 'showIcon']);
 const route = useRoute();
-console.log(route.path, props.item.path);
 
 const isActive = computed(() => {
     return route.path.includes(props.item.path);
 });
-
 </script>
 
 <style scoped lang="scss">
@@ -31,6 +29,9 @@ const isActive = computed(() => {
     gap: 10px;
     &:hover {
         background-color: rgba($primaryColor, 0.1);
+    }
+    &:focus {
+       outline: 1px solid $primaryColor;
     }
 }
 

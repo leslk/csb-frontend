@@ -1,5 +1,5 @@
 <template>
-    <h1 class="csb-title">{{ title }}</h1>
+    <h2 class="csb-title">{{ title }}</h2>
 </template>
 
 <script setup lang="ts">

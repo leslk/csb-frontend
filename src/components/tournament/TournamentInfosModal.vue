@@ -8,10 +8,26 @@
                 <div class="tournament-modal-form">
                     <div class="tournament-modal-form-group">
                         <CsbInput
-                            :value="form.location"
-                            label="Lieu"
-                            @update:value="form.location = $event"
-                            :error="tournamentValidate.location?.$errors[0]?.$message"
+                            :value="form.address"
+                            label="Adresse"
+                            @update:value="form.address = $event"
+                            :error="tournamentValidate.location?.address?.$errors[0]?.$message"
+                        />
+                    </div>
+                    <div class="tournament-modal-form-group">
+                        <CsbInput
+                            :value="form.zipCode"
+                            label="Code postal"
+                            @update:value="form.zipCode = $event"
+                            :error="tournamentValidate.location?.zipCode?.$errors[0]?.$message"
+                        />
+                    </div>
+                    <div class="tournament-modal-form-group">
+                        <CsbInput
+                            :value="form.city"
+                            label="Ville"
+                            @update:value="form.city = $event"
+                            :error="tournamentValidate.location?.city?.$errors[0]?.$message"
                         />
                     </div>
                     <div class="tournament-modal-form-group">
@@ -88,14 +104,14 @@ const headerText = computed(() =>
     props.tournament._id ? 'Modification du tournois' : "Création d'un tournoi"
 );
 
-const minAvailbablePlaces = computed(() => props.tournament.participants.length);
-
 const buttonText = computed(() => (props.tournament._id ? 'Modifier' : 'Créer'));
 
 const emit = defineEmits(['close', 'confirm']);
 const form = ref({
     _id: props.tournament._id,
-    location: props.tournament.location,
+    address: props.tournament.address,
+    zipCode: props.tournament.zipCode,
+    city: props.tournament.city,
     availablePlaces: props.tournament.availablePlaces,
     participants: props.tournament.participants,
     startDate: props.tournament.startDate,
@@ -105,15 +121,6 @@ const form = ref({
     price: props.tournament.price
 });
 
-function checkAvailablePlaces(value: number) {
-    const participantsCount = props.tournament.participants.length;
-    console.log(participantsCount);
-    if (participantsCount === 0) {
-        return true;
-    } else {
-        return value >= participantsCount;
-    }
-}
 
 const availablePlacesError = computed(() => {
     if (form.value.availablePlaces < props.tournament.participants.length) {
@@ -126,7 +133,9 @@ const availablePlacesError = computed(() => {
 });
 
 const tournamentRules = {
-    location: { required: helpers.withMessage('Le lieu est requis', required) },
+    address: helpers.withMessage('L\'adresse est requise', required),
+    zipCode: helpers.withMessage('Le code postal est requis', required),
+    city: helpers.withMessage('La ville est requise', required),
     availablePlaces: {
         required: helpers.withMessage(availablePlacesError.value, required)
     },
@@ -153,7 +162,9 @@ watch(
     (value) => {
         form.value = {
             _id: value._id,
-            location: value.location,
+            address: value.address,
+            zipCode: value.zipCode,
+            city: value.city,
             availablePlaces: value.availablePlaces,
             participants: value.participants,
             startDate: value.startDate,

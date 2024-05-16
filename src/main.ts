@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import Vue3Toasity, { type ToastContainerOptions } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import 'vue3-carousel/dist/carousel.css'
 
 import App from './App.vue';
 import router from './router';

@@ -38,7 +38,7 @@
                             <th>Email</th>
                             <th>Téléphone</th>
                         </tr>
-                        <tr v-for="participant in tournament.participants" :key="participant._id">
+                        <tr v-for="participant in participants" :key="participant._id">
                             <td>{{ participant.firstName }}</td>
                             <td>{{ participant.lastName }}</td>
                             <td>{{ participant.email }}</td>
@@ -64,7 +64,6 @@ import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { type Tournament as TournamentType } from '@/services/types';
 import { type PropType, computed, ref, watch } from 'vue';
-import { DateUtils } from '@/services/services';
 import { type Participant as ParticipantType } from '@/services/types';
 
 const props = defineProps({
@@ -78,6 +77,7 @@ const props = defineProps({
     }
 });
 
+const participants = ref(props.tournament.participants);
 const participantForm = ref({
     firstName: '',
     lastName: '',
@@ -92,14 +92,6 @@ const isOpenTournament = computed(() => {
 
 const showAddParticipant = ref(false);
 const emit = defineEmits(['close', 'deleteParticipant', 'addParticipant']);
-const totalPayment = computed(() => {
-    const payments = props.tournament.participants?.map((participant) => participant.payment);
-    let total = 0;
-    payments?.forEach((payment) => {
-        total += payment;
-    });
-    return total;
-});
 
 const close = () => {
     emit('close');
@@ -122,7 +114,16 @@ function resetParticipantForm() {
 watch(
     () => props.tournament.participants,
     (newValue) => {
-        props.tournament.participants = newValue;
+        participants.value = newValue;
+    }
+);
+
+watch(
+    () => props.show,
+    (newValue) => {
+        if (!newValue) {
+            resetParticipantForm();
+        }
     }
 );
 </script>

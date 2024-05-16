@@ -1,5 +1,7 @@
 export interface Tournament {
-    location: string;
+    city: string;
+    address: string;
+    zipCode: string;
     availablePlaces: number;
     participants: any[];
     startDate: string;

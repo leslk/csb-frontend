@@ -1,5 +1,5 @@
 <template>
-    <button :class="['csb-button', {iconButton: isIconButton}]" :style="{'--color': color}">
+    <button :class="['csb-button', {iconButton: isIconButton}]" :style="{'--color': color, '--text-color': textColor}">
         <i v-if="icon" :class="icon"></i>
         <span v-if="!isIconButton">{{ label }}</span>
     </button>
@@ -27,9 +27,15 @@ const props = defineProps({
         required: false,
         default: '#161617'
     },
+    textColor: {
+        type: String,
+        required: false,
+        default: '#ffffff'
+    }
 });
 
 const color = computed(() => props.color);
+const textColor = computed(() => props.textColor);
 </script>
 
 <style scoped lang="scss">
@@ -37,7 +43,8 @@ const color = computed(() => props.color);
     padding: 0.625rem 1.25rem;
     border-radius: $borderRadius;
     background-color: var(--color);
-    color: $white;
+    color: var(--text-color);
+    font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
     display: flex;
@@ -45,6 +52,9 @@ const color = computed(() => props.color);
     gap: 0.625rem;
     i {
         font-size: 1.2rem;
+    }
+    &:focus {
+        outline: 2px solid var(--color);
     }
 }
 

@@ -22,10 +22,8 @@
 <script lang="ts" setup>
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
-import { type Tournament as TournamentType } from '@/services/types';
-import { ref, watch, type PropType } from 'vue';
 
-const props = defineProps({
+defineProps({
     show: {
         type: Boolean,
         required: true

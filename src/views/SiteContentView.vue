@@ -16,7 +16,8 @@
                         <div class="site-content-view-aboutUs-card-footer">
                             <CsbButton
                                 label="Modifier"
-                                color="#f0c346"
+                                color="#f9ee57"
+                                text-color="#000000"
                                 @click="setShowDescriptionModal"
                             />
                         </div>
@@ -68,7 +69,8 @@
                         <div class="site-content-view-aboutUs-card-footer">
                             <CsbButton
                                 label="Modifier"
-                                color="#f0c346"
+                                color="#f9ee57"
+                                text-color="#000000"
                                 @click="setShowContactModal"
                             />
                         </div>
@@ -179,6 +181,7 @@ function setShowMemberCardModal(type: string, memberToUpdate: Member) {
 async function fetchSiteContent() {
     const response = await SiteContent.getSiteContent();
     siteContent.value = response.data[0];
+    console.log(siteContent.value);
 }
 
 async function updateDescription(aboutUs: string) {

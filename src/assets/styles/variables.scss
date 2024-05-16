@@ -3,7 +3,7 @@ $lighterGrey: #f5f6f8;
 $darkGrey: #b1b1b1;
 $darkerGrey: #5d5d5d;
 
-$primaryColor: #f0c346;
+$primaryColor: #f9ee57;
 $secondaryColor: #161617;
 $white: #ffffff;
 
@@ -34,7 +34,7 @@ $borderRadius: 5px;
 
 // ------- Mixins-------
 
-// Breakpoints
+// Breakpoints for admin dashboard
 @mixin tablet-break-point {
     @media (max-width: 1024px) {
         @content;
@@ -43,6 +43,19 @@ $borderRadius: 5px;
 
 @mixin mobile-break-point {
     @media (max-width: 768px) {
+        @content;
+    }
+}
+
+// Breakpoints for user Site
+@mixin mf-desktop-break-point {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin mf-tablet-break-point {
+    @media (min-width: 768px) {
         @content;
     }
 }

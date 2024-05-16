@@ -75,7 +75,7 @@ async function login() {
     try {
         const response = await Auth.login(userCredentials.value);
         authStore.login(response.data.user);
-        router.push({ name: 'Comptes' });
+        router.push({ name: 'Les comptes' });
     } catch (error: any) {
         console.log(error);
         const errorMessage = ErrorMessage.getErrorMessage(error);

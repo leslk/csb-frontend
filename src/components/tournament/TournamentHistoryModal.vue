@@ -97,17 +97,15 @@ const isTournamentHistory = computed(() => {
     );
 });
 
-const buttonLabel = computed(() => {
-    if (
-        props.tournament.tournamentHistory.content &&
-        props.tournament.tournamentHistory.images.length > 0 &&
-        props.tournament.tournamentHistory.title
-    ) {
-        return 'Modifier';
-    } else {
-        return 'Ajouter';
-    }
-});
+const buttonLabel = ref(
+    props.tournament.tournamentHistory.content &&
+    props.tournament.tournamentHistory.images.length > 0 &&
+    props.tournament.tournamentHistory.title
+    ? 
+    'Modifier' 
+    : 
+    'Ajouter'
+);
 
 const tournamentHistoryRules = {
     content: {
@@ -148,7 +146,7 @@ async function addHistory() {
 }
 
 const close = () => {
-    if (!tournamentHistory.value._id && tournamentHistory.value.images.length > 0) {
+    if (!tournamentHistory.value.content && !tournamentHistory.value.title && tournamentHistory.value.images.length > 0) {
         for (const image of tournamentHistory.value.images) {
             removeImage(image);
         }
@@ -169,6 +167,10 @@ const resetTournamentHistory = () => {
 watch(
     () => props.tournament,
     (newValue) => {
+        buttonLabel.value = 
+        newValue.tournamentHistory.content && 
+        newValue.tournamentHistory.images.length > 0 &&
+        newValue.tournamentHistory.title ? 'Modifier' : 'Ajouter';
         if (newValue.tournamentHistory) {
             tournamentHistory.value.images = newValue.tournamentHistory.images;
         }
