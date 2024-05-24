@@ -25,7 +25,17 @@
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { type AdminAccount } from '@/services/types';
+/**
+ * Component for the admin delete account modal.
+ * @component AdminDeleteModal
+ * @example <AdminDeleteModal :show="show" :account="account" @close="close" @confirm="deleteAccount" />
+ */
 
+/**
+ * Props of the component
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ * @prop {AdminAccount} account - The account to be deleted.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -37,12 +47,23 @@ const props = defineProps({
     }
 });
 
+/** 
+* Emits of the component
+* @emit close - Event emitted when the modal is closed.
+* @emit confirm - Event emitted when the deletion is confirmed. Passes the account ID as a parameter.
+*/
 const emit = defineEmits(['close', 'confirm']);
 
+/**
+ * Close the modal
+ */
 function close() {
     emit('close');
 }
 
+/**
+ * Delete the account
+ */
 function deleteAccount() {
     emit('confirm', props.account._id);
 }

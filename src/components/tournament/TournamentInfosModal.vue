@@ -8,10 +8,26 @@
                 <div class="tournament-modal-form">
                     <div class="tournament-modal-form-group">
                         <CsbInput
-                            :value="form.location"
-                            label="Lieu"
-                            @update:value="form.location = $event"
-                            :error="tournamentValidate.location?.$errors[0]?.$message"
+                            :value="form.address"
+                            label="Adresse"
+                            @update:value="form.address = $event"
+                            :error="tournamentValidate.address?.$errors[0]?.$message"
+                        />
+                    </div>
+                    <div class="tournament-modal-form-group">
+                        <CsbInput
+                            :value="form.zipCode"
+                            label="Code postal"
+                            @update:value="form.zipCode = $event"
+                            :error="tournamentValidate.zipCode?.$errors[0]?.$message"
+                        />
+                    </div>
+                    <div class="tournament-modal-form-group">
+                        <CsbInput
+                            :value="form.city"
+                            label="Ville"
+                            @update:value="form.city = $event"
+                            :error="tournamentValidate.city?.$errors[0]?.$message"
                         />
                     </div>
                     <div class="tournament-modal-form-group">
@@ -73,6 +89,18 @@ import { computed, ref, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { type Tournament } from '@/services/types';
 
+/**
+ * Vue component for the tournament infos modal.
+ *
+ * @component TournamentInfosModal
+ * @example <TournamentInfosModal :show="show" :tournament="tournament" @close="close" @confirm="confirm" />
+ */
+
+/**
+ * The props of the component.
+ * @prop {Tournament} tournament - The tournament to be updated.
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ */
 const props = defineProps({
     tournament: {
         type: Object as () => Tournament,
@@ -84,18 +112,36 @@ const props = defineProps({
     }
 });
 
+/**
+ * @computed {string} headerText - The header text of the modal.
+ * The header text of the modal.
+ */
 const headerText = computed(() =>
     props.tournament._id ? 'Modification du tournois' : "Création d'un tournoi"
 );
 
-const minAvailbablePlaces = computed(() => props.tournament.participants.length);
-
+/**
+ * @computed {string} buttonText - The button text of the modal.
+ * The button text of the modal.
+ */
 const buttonText = computed(() => (props.tournament._id ? 'Modifier' : 'Créer'));
 
+/**
+ * Emits of the component.
+ * @emits close - The event emitted when the modal is closed.
+ * @emits confirm - The event emitted when the tournament is confirmed.
+ */
 const emit = defineEmits(['close', 'confirm']);
+
+/**
+ * @ref {Ref<Tournament>} form - The form of the component.
+ * The form of the component.
+ */
 const form = ref({
     _id: props.tournament._id,
-    location: props.tournament.location,
+    address: props.tournament.address,
+    zipCode: props.tournament.zipCode,
+    city: props.tournament.city,
     availablePlaces: props.tournament.availablePlaces,
     participants: props.tournament.participants,
     startDate: props.tournament.startDate,
@@ -105,16 +151,10 @@ const form = ref({
     price: props.tournament.price
 });
 
-function checkAvailablePlaces(value: number) {
-    const participantsCount = props.tournament.participants.length;
-    console.log(participantsCount);
-    if (participantsCount === 0) {
-        return true;
-    } else {
-        return value >= participantsCount;
-    }
-}
-
+/**
+ * @ref {ComputedRef<string>} availablePlacesError - The error message for the available places.
+ * The error message for the available places.
+ */
 const availablePlacesError = computed(() => {
     if (form.value.availablePlaces < props.tournament.participants.length) {
         return 'Le nombre de places doit être supérieur ou égal au nombre de participants';
@@ -125,8 +165,15 @@ const availablePlacesError = computed(() => {
     return '';
 });
 
+/**
+ * Rules for the tournament validation.
+ */
 const tournamentRules = {
-    location: { required: helpers.withMessage('Le lieu est requis', required) },
+    address: {
+        required: helpers.withMessage('L\'adresse est requise', required)
+    },
+    zipCode: { required: helpers.withMessage('Le code postal est requis', required)},
+    city: { required: helpers.withMessage('La ville est requise', required) },
     availablePlaces: {
         required: helpers.withMessage(availablePlacesError.value, required)
     },
@@ -134,12 +181,23 @@ const tournamentRules = {
     startDate: { required: helpers.withMessage('La date de début est requise', required) }
 };
 
+/**
+ * Tournament validation that uses the rules of the tournament to avoid empty fields.
+ */
 const tournamentValidate = useVuelidate(tournamentRules, form);
 
+/**
+ * @function close
+ * Close the modal.
+ */
 function close() {
     emit('close');
 }
 
+/**
+ * @function confirm
+ * Confirm the tournament creation or update if the form is valid.
+ */
 function confirm() {
     tournamentValidate.value.$touch();
     if (tournamentValidate.value.$error) {
@@ -148,12 +206,19 @@ function confirm() {
     emit('confirm', form.value);
 }
 
+
+/**
+ * Watch the tournament and update the form when the tournament changes.
+ * @param value - The new value of the tournament.
+ */
 watch(
     () => props.tournament,
     (value) => {
         form.value = {
             _id: value._id,
-            location: value.location,
+            address: value.address,
+            zipCode: value.zipCode,
+            city: value.city,
             availablePlaces: value.availablePlaces,
             participants: value.participants,
             startDate: value.startDate,
@@ -165,6 +230,12 @@ watch(
     }
 );
 
+/**
+ * Watch the show prop and reset the form.
+ * if the show prop changes, the form is reset.
+ * @param value - The new value of the show prop.
+ 
+ */
 watch(
     () => props.show,
     (value) => {

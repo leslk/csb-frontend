@@ -6,7 +6,19 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+/**
+ * Vue component for the status.
+ * @component CsbStatus
+ * @example <CsbStatus icon="fa-solid fa-circle-check" text="Envoyé" color="#00ff00" />
+ */
+
+/**
+ * Props of the component
+ * @props icon: The icon of the status.
+ * @props text: The text of the status.
+ * @props color: The color of the status.
+ */
+defineProps({
     icon: {
         type: String,
         required: true

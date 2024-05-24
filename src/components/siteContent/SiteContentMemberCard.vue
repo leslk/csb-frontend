@@ -36,6 +36,17 @@ import CsbCard from '@/components/common/CsbCard.vue';
 import { ref } from 'vue';
 import { type Member } from '@/services/types';
 
+/**
+ * This component displays the member information in a card.
+ * The user can edit the member information or delete the member.
+ * @component SiteContentMemberCard
+ * @exemple <SiteContentMemberCard :member="member" @showModal="showModal" />
+ */
+
+/**
+ * Props of the component
+ * @prop {Member} member - The member to be displayed.
+ */
 const props = defineProps({
     member: {
         type: Object as () => Member,
@@ -43,15 +54,40 @@ const props = defineProps({
     }
 });
 
+
+/**
+ * @ref showMenu - Determines whether the menu is shown or not.
+ */
 const showMenu = ref(false);
+
+/**
+ * Emits of the component
+ * @emit showModal - Event emitted when the modal is shown. Passes the type of modal and the member as parameters.
+ */
 const emit = defineEmits(['showModal']);
+
+/**
+ * @ref menu - Reference to the menu element.
+ * @ref menuIcon - Reference to the menu icon element.
+ */
 const menu = ref<HTMLElement | null>(null);
 const menuIcon = ref<HTMLElement | null>(null);
 
+
+/**
+ * @function closeMenu
+ * Close the menu when clicking outside of it.
+ * @param event - The click event.
+ */
 function setShowModal(type: string) {
     emit('showModal', type, props.member);
 }
 
+/**
+ * @function closeMenu
+ * Close the menu when clicking outside of it.
+ * @param event - The click event.
+ */
 function closeMenu(event: MouseEvent) {
     if (
         menu.value &&
@@ -64,6 +100,10 @@ function closeMenu(event: MouseEvent) {
     }
 }
 
+/**
+ * @function setShowMenu
+ * Show the menu when the icon is clicked.
+ */
 function setShowMenu() {
     showMenu.value = !showMenu.value;
     window.addEventListener('click', closeMenu);

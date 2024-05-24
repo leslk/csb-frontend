@@ -9,9 +9,21 @@
 <script setup lang="ts">
 import CsbTitle from '@/components/common/CsbTitle.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
+/**
+ * Component for the admin expired link page.
+ * @component AdminExpiredLink
+ * @example <AdminExpiredLink @goToLogin="goToLogin" />
+ */
 
+/**
+ * Emits of the component
+ * @emit goToLogin: go to the login page
+ */
 const emit = defineEmits(['goToLogin']);
 
+/**
+ * Go to the login page
+ */
 function goToLogin() {
     emit('goToLogin');
 }

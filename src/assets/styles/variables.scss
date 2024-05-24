@@ -3,7 +3,7 @@ $lighterGrey: #f5f6f8;
 $darkGrey: #b1b1b1;
 $darkerGrey: #5d5d5d;
 
-$primaryColor: #f0c346;
+$primaryColor: #f9ee57;
 $secondaryColor: #161617;
 $white: #ffffff;
 
@@ -23,6 +23,15 @@ $borderRadius: 5px;
     }
 }
 
+@keyframes slideToLeft {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -34,7 +43,7 @@ $borderRadius: 5px;
 
 // ------- Mixins-------
 
-// Breakpoints
+// Breakpoints for admin dashboard
 @mixin tablet-break-point {
     @media (max-width: 1024px) {
         @content;
@@ -43,6 +52,19 @@ $borderRadius: 5px;
 
 @mixin mobile-break-point {
     @media (max-width: 768px) {
+        @content;
+    }
+}
+
+// Breakpoints for user Site
+@mixin mf-desktop-break-point {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin mf-tablet-break-point {
+    @media (min-width: 768px) {
         @content;
     }
 }
@@ -122,5 +144,36 @@ $borderRadius: 5px;
     gap: 0.625rem;
     .csb-button:first-child {
         background-color: lighten($errorColor, 30%);
+    }
+}
+
+@mixin user-header {
+    position: relative;
+    img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 7rem;
+        font-weight: 900;
+        gap: 1rem;
+        color: $primaryColor;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    h1 {
+        max-width: 400px;
+        font-size: 5rem;
+        line-height: 1;
+        font-family: 'breakside';
+        text-align: center;
     }
 }

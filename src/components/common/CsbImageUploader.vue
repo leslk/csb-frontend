@@ -33,8 +33,20 @@
 import { computed, ref, unref, watch, type PropType, type Ref } from 'vue';
 import CsbButton from './CsbButton.vue';
 
+/**
+ * Vue component for the image uploader.
+ * @component CsbImageUploader
+ * @example <CsbImageUploader :imageUrl="imageUrl" :imagesUrl="imagesUrl" :multiple="multiple" @update:imageUrl="updateImageUrl" @delete:imageUrl="deleteImageUrl" />
+ */
 type StringOrRef = string | Ref<string>;
 
+/**
+ * Props of the component
+ * @props imageUrl: The image url.
+ * @props imagesUrl: The images url.
+ * @props multiple: Determines whether the uploader is multiple or not.
+ * @props error: The error message of the uploader.
+ */
 const props = defineProps({
     imageUrl: {
         type: String,
@@ -53,11 +65,33 @@ const props = defineProps({
         default: undefined
     }
 });
+
+/**
+ * The error message of the uploader.
+ */
 const errorMessage = computed(() => unref(props.error));
+
+/**
+ * emits
+ * @emits update:imageUrl - Emits when the image url is updated.
+ * @emits delete:imageUrl - Emits when the image url is deleted.
+ */
 const emit = defineEmits(['update:imageUrl', 'delete:imageUrl']);
+
+/**
+ * The image url array.
+ */
 const images = ref(props.imagesUrl);
+
+/**
+ * The file input reference.
+ */
 const fileInput = ref<HTMLInputElement | null>(null);
 
+/**
+ * @function onFileChange - Function to handle the file change event.
+ * @param event - The event object
+ */
 function onFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
@@ -66,14 +100,26 @@ function onFileChange(event: Event) {
     }
 }
 
+/**
+ * @function updateImageUrl - Function to update the image url.
+ * @param imageUrl - The image url
+ */
 function deleteImageUrl(imageUrl: string) {
     emit('delete:imageUrl', imageUrl);
 }
 
+/**
+ * @function handleInputFileClick - Function to handle the input file click event.
+ */
 function handleInputFileClick() {
     fileInput.value?.click();
 }
 
+/**
+ * Watch the images url prop.
+ * @param {Array<string>} props.imagesUrl - The images url.
+ * @param {Array<string>} newValue - The new images url.
+ */
 watch(
     () => props.imagesUrl,
     (newValue: string[]) => {

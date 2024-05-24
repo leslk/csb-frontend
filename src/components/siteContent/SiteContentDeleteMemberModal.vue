@@ -26,6 +26,17 @@ import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { type Member } from '@/services/types';
 
+/**
+ * Component for the site content delete member modal.
+ * @component SiteContentDeleteMemberModal
+ * @example <SiteContentDeleteMemberModal :show="show" :member="member" @close="close" @confirm="deleteMember" />
+ */
+
+/**
+ * Props of the component
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ * @prop {Member} member - The member to be deleted.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -37,12 +48,25 @@ const props = defineProps({
     }
 });
 
+/** 
+ * Emits of the component
+ * @emit close - Event emitted when the modal is closed.
+ * @emit confirm - Event emitted when the deletion is confirmed. Passes the member ID as a parameter.
+ */
 const emit = defineEmits(['close', 'confirm']);
 
+/**
+ * @function close
+ * Close the modal
+ */
 function close() {
     emit('close');
 }
 
+/**
+ * @function deleteMember
+ * Delete the member
+ */
 function deleteMember() {
     emit('confirm', props.member._id);
     close();

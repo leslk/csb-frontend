@@ -30,6 +30,13 @@ import { onBeforeMount, onUnmounted, ref, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useServicesStore } from '@/stores/services';
 
+/**
+ * This component displays the header of the admin page.
+ * The user can navigate through the different pages of the admin section.
+ * @component AdminHeader
+ * @exemple <AdminHeader />
+ */
+
 const router = useRouter(); 
 const toggleMenu = ref<HTMLElement | null>(null);
 const servicesStore = useServicesStore();
@@ -51,6 +58,10 @@ function logout() {
     useAuthStore().logout();
     router.push({ name: 'Login' });
 }
+
+/**
+ * @computed adminRoutes - A computed property that returns the routes of the admin page.
+ */
 const adminRoutes = router.options.routes.filter(
     (route: any) => route.path === '/admin')[0].children?.filter((route: any) => route.meta.isInTheMenu);
     

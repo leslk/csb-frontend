@@ -19,7 +19,7 @@
                     <i class="fa-solid fa-basketball tournament-card-icon" />
                     <div class="tournament-card-value">
                         <p class="tournament-card-label">Lieu:</p>
-                        <p class="tournament-card-data">{{ tournament.location }}</p>
+                        <p class="tournament-card-data">{{ address }}</p>
                     </div>
                     <div class="tournament-card-value">
                         <p class="tournament-card-label">Participants:</p>
@@ -43,7 +43,8 @@
                 <div class="tournament-card-footer">
                     <CsbButton label="Voir les détails" @click="setShowModal('infos')" />
                     <CsbButton
-                        color="#f0c346"
+                        color="#f9ee57"
+                        text-color="#000000"
                         v-if="!isOpenTournament && !isCancelledTournament"
                         :label="historyButtonLabel"
                         @click="setShowHistoryModal"
@@ -62,6 +63,17 @@ import CsbButton from '../common/CsbButton.vue';
 import type { Tournament as TournamentType } from '@/services/types';
 import { DateUtils } from '@/services/services';
 
+/**
+ * @component TournamentCard
+ * Display a card with the tournament information
+ * @example <TournamentCard :tournament="tournament" />
+ */
+
+
+/**
+ * Props of the component
+ * @prop {TournamentType} tournament - The tournament to display
+ */
 const props = defineProps({
     tournament: {
         type: Object as PropType<TournamentType>,
@@ -69,10 +81,26 @@ const props = defineProps({
     }
 });
 
+/**
+ * @ref menu - The menu of the card
+ * @ref menuIcon - The icon of the menu
+ */
 const menu = ref<HTMLElement | null>(null);
 const menuIcon = ref<HTMLElement | null>(null);
+
+/**
+ * @computed isOpenTournament - Determine if the tournament is open
+ */
 const isOpenTournament = computed(() => props.tournament.status === 'open');
+
+/**
+ * @computed isCancelledTournament - Determine if the tournament is cancelled
+ */
 const isCancelledTournament = computed(() => props.tournament.status === 'cancelled');
+
+/**
+ * @computed historyButtonLabel - Determine the label of the history button
+ */
 const historyButtonLabel = computed(() => {
     if (
         props.tournament.tournamentHistory.content &&
@@ -85,6 +113,16 @@ const historyButtonLabel = computed(() => {
     }
 });
 
+/**
+ * @computed address - The address of the tournament
+ */
+const address = computed(() => {
+    return `${props.tournament.address}, ${props.tournament.zipCode} ${props.tournament.city}`;
+});
+
+/**
+ * @computed status - The status of the tournament
+ */
 const status = computed(() => {
     if (props.tournament.status === 'open') {
         return {
@@ -110,6 +148,15 @@ const status = computed(() => {
 const numberOfParticipants = computed(() =>
     props.tournament.participants?.length ? props.tournament.participants.length : 0
 );
+
+/**
+ * emit of the component
+ * @emits showUpdateModal - Show the update modal
+ * @emits showHistoryModal - Show the history modal
+ * @emits showDetailsModal - Show the details modal
+ * @emits showParticipantModal - Show the participant modal
+ * @emits showDeleteTournament - Show the delete tournament modal
+ */
 const emit = defineEmits([
     'showUpdateModal',
     'showHistoryModal',
@@ -117,6 +164,10 @@ const emit = defineEmits([
     'showParticipantModal',
     'showDeleteTournament'
 ]);
+
+/**
+ * @ref {Ref<boolean>} showMenu - The visibility of the menu
+ */
 const showMenu = ref(false);
 
 function closeMenu(event: MouseEvent) {
@@ -131,15 +182,28 @@ function closeMenu(event: MouseEvent) {
     }
 }
 
+/**
+ * @function setShowMenu
+ * Show the menu when the icon is clicked.
+ */
 function setShowMenu() {
     showMenu.value = !showMenu.value;
     window.addEventListener('click', closeMenu);
 }
 
+/**
+ * @function deleteTournament
+ * Delete the tournament
+ */
 function deleteTournament() {
     emit('showDeleteTournament', props.tournament);
 }
 
+/**
+ * @function setShowModal
+ * Show the modal based on the given type
+ * @param {string} type - The type of modal to show
+ */
 function setShowModal(type: string) {
     showMenu.value = false;
     if (type === 'update') {
@@ -151,6 +215,10 @@ function setShowModal(type: string) {
     }
 }
 
+/**
+ * @function setShowHistoryModal
+ * Show the history modal
+ */
 function setShowHistoryModal() {
     emit('showHistoryModal', props.tournament);
 }

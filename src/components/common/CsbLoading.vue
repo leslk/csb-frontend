@@ -10,7 +10,17 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+/**
+ * Vue component for the loading.
+ * @component CsbLoading
+ * @example <CsbLoading :loading="loading" />
+ */
+
+/**
+ * Props of the component
+ * @props loading: Determines whether the loading is active or not.
+ */
+defineProps({
     loading: {
         type: Boolean,
         required: true

@@ -55,30 +55,52 @@ import CsbButton from '@/components/common/CsbButton.vue';
 import { ref, watch } from 'vue';
 import { required, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
+import type { Participant } from '@/services/types';
 
-interface Participant {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-}
+/**
+ * Vue component for the tournament participant modal.
+ *
+ * @component TournamentParticipantModal
+ * @example <TournamentParticipantModal :show="show" @close="close" @addParticipant="addParticipant" />
+ */
 
+/**
+ * Props of the component
+ * @param {Boolean} show - Show the modal
+ * @param {Function} close - Close the modal
+ */
 const props = defineProps({
     show: {
         type: Boolean,
         required: true
     }
 });
+
+/**
+ * Emits of the component
+ * @param {Function} close - Close the modal
+ * @param {Function} addParticipant - Add a participant
+ */
 const emit = defineEmits(['close', 'addParticipant']);
+
+/**
+ * Header text
+ */
 const headerText = 'Historique des tournois';
 
-const participant = ref({
+/**
+ * @ref {Ref<Participant>} participant - The participant to be added
+ */
+const participant = ref<Participant>({
     firstName: '',
     lastName: '',
     email: '',
     phoneNumber: ''
 });
 
+/**
+ * Rules for the participant
+ */
 const participantRules = {
     firstName: {
         required: helpers.withMessage('Le prénom est obligatoire', required)
@@ -94,6 +116,9 @@ const participantRules = {
     }
 };
 
+/**
+ * Participant validation that uses the rules of the participant to avoid empty fields
+ */
 const participantValidate = useVuelidate(participantRules, participant);
 
 async function addparticipant() {
@@ -105,10 +130,18 @@ async function addparticipant() {
     close();
 }
 
+/**
+ * @function close
+ * Close the modal
+ */
 const close = () => {
     emit('close');
 };
 
+/**
+ * @function resetParticipant
+ * Reset the participant
+ */
 function resetParticipant() {
     participant.value = {
         firstName: '',
@@ -118,6 +151,10 @@ function resetParticipant() {
     };
 }
 
+/**
+ * Watch the show prop and reset the participant when the modal is shown
+ * @param value - The new value of the show prop
+ */
 watch(
     () => props.show,
     (value) => {

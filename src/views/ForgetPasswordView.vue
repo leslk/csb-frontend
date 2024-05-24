@@ -36,19 +36,46 @@ import { useRoute } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import AdminExpiredLink from '@/components/admin/AdminExpiredLink.vue';
 
+/**
+ * Vue component for the create password view.
+ * @component CreatePasswordView
+ * @example <CreatePasswordView />
+ */
+
+/**
+ * route to get the params
+ */
 const route = useRoute();
+
+/**
+ * router to navigate
+ */
 const router = useRouter();
+
+/**
+ * reference password data
+ */
 const passwordData = ref({
     password: '',
     confirmPassword: ''
 });
+
+/**
+ * reference to check if the token is expired
+ */
 const expiredToken = ref(false);
 
+/**
+ * reset password data
+ */
 function resetPasswordData() {
     passwordData.value.password = '';
     passwordData.value.confirmPassword = '';
 }
 
+/**
+ * password rules
+ */
 const passwordRules = {
     password: {
         required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required)
@@ -63,8 +90,14 @@ const passwordRules = {
     }
 };
 
+/**
+ * password validation
+ */
 const passwordValidate = useVuelidate(passwordRules, passwordData);
 
+/**
+ * create password
+ */
 async function createPassword() {
     const adminId = route.params.id as string;
     try {
@@ -78,10 +111,18 @@ async function createPassword() {
     }
 }
 
+/**
+ * go to login
+ */
 function goToLogin() {
     router.push({ name: 'Login' });
 }
 
+/**
+ * watch password data
+ * to check if the password and the confirm password are the same
+ * and touch the confirm password field
+ */
 watch(
     () => passwordData.value,
     (newValue: { password: string; confirmPassword: string }) => {
@@ -93,6 +134,9 @@ watch(
     { deep: true }
 );
 
+/**
+ * check if the token is expired
+ */
 onMounted(async () => {
     resetPasswordData();
     const adminId = route.params.id as string;

@@ -38,7 +38,7 @@
                             <th>Email</th>
                             <th>Téléphone</th>
                         </tr>
-                        <tr v-for="participant in tournament.participants" :key="participant._id">
+                        <tr v-for="participant in participants" :key="participant._id">
                             <td>{{ participant.firstName }}</td>
                             <td>{{ participant.lastName }}</td>
                             <td>{{ participant.email }}</td>
@@ -64,9 +64,20 @@ import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { type Tournament as TournamentType } from '@/services/types';
 import { type PropType, computed, ref, watch } from 'vue';
-import { DateUtils } from '@/services/services';
 import { type Participant as ParticipantType } from '@/services/types';
 
+/**
+ * Vue component for the tournament details modal.
+ *
+ * @component TournamentDetailsModal
+ * @example <TournamentDetailsModal :show="show" :tournament="tournament" @close="close" @deleteParticipant="deleteParticipant" @addParticipant="addParticipant" />
+ */
+
+/**
+ * Props of the component.
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ * @prop {TournamentType} tournament - The tournament to be displayed.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -78,6 +89,14 @@ const props = defineProps({
     }
 });
 
+/**
+ * @ref {Ref<ParticipantType[]>} participants - Participants of the tournament.
+ */
+const participants = ref(props.tournament.participants);
+
+/**
+ * @ref {Ref<ParticipantType>} participantForm - Form for adding a participant.
+ */
 const participantForm = ref({
     firstName: '',
     lastName: '',
@@ -86,29 +105,48 @@ const participantForm = ref({
     payment: 0
 });
 
+/**
+ * @ref {Ref<Boolean>} isOpenTournament - Determines whether the tournament is open.
+ */
 const isOpenTournament = computed(() => {
     return props.tournament.status === 'open';
 });
 
+/**
+ * @ref {Ref<Boolean>} showAddParticipant - Determines whether the add participant form is shown.
+ */
 const showAddParticipant = ref(false);
-const emit = defineEmits(['close', 'deleteParticipant', 'addParticipant']);
-const totalPayment = computed(() => {
-    const payments = props.tournament.participants?.map((participant) => participant.payment);
-    let total = 0;
-    payments?.forEach((payment) => {
-        total += payment;
-    });
-    return total;
-});
 
+/**
+ * emit of the component
+ * @emit close - Event emitted when the modal is closed.
+ * @emit deleteParticipant - Event emitted when the participant is deleted. Passes the participant and the tournament ID as parameters.
+ * @emit addParticipant - Event emitted when a participant is added. Passes the participant and the tournament ID as parameters.
+ */
+const emit = defineEmits(['close', 'deleteParticipant', 'addParticipant']);
+
+/**
+ * @function close
+ * Close the modal
+ */
 const close = () => {
     emit('close');
 };
 
+/**
+ * @function deleteParticipant
+ * Delete the participant
+ * @param {ParticipantType} participant - The participant to be deleted
+ * @param {string} tournamentId - The ID of the tournament
+ */
 function deleteParticipant(participant: ParticipantType, tournamentId: string) {
     emit('deleteParticipant', participant, tournamentId);
 }
 
+/**
+ * @function resetParticipantForm
+ * Reset the participant form
+ */
 function resetParticipantForm() {
     participantForm.value = {
         firstName: '',
@@ -119,10 +157,27 @@ function resetParticipantForm() {
     };
 }
 
+/**
+ * watch the participants and update the participants value
+ * @param {ParticipantType[]} newValue - The new value of the participants
+ */
 watch(
     () => props.tournament.participants,
     (newValue) => {
-        props.tournament.participants = newValue;
+        participants.value = newValue;
+    }
+);
+
+/**
+ * watch the show prop and reset the participant form
+ * @param {Boolean} newValue - The new value of the show prop
+ */
+watch(
+    () => props.show,
+    (newValue) => {
+        if (!newValue) {
+            resetParticipantForm();
+        }
     }
 );
 </script>

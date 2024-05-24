@@ -22,8 +22,22 @@
 <script setup lang="ts">
 import { ref, watch, type Ref, type PropType, unref, computed } from 'vue';
 
+/**
+ * Vue component for the text area.
+ * @component CsbTextArea
+ * @example <CsbTextArea label="Commentaire" v-model="comment" />
+ */
 type StringOrRef = string | Ref<string>;
 
+/**
+ * Props of the component
+ * @props value: The value of the text area.
+ * @props disabled: Determines whether the text area is disabled or not.
+ * @props placeholder: The placeholder of the text area.
+ * @props height: The height of the text area.
+ * @props label: The label of the text area.
+ * @props error: The error message of the text area.
+ */
 const props = defineProps({
     value: {
         type: String,
@@ -50,20 +64,47 @@ const props = defineProps({
         default: undefined
     }
 });
+
+/**
+ * Emits of the component
+ * @emits update:value: Emits when the value of the text area is updated.
+ * @emits blur: Emits when the text area is blurred.
+ */
 const emit = defineEmits(['update:value', 'blur']);
 
+/**
+ * The error message of the text area.
+ */
 const errorMessage = computed(() => unref(props.error));
+
+/**
+ * The value of the text area.
+ */
 const textValue = ref(props.value);
 
+/**
+ * Updates the value of the text area.
+ *
+ * @param {Event} event - The event object.
+ */
 const updateValue = (event: any) => {
     const value = event?.target?.value;
     emit('update:value', value);
 };
 
+/**
+ * Blurs the text area.
+ *
+ * @param {Event} event - The event object.
+ */
 const blur = (event: any) => {
     emit('blur', event);
 };
 
+/**
+ * Watches the value prop and updates the text value.
+ * @param {string} newValue - The new value of the text area.
+ */
 watch(
     () => props.value,
     (newValue: string) => {

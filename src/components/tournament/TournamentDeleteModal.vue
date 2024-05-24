@@ -22,22 +22,44 @@
 <script lang="ts" setup>
 import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
-import { type Tournament as TournamentType } from '@/services/types';
-import { ref, watch, type PropType } from 'vue';
 
-const props = defineProps({
+/**
+ * Vue component for the tournament delete modal.
+ *
+ * @component TournamentDeleteModal
+ * @example <TournamentDeleteModal :show="show" @close="close" @deleteTournament="deleteTournament" />
+ */
+
+/**
+ * Props of the component.
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ */
+defineProps({
     show: {
         type: Boolean,
         required: true
     }
 });
 
+/**
+ * Emits of the component.
+ * @emit close - Event emitted when the modal is closed.
+ * @emit deleteTournament - Event emitted when the tournament is deleted.
+ */
 const emit = defineEmits(['close', 'deleteTournament']);
 
+/**
+ * @function close
+ * Close the modal.
+ */
 const close = () => {
     emit('close');
 };
 
+/**
+ * @function deleteTournament
+ * Delete the tournament.
+ */
 function deleteTournament() {
     emit('deleteTournament');
     close();

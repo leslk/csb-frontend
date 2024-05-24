@@ -36,19 +36,47 @@ import { useRoute } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import AdminExpiredLink from '@/components/admin/AdminExpiredLink.vue';
 
+/**
+ * Vue component for the create password view.
+ * @component CreatePasswordView
+ * @example <CreatePasswordView />
+ */
+
+
+/**
+ * route to get the params
+ */
 const route = useRoute();
+
+/**
+ * router to navigate
+ */
 const router = useRouter();
+
+/**
+ * refrerence password data
+ */
 const passwordData = ref({
     password: '',
     confirmPassword: ''
 });
+
+/**
+ * ref to check if the token is expired
+ */
 const expiredToken = ref(false);
 
+/**
+ * reset password data
+ */
 function resetPasswordData() {
     passwordData.value.password = '';
     passwordData.value.confirmPassword = '';
 }
 
+/**
+ * password rules
+ */
 const passwordRules = {
     password: {
         required: helpers.withMessage('Veuillez entrer votre ancien mot de passe', required)
@@ -63,6 +91,9 @@ const passwordRules = {
     }
 };
 
+/**
+ * password validation using vuelidate to avoid empty fields
+ */
 const passwordValidate = useVuelidate(passwordRules, passwordData);
 
 async function createPassword() {
@@ -78,15 +109,22 @@ async function createPassword() {
     }
 }
 
+/**
+ * go to login page
+ */
 function goToLogin() {
     router.push({ name: 'Login' });
 }
 
+/**
+ * watch the password data to check if the password and the confirm password are the same
+ * if not, touch the confirm password field
+ * @param newValue - the new value of the password data
+ */
 watch(
     () => passwordData.value,
     (newValue: { password: string; confirmPassword: string }) => {
         if (newValue.password.length > 3 && newValue.confirmPassword !== newValue.password) {
-            console.log(newValue);
             passwordValidate.value.confirmPassword.$touch();
             console.log('touched');
         }
@@ -94,6 +132,9 @@ watch(
     { deep: true }
 );
 
+/**
+ * on mounted, check if the token is expired
+ */
 onMounted(async () => {
     resetPasswordData();
     const adminId = route.params.id as string;

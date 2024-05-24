@@ -5,45 +5,48 @@ import SiteContentView from '@/views/SiteContentView.vue';
 import LoginView from '@/views/LoginView.vue';
 import CreatePasswordView from '@/views/CreatePasswordView.vue';
 import ForgetPasswordView from '@/views/ForgetPasswordView.vue';
+import Logo from '@/assets/csb_logo_yellow.png';
+import NotFound from '@/views/NotFound.vue';
 
 const adminRouter = {
     path: '/admin',
     component: AdminLayout,
     name: 'Admin',
-    redirect: { name: 'Comptes' },
+    redirect: { name: 'Les comptes' },
     meta: {
-        title: 'CSB - Admin'
+        title: 'CSB - Admin',
+        logo: Logo,
     },
     children: [
         {
             path: 'accounts',
-            name: 'Comptes',
+            name: 'Les comptes',
             component: AccountsView,
             meta: {
                 isInTheMenu: true,
-                title: 'Accounts',
+                title: 'Caen Street Ball Admin - Comptes',
                 metaIcon: 'fa-regular fa-address-card',
                 requiresAuth: true
             }
         },
         {
             path: 'tournaments',
-            name: 'Tournois',
+            name: 'Les tournois',
             component: TournamentsView,
             meta: {
                 isInTheMenu: true,
-                title: 'Tournaments',
+                title: 'Caen Street Ball Admin - Tournois',
                 metaIcon: 'fa-solid fa-basketball',
                 requiresAuth: true
             }
         },
         {
             path: 'site-content',
-            name: 'Contenu du site',
+            name: 'Le contenu du site',
             component: SiteContentView,
             meta: {
                 isInTheMenu: true,
-                title: 'Site Content',
+                title: 'Caen Street Ball Admin - Contenu du site',
                 metaIcon: 'fa-solid fa-pager',
                 requiresAuth: true
             }
@@ -76,6 +79,23 @@ const adminRouter = {
                 isInTheMenu: false,
                 title: 'Create Password',
                 requiresAuth: false
+            }
+        },
+        {
+            path: '404',
+            name : 'AdminNotFound',
+            component: NotFound,
+            meta: {
+                title: 'Not Found',
+                isInTheMenu: false,
+            }
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: { name: 'AdminNotFound' },
+            meta: {
+                title: 'Not Found',
+                isInTheMenu: false,
             }
         }
     ]
