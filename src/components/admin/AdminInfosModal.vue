@@ -61,12 +61,16 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
 import { type AdminAccount } from '@/services/types';
 
+/**
+ * Auth store
+ */
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
-const buttonText = computed(() => (props.account._id ? 'Modifier' : 'Créer'));
-const headerText = computed(() =>
-    props.account._id ? 'Modification du compte' : "Création d'un compte"
-);
+
+/**
+ * Props of the component
+ * @prop {AdminAccount} account - The account to be updated
+ * @prop {Boolean} show - Determines whether the modal is shown or not
+ */
 const props = defineProps({
     account: {
         type: Object as () => AdminAccount,
@@ -77,8 +81,17 @@ const props = defineProps({
         required: true
     }
 });
+
+/**
+ * Emits of the component
+ * @emit close - Event emitted when the modal is closed
+ * @emit confirm - Event emitted when the account is updated
+ */
 const emit = defineEmits(['close', 'confirm']);
-const label = computed(() => (form.value.isSuperAdmin ? 'Super Admin' : 'Admin'));
+
+/**
+ * Form that contains the account data
+ */
 const form = ref({
     _id: props.account._id,
     email: props.account.email,
@@ -88,6 +101,9 @@ const form = ref({
     status: props.account.status
 });
 
+/**
+ * Rules for the account validation
+ */
 const accountRules = {
     email: { required: helpers.withMessage('Veuillez entrer un email', required) },
     firstName: { required: helpers.withMessage('Veuillez entrer un prénom', required) },
@@ -97,17 +113,53 @@ const accountRules = {
     status: {}
 };
 
+/**
+ * Account validation that uses the rules of the account to avoid empty fields
+ */
 const accountValidate = useVuelidate(accountRules, form);
 
+/**
+ * logged user from the store
+ */
+const user = computed(() => authStore.user);
+
+/**
+ * Button text of the modal
+ */
+const buttonText = computed(() => (props.account._id ? 'Modifier' : 'Créer'));
+
+/**
+ * Header text of the modal
+ */
+const headerText = computed(() =>
+    props.account._id ? 'Modification du compte' : "Création d'un compte"
+);
+
+/**
+ * Label of the checkbox
+ */
+const label = computed(() => (form.value.isSuperAdmin ? 'Super Admin' : 'Admin'));
+
+/**
+ * Close the modal and reset the form
+ */
 function close() {
     accountValidate.value.$reset();
     emit('close');
 }
 
+/**
+ * Toggle the status of the account
+ * @param status the status to set
+ */
 function toggleStatus(status: boolean) {
     form.value.isSuperAdmin = status;
 }
 
+/**
+ * Update the account
+ * Validate the form and emit the confirm event
+ */
 async function updateAdmin() {
     accountValidate.value.$reset();
     const valid = await accountValidate.value.$validate();
@@ -115,6 +167,11 @@ async function updateAdmin() {
     emit('confirm', form.value);
 }
 
+/**
+ * Watch the account to update the form
+ * @param newValue the new value of the account
+ * if the account prop changes, the form is updated
+ */
 watch(
     () => props.account,
     (newValue: AdminAccount) => {
@@ -129,6 +186,10 @@ watch(
     }
 );
 
+/**
+ * Watch the show prop to reset the form
+ * if the show prop changes, the form is reset
+ */
 watch(
     () => props.show,
     () => {

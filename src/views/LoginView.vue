@@ -42,12 +42,46 @@ import { useAuthStore } from '@/stores/auth';
 import { computed, ref } from 'vue';
 import { Auth, ErrorMessage } from '@/services/services';
 
+/**
+ * Vue component for the login view.
+ * @component LoginView
+ * @example <LoginView />
+ */
+
+
+/**
+ * Reference to the auth store.
+ */
 const authStore = useAuthStore();
+
+/**
+ * Reference to the forget password view.
+ */
 const forgetPasswordView = ref(false);
+
+/**
+ * Reference to the forget password success.
+ */
 const forgetPasswordSuccess = ref(false);
+
+/**
+ * Reference to the email error.
+ */
 const emailError = ref('');
+
+/**
+ * Reference to the password error.
+ */
 const passwordError = ref('');
+
+/**
+ * Router to navigate
+ */
 const router = useRouter();
+
+/**
+ * @computed userCredentials - A computed property that returns the user credentials.
+ */
 const userCredentials = computed(() => {
     return {
         email: '',
@@ -55,21 +89,33 @@ const userCredentials = computed(() => {
     };
 });
 
+/**
+ * Resets the errors.
+ */
 function resetErrors() {
     emailError.value = '';
     passwordError.value = '';
 }
 
+/**
+ * Navigates to the login view.
+ */
 function goToLogin() {
     forgetPasswordView.value = false;
     forgetPasswordSuccess.value = false;
 }
 
+/**
+ * Resets the user credentials.
+ */
 function resetCredentials() {
     userCredentials.value.email = '';
     userCredentials.value.password = '';
 }
 
+/**
+ * Logs the user in.
+ */
 async function login() {
     resetErrors();
     try {
@@ -90,6 +136,9 @@ async function login() {
     }
 }
 
+/**
+ * Sends a request to reset the password.
+ */
 async function forgetPassword() {
     emailError.value = '';
     try {

@@ -3,6 +3,17 @@
 </template>
 
 <script setup lang="ts">
+
+/**
+ * Vue component for the title.
+ * @component CsbTitle
+ * @example <CsbTitle title="Envoyer" />
+ */
+
+/**
+ * Props of the component
+ * @props title: The title of the title.
+ */
 defineProps({
     title: {
         type: String,

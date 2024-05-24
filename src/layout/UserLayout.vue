@@ -1,7 +1,7 @@
 <template>
     <div class="user-layout">
         <UserHeader />
-        <CsbLoading :loading="loading" />
+        <CsbUserLoading :loading="loading" />
         <div class="view">
             <router-view />
         </div>
@@ -13,12 +13,22 @@
 import UserHeader from '@/layout/UserHeader.vue';
 import UserFooter from '@/layout/UserFooter.vue';
 import { RouterView } from 'vue-router';
-import { computed } from 'vue';
-import CsbLoading from '@/components/common/CsbLoading.vue';
+import { computed, onMounted } from 'vue';
+import CsbUserLoading from '@/components/common/CsbUserLoading.vue';
 import { useServicesStore } from '@/stores/services';
+
+/**
+ * the component displays the layout of the user page
+ * @component UserLayout
+ * @exemple <UserLayout />
+ */
 
 const servicesStore = useServicesStore();
 const loading = computed(() => servicesStore.loading);
+
+onMounted(() => {
+    servicesStore.setSiteContent();
+});
 </script>
 
 <style scoped lang="scss">

@@ -18,14 +18,35 @@ import { computed } from 'vue';
 import CsbLoading from '@/components/common/CsbLoading.vue';
 import { useServicesStore } from '@/stores/services';
 
+/**
+ * This component displays the layout of the admin page.
+ * @component AdminLayout
+ * @exemple <AdminLayout />
+ */
+
+
+/**
+ * Reference to the auth store.
+ */
 const authStore = useAuthStore();
+
+/**
+ * @computed isAuth - A computed property that returns a boolean value indicating whether the user is authenticated or not.
+ */
 const isAuth = computed(() => authStore.isLoggedIn);
 const router = useRouter();
+/**
+ * @computed isNotCreatePasswordView - A computed property that returns a boolean value indicating whether the current view is not the create password view.
+ */
 const isNotCreatePasswordView = computed(
     () => router.currentRoute.value.name !== 'create-password'
 );
 const servicesStore = useServicesStore();
 const loading = computed(() => servicesStore.loading);
+
+/**
+ * @computed viewStyle - A computed property that returns the style of the view.
+ */
 const viewStyle = computed(() => (isAuth.value ? 'view' : 'view no-auth'));
 </script>
 

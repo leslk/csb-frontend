@@ -31,8 +31,17 @@ import CsbSocial from '@/components/common/CsbSocial.vue';
 import MenuItem from '@/layout/MenuItem.vue';
 import { useRouter } from 'vue-router';
 
+/**
+ * This component displays the footer of the user page.
+ * @component UserFooter
+ * @exemple <UserFooter />
+ */
+
 const router = useRouter();
 
+/**
+ * @computed userRoutes - A computed property that returns the routes of the user page.
+ */
 const userRoutes = router.options.routes
     .filter((route: any) => route.path === '/')[0]
     .children?.filter((route: any) => route.meta.isInTheMenu);

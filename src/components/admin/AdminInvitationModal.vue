@@ -26,6 +26,18 @@ import CsbModal from '@/components/common/CsbModal.vue';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { type AdminAccount } from '@/services/types';
 
+/**
+ * Vue component for the admin invitation modal.
+ *
+ * @component AdminInvitationModal
+ * @example <AdminInvitationModal :show="show" :account="account" @close="close" @confirm="resendInvitation" />
+ */
+
+/**
+ * Props of the component.
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ * @prop {AdminAccount} account - The account to resend the invitation to.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -37,12 +49,27 @@ const props = defineProps({
     }
 });
 
+/**
+ * Emits of the component.
+ * @emit close - Event emitted when the modal is closed.
+ * @emit confirm - Event emitted when the invitation is resent. Passes the account ID as a parameter.
+ */
 const emit = defineEmits(['close', 'confirm']);
 
+/**
+ * Closes the modal by emitting the 'close' event.
+ *
+ * @function close
+ */
 function close() {
     emit('close');
 }
 
+/**
+ * Resends the invitation by emitting the 'confirm' event with the account ID as the payload.
+ *
+ * @function resendInvitation
+ */
 function resendInvitation() {
     emit('confirm', props.account._id);
 }

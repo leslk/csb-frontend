@@ -24,7 +24,6 @@ export interface Participant {
     firstName: string;
     lastName: string;
     phoneNumber: string;
-    payment: string;
     _id?: string;
 }
 
@@ -58,4 +57,9 @@ export interface SiteContent {
     contact: Contact;
     members: Member[];
     _id?: string;
+}
+
+export interface Credentials {
+    email: string;
+    password: string;
 }

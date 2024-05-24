@@ -21,9 +21,21 @@ const router = createRouter({
     ]
 });
 
+
+/**
+ * This function is called before each route change.
+ * it sets the title of the page to the title defined in the route's meta.
+ * It checks if the user is authenticated and if the route requires authentication.
+ * If the user is not authenticated and the route requires authentication, the user is redirected to the login page.
+ * If the user is authenticated and tries to access the login page, the user is redirected to the admin page.
+ * @param to The route the user is going to
+ * @param from The route the user is coming from
+ * @param next The function to call to continue the navigation
+ */
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
     const isAuth = authStore.isLoggedIn;
+    document.title = to.meta.title as string;
 
     if (to.meta.requiresAuth && !isAuth) {
         router.push({ name: 'Login' });

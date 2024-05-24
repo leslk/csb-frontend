@@ -18,6 +18,16 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 
+/**
+ * Vue component for the modal.
+ * @component CsbModal
+ * @example <CsbModal :show="show" @close="close">
+ */
+
+/**
+ * Props of the component.
+ * @prop {Boolean} show - Determines whether the modal is shown or not.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -25,8 +35,17 @@ const props = defineProps({
     }
 });
 
+/**
+ * Emits of the component.
+ * @emit close - Event emitted when the modal is closed.
+ */
 const emit = defineEmits(['close']);
 
+/**
+ * Watcher for the show prop.  
+ * Adds the 'modal-open' class to the body
+ * when the modal is shown and removes it when it is hidden.
+ */
 watch(
     () => props.show,
     () => {

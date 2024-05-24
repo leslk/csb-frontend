@@ -8,6 +8,20 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+/**
+ * Vue component for the button.
+ * @component CsbButton
+ * @example <CsbButton label="Envoyer" text-color="#f9ee57" @click="sendContact"/>
+ */
+
+/**
+ * Props of the component
+ * @props label: The label of the button.
+ * @props icon: The icon of the button.
+ * @props isIconButton: Determines whether the button is an icon button or not.
+ * @props color: The color of the button.
+ * @props textColor: The text color of the button.
+ */
 const props = defineProps({
     label: {
         type: String,
@@ -34,7 +48,14 @@ const props = defineProps({
     }
 });
 
+/**
+* The color of the button.
+*/
 const color = computed(() => props.color);
+
+/**
+ * The text color of the button.
+ */
 const textColor = computed(() => props.textColor);
 </script>
 

@@ -22,8 +22,18 @@ import CsbSocial from '@/components/common/CsbSocial.vue';
 import MenuItem from '@/layout/MenuItem.vue';
 import { useRouter } from 'vue-router';
 
+/**
+ * This component displays the header of the user page.
+ * The user can navigate through the different pages of the user section.
+ * @component UserHeader
+ * @exemple <UserHeader />
+ */
+
 const router = useRouter();
 
+/**
+ * @computed userRoutes - A computed property that returns the routes of the user page.
+ */
 const userRoutes = router.options.routes
     .filter((route: any) => route.path === '/')[0]
     .children?.filter((route: any) => route.meta.isInTheMenu);

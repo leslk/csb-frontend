@@ -64,9 +64,25 @@ import { useRoute } from 'vue-router';
 import type { Tournament } from '@/services/types';
 import { Tournament as TournamentService } from '@/services/services';
 
+/**
+ * The component displays the details of a tournament.
+ * @component UserTournamentView
+ * @example <UserTournamentView />
+ */
+
+/**
+ * router to navigate 
+ */
 const route = useRoute();
+
+ /**
+  * @const tournament - The tournament object.
+  */
 const tournament = ref<Tournament | null>(null);
 
+/**
+ * @event onMounted - Fetch the tournament data.
+ */
 onMounted( async () => {
     const response = await TournamentService.getTournament(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
     tournament.value = response.data;
@@ -75,38 +91,8 @@ onMounted( async () => {
 
 <style lang="scss">
 .user-tournament-view {
-    &-image {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-    }
     &-header {
-        position: relative;
-    }
-    &-title {
-        font-size: 1.5rem;
-    }
-    &-header-text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        font-size: 7rem;
-        font-weight: 900;
-        gap: 1rem;
-        color: $primaryColor;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    &-main-title {
-        max-width: 400px;
-        font-size: 5rem;
-        line-height: 1;
-        font-family: 'breakside';
-        text-align: center;
+        @include user-header;
     }
     &-content {
         text-align: center;

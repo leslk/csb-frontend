@@ -40,7 +40,20 @@
 import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTitle from '@/components/common/CsbTitle.vue';
 import CsbInput from '@/components/common/CsbInput.vue';
-const props = defineProps({
+/**
+ * Component for the admin forget password functionality.
+ * @component AdminForgetPassword
+ * @exemple <AdminForgetPassword :show="show" :success="success" :email="email" @updateEmail="updateEmail" @submit="submit" @goToLogin="goToLogin" />
+ */
+
+/**
+ * Component for the admin forget password functionality.
+ * @props show: Determines whether the modal should be shown or not.
+ * @props success: Indicates the success of the password reset request.
+ * @props email: The email address to reset the password for.
+ * @exemple <AdminForgetPassword :show="show" :success="success" :email="email" @updateEmail="updateEmail" @submit="submit" @goToLogin="goToLogin" />
+ */
+defineProps({
     show: {
         type: Boolean,
         required: true
@@ -59,17 +72,38 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['updateEmail', 'submit', 'goToLogin']);
+/**
+ * Emits of the component
+ * @emit updateEmail - Event emitted when the email is updated
+ * @emit submit - Event emitted when the form is submitted.
+ * @emit goToLogin - Event emitted when the user wants to go to the login page.
+ */
+const emit = defineEmits([
+    'updateEmail',
+    'submit',
+    'goToLogin'
+]);
 
+/**
+ * Submits the form
+ * @param e The event object.
+ */
 function submit(e: Event) {
     e.preventDefault();
     emit('submit');
 }
 
+/**
+ * Updates the email address.
+ * @param email The updated email address.
+ */
 function updateEmail(email: string) {
     emit('updateEmail', email);
 }
 
+/**
+ * Redirects the user to the login page.
+ */
 function goToLogin() {
     emit('goToLogin');
 }

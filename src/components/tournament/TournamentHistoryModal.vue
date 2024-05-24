@@ -63,6 +63,18 @@ import { computed, ref, watch } from 'vue';
 import { required, helpers } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 
+/**
+ * Vue component for the tournament history modal.
+ * @component TournamentHistoryModal
+ * @example <TournamentHistoryModal :show="show" :tournament="tournament" @close="close" @addHistory="addHistory" @addImage="addImage" @removeImage="removeImage" @deleteTournamentHistory="deleteTournamentHistory" />
+ */
+
+
+/**
+ * Props of the component
+ * @props show: The visibility of the modal.
+ * @props tournament: The tournament to be updated.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -73,6 +85,15 @@ const props = defineProps({
         required: true
     }
 });
+
+/**
+ * Emits of the component
+ * @emits close - Emits when the modal is closed.
+ * @emits addHistory - Emits when the history is added.
+ * @emits addImage - Emits when the image is added.
+ * @emits removeImage - Emits when the image is removed.
+ * @emits deleteTournamentHistory - Emits when the history is deleted.
+ */
 const emit = defineEmits([
     'close',
     'addHistory',
@@ -80,8 +101,15 @@ const emit = defineEmits([
     'removeImage',
     'deleteTournamentHistory'
 ]);
+
+/**
+ * Header text of the modal
+ */
 const headerText = 'Contenu du tournoi affiché sur le site';
 
+/**
+ * @ref {Ref<TournamentHistory>} tournamentHistory - The tournament history to be updated.
+ */
 const tournamentHistory = ref<TournamentHistory>({
     content: props.tournament.tournamentHistory.content || '',
     images: props.tournament.tournamentHistory.images || [],
@@ -89,6 +117,9 @@ const tournamentHistory = ref<TournamentHistory>({
     _id: props.tournament.tournamentHistory._id || ''
 });
 
+/**
+ * @ref {ComputedRef<Boolean>} isTournamentHistory - Determines whether the tournament history is set.
+ */
 const isTournamentHistory = computed(() => {
     return (
         props.tournament.tournamentHistory.content &&
@@ -97,6 +128,9 @@ const isTournamentHistory = computed(() => {
     );
 });
 
+/**
+ * @ref {Ref<string>} buttonLabel - The label of the button.
+ */
 const buttonLabel = ref(
     props.tournament.tournamentHistory.content &&
     props.tournament.tournamentHistory.images.length > 0 &&
@@ -107,6 +141,9 @@ const buttonLabel = ref(
     'Ajouter'
 );
 
+/**
+ * Rules for the tournament history form.
+ */
 const tournamentHistoryRules = {
     content: {
         required: helpers.withMessage('Le contenu est requis', required)
@@ -119,23 +156,41 @@ const tournamentHistoryRules = {
     }
 };
 
+/**
+ * Tournament history validation that uses the rules of the tournament history to avoid empty fields
+ */
 const tournamentHistoryValidate = useVuelidate(tournamentHistoryRules, tournamentHistory);
 
+/**
+ * Add an image to the tournament history.
+ * @param {string} image - The image to be added.
+ */
 async function addImage(image: string) {
     const response = await Upload.uploadImage(image);
     emit('addImage', response.data.imageUrl);
 }
 
+/**
+ * Delete the tournament history.
+ */
 async function deleteTournamentHistory() {
     emit('deleteTournamentHistory', props.tournament);
     emit('close');
 }
 
+/**
+ * Remove an image from the tournament history.
+ * @param {string} image - The image to be removed.
+ */
 async function removeImage(image: string) {
     const response = await Upload.deleteImage(image);
     emit('removeImage', response.data);
 }
 
+/**
+ * @function addHistory
+ * Add the tournament history.
+ */
 async function addHistory() {
     tournamentHistoryValidate.value.$touch();
     if (tournamentHistoryValidate.value.$error) {
@@ -145,6 +200,10 @@ async function addHistory() {
     emit('close');
 }
 
+/**
+ * @function close
+ * Close the modal
+ */
 const close = () => {
     if (!tournamentHistory.value.content && !tournamentHistory.value.title && tournamentHistory.value.images.length > 0) {
         for (const image of tournamentHistory.value.images) {
@@ -155,6 +214,10 @@ const close = () => {
     emit('close');
 };
 
+/**
+ * @function resetTournamentHistory
+ * Reset the tournament history
+ */
 const resetTournamentHistory = () => {
     tournamentHistory.value = {
         content: '',
@@ -164,13 +227,17 @@ const resetTournamentHistory = () => {
     };
 };
 
+/**
+ * Watch the tournament and update the tournament history value.
+ * @param {TournamentType} newValue - The new value of the tournament.
+ */
 watch(
     () => props.tournament,
     (newValue) => {
         buttonLabel.value = 
-        newValue.tournamentHistory.content && 
-        newValue.tournamentHistory.images.length > 0 &&
-        newValue.tournamentHistory.title ? 'Modifier' : 'Ajouter';
+        newValue.tournamentHistory?.content && 
+        newValue.tournamentHistory?.images.length > 0 &&
+        newValue.tournamentHistory?.title ? 'Modifier' : 'Ajouter';
         if (newValue.tournamentHistory) {
             tournamentHistory.value.images = newValue.tournamentHistory.images;
         }
@@ -178,6 +245,10 @@ watch(
     { deep: true }
 );
 
+/**
+ * Watch the show prop and reset the tournament history.
+ * @param {Boolean} value - The new value of the show prop.
+ */
 watch(
     () => props.show,
     (value) => {

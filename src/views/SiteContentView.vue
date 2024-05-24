@@ -124,6 +124,16 @@ import type { SiteContent as SiteContentType, Member, Contact } from '@/services
 import { SiteContent, Upload } from '@/services/services';
 import { toast } from 'vue3-toastify';
 
+/**
+ * Site content view component.
+ * @component SiteContentView
+ * @example <SiteContentView />
+ */
+
+
+/**
+ * @ref siteContent - The site content data.
+ */
 const siteContent = ref<SiteContentType>({
     aboutUs: '',
     members: [],
@@ -134,30 +144,72 @@ const siteContent = ref<SiteContentType>({
         email: ''
     }
 });
+
+/**
+ * @computed members - The members of the site.
+ */
 const members = computed(() => siteContent.value?.members || []);
+
+/**
+ * @ref member - The member to update.
+ */
 const member = ref<Member>({
     firstName: '',
     lastName: '',
     role: '',
     image: ''
 });
+
+/**
+ * @computed contact - The contact information of the site.
+ */
 const contact = computed(() => siteContent.value?.contact);
+
+
 const servicesStore = useServicesStore();
+
+/**
+ * @ref showDescriptionModal - The state of the description modal.
+ */
 const showDescriptionModal = ref(false);
+
+/**
+ * @ref showContactModal - The state of the contact modal.
+ */
 const showContactModal = ref(false);
+
+/**
+ * @ref showMemberModal - The state of the member modal.
+ */
 const showMemberModal = ref(false);
+
+/**
+ * @ref showDeleteMemberModal - The state of the delete member modal.
+ */
 const showDeleteMemberModal = ref(false);
 
+/**
+ * @computed isSmallScreen - The state of the screen size.
+ */
 const isSmallScreen = computed(() => servicesStore.getSmallDeviceScreen);
 
+/**
+ * Sets the state of the description modal.
+ */
 function setShowDescriptionModal() {
     showDescriptionModal.value = !showDescriptionModal.value;
 }
 
+/**
+ * Sets the visibility of the contact modal.
+ */
 function setShowContactModal() {
     showContactModal.value = !showContactModal.value;
 }
 
+/**
+ * Sets the visibility of the member modal.
+ */
 function setShowMemberModal() {
     showMemberModal.value = !showMemberModal.value;
     if (!showMemberModal.value) {
@@ -165,10 +217,18 @@ function setShowMemberModal() {
     }
 }
 
+/**
+ * Sets the visibility of the delete member modal.
+ */
 function setShowDeleteMemberModal() {
     showDeleteMemberModal.value = !showDeleteMemberModal.value;
 }
 
+/**
+ * Sets the state of the member card modal.
+ * @param {String} type - The type of modal.
+ * @param {Member} memberToUpdate - The member to update.
+ */
 function setShowMemberCardModal(type: string, memberToUpdate: Member) {
     member.value = memberToUpdate;
     if (type === 'delete') {
@@ -178,12 +238,19 @@ function setShowMemberCardModal(type: string, memberToUpdate: Member) {
     }
 }
 
+/**
+ * Fetches the site content.
+ */
 async function fetchSiteContent() {
     const response = await SiteContent.getSiteContent();
     siteContent.value = response.data[0];
     console.log(siteContent.value);
 }
 
+/**
+ * Updates the description.
+ * @param {String} aboutUs - The description.
+ */
 async function updateDescription(aboutUs: string) {
     try {
         siteContent.value.aboutUs = aboutUs;
@@ -195,6 +262,10 @@ async function updateDescription(aboutUs: string) {
     }
 }
 
+/**
+ * Updates the contact information.
+ * @param {Contact} contact - The contact information.
+ */
 async function updateContact(contact: Contact) {
     try {
         siteContent.value.contact = contact;
@@ -206,6 +277,10 @@ async function updateContact(contact: Contact) {
     }
 }
 
+/**
+ * Creates a member.
+ * @param {Member} member - The member to create.
+ */
 async function createMember(member: Member) {
     try {
         if (member._id) {
@@ -228,6 +303,10 @@ async function createMember(member: Member) {
     }
 }
 
+/**
+ * Deletes a member.
+ * @param {String} memberId - The member id.
+ */
 async function deleteMember(memberId: string) {
     try {
         const member = siteContent.value.members.find((member) => member._id === memberId);
@@ -245,6 +324,9 @@ async function deleteMember(memberId: string) {
     }
 }
 
+/**
+ * Resets the member.
+ */
 function resetMember() {
     member.value = {
         firstName: '',
@@ -254,12 +336,18 @@ function resetMember() {
     };
 }
 
+/**
+ * Formats the contact information.
+ */
 const formattedContact = computed(() =>
     Object.entries(contact.value)
         .filter(([key, value]) => key !== '_id')
         .map(([key, value]) => ({ name: key, value }))
 );
 
+/**
+ * @event onMounted - Fetches the site content.
+ */
 onMounted(async () => {
     await fetchSiteContent();
 });

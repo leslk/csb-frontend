@@ -2,23 +2,24 @@
     <Transition>
         <div v-if="loading" class="csb-loading">
             <div class="csb-loading-spinner">
-                <i class="fa-solid fa-basketball"></i>
-                <p class="csb-loading-spinner-text">Chargement...</p>
+                <img :src="Image" alt="Logo Caen street ball" />
             </div>
         </div>
     </Transition>
 </template>
 
 <script setup lang="ts">
+import Image from "@/assets/csb_logo_letter.png";
+
 /**
  * Vue component for the loading.
- * @component CsbLoading
- * @example <CsbLoading :loading="loading" />
+ * @component CsbUserLoading
+ * @example <CsbUserLoading :loading="loading" />
  */
 
 /**
  * Props of the component
- * @props loading: Determines whether the loading is active or not.
+ * @props loading: Determines whether the loading is shown or not.
  */
 defineProps({
     loading: {
@@ -50,23 +51,18 @@ defineProps({
     align-items: center;
     z-index: 100000;
     &-spinner {
-        color: $white;
         text-align: center;
-        i {
-            animation: spinbounce 2s ease-in-out infinite;
-            font-size: 4rem;
-        }
-        &-text {
-            padding-top: 20px;
-            font-size: 1rem;
+        img {
+            animation: bounce 2s ease-in-out infinite;
+            width: 30%;
         }
     }
 }
 
-@keyframes spinbounce {
-    0% { transform: rotate(0deg); }
+@keyframes bounce {
+    0% { transform: scale(1.1); }
     100% { 
-        transform: rotate(360deg); 
+        transform: scale(0.9); 
     }
 }
 

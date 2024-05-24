@@ -53,6 +53,18 @@ import { computed, ref, watch, type PropType } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { helpers, required } from '@vuelidate/validators';
 
+/**
+ * Vue component for the site content member modal.
+ *
+ * @component SiteContentMemberModal
+ * @example <SiteContentMemberModal :show="show" :member="member" @close="close" @createMember="createMember" />
+ */
+
+/**
+ * Props of the component
+ * @props show: The visibility of the modal.
+ * @props member: The member to be updated.
+ */
 const props = defineProps({
     show: {
         type: Boolean,
@@ -64,7 +76,17 @@ const props = defineProps({
     }
 });
 
+
+/**
+ * Emits of the component
+ * @emits close - The event emitted when the modal is closed.
+ * @emits createMember - The event emitted when the member is created.
+ */
 const emit = defineEmits(['close', 'createMember']);
+
+/**
+ * @ref {Ref<Member>} member - The member to be updated.
+ */
 const member = ref<Member>({
     _id: props.member._id || '',
     firstName: props.member.firstName || '',
@@ -73,14 +95,23 @@ const member = ref<Member>({
     image: props.member.image || ''
 });
 
+/**
+ * @ref {ComputedRef<string>} headerText - The text of the header.
+ */
 const headerText = computed(() => {
     return member.value._id ? 'Modifier le membre' : 'Ajouter un membre';
 });
 
+/**
+ * @ref {ComputedRef<string>} buttonText - The text of the button.
+ */
 const buttonText = computed(() => {
     return member.value._id ? 'Modifier' : 'Ajouter';
 });
 
+/**
+ * Rules for the member form.
+ */
 const memberRules = {
     firstName: { required: helpers.withMessage('Le prénom est requis', required) },
     lastName: { required: helpers.withMessage('Le nom est requis', required) },
@@ -88,30 +119,69 @@ const memberRules = {
     image: { required: helpers.withMessage('La photo est requise', required) }
 };
 
+/**
+ * Member validation that uses the rules of the member to avoid empty fields.
+ */
 const memberValidate = useVuelidate(memberRules, member);
 
+/**
+ * Function to set the first name of the member.
+ *
+ * @function setFirstName
+ * @param {string} value - The updated first name value.
+ */
 function setFirstName(value: string) {
     member.value.firstName = value;
 }
 
+/**
+ * Function to set the last name of the member.
+ *
+ * @function setLastName
+ * @param {string} value - The updated last name value.
+ */
 function setLastName(value: string) {
     member.value.lastName = value;
 }
 
+/**
+ * Function to set the role of the member.
+ *
+ * @function setRole
+ * @param {string} value - The updated role value.
+ */
 function setRole(value: string) {
     member.value.role = value;
 }
 
+/**
+ * Function to add an image to the member.
+ *
+ * @function addImage
+ * @param {string} image - The image to be added.
+ */
 async function addImage(image: string) {
     const response = await Upload.uploadImage(image);
     member.value.image = response.data.imageUrl;
 }
 
+/**
+ * Function to remove an image from the member.
+ *
+ * @function removeImage
+ * @param {string} image - The image to be removed.
+ */
 async function removeImage(image: string) {
     await Upload.deleteImage(image);
     member.value.image = '';
 }
 
+/**
+ * Function to create a member.
+ *
+ * @function createMember
+ * Create the member if the form is valid.
+ */
 function createMember() {
     memberValidate.value.$touch();
     if (memberValidate.value.$error) {
@@ -121,6 +191,12 @@ function createMember() {
     emit('close');
 }
 
+/**
+ * Function to reset the member.
+ *
+ * @function resetMember
+ * Reset the member.
+ */
 function resetMember() {
     member.value = {
         _id: '',
@@ -131,6 +207,12 @@ function resetMember() {
     };
 }
 
+/**
+ * Function to close the modal.
+ *
+ * @function close
+ * Close the modal.
+ */
 async function close() {
     if (!member.value._id && member.value.image) {
         await removeImage(member.value.image);
@@ -138,6 +220,11 @@ async function close() {
     emit('close');
 }
 
+/**
+ * Watch the member prop and update the member value.
+ * @param newValue - The new value of the member
+ * if the member prop changes, the member is updated
+ */
 watch(
     () => props.member,
     (newValue) => {
@@ -147,6 +234,11 @@ watch(
     { deep: true }
 );
 
+/**
+ * Watch the show prop and reset the member.
+ * @param newValue - The new value of the show prop.
+ * if the show prop changes, the member is reset
+ */
 watch(
     () => props.show,
     (newValue) => {

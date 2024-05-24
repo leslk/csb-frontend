@@ -12,6 +12,16 @@
 import type { Member } from '@/services/types';
 import { computed } from 'vue';
 
+/**
+ * Component for displaying a member card.
+ * @component MemberCard
+ * @example <MemberCard :member="member" />
+ */
+
+/**
+ * Props of the component
+ * @prop {Member} member - The member to display.
+ */
 const props = defineProps({
     member: {
         type: Object as () => Member,
@@ -19,6 +29,9 @@ const props = defineProps({
     }
 });
 
+/**
+ * The alt text of the image.
+ */
 const imageAtlText = computed(
     () =>
         `Photo de ${props.member.firstName} ${props.member.lastName} ${props.member.role} de l'équipe de Caen Streetball`

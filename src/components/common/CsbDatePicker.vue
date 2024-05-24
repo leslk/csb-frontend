@@ -22,8 +22,25 @@
 import moment from 'moment';
 import { computed, ref, watch, type Ref, type PropType, unref } from 'vue';
 
+/**
+ * Vue component for the date input.
+ * @component CsbDateInput
+ * @example <CsbDateInput label="Date" v-model="date" />
+ */
+
 type StringOrRef = string | Ref<string>;
 
+/**
+ * Props of the component
+ * @props value: The value of the input.
+ * @props password: Determines whether the input is a password input or not.
+ * @props disabled: Determines whether the input is disabled or not.
+ * @props placeholder: The placeholder of the input.
+ * @props type: The type of the input.
+ * @props label: The label of the input.
+ * @props error: The error message of the input.
+ * @props icon: The icon of the input.
+ */
 const props = defineProps({
     value: {
         type: String,
@@ -59,19 +76,47 @@ const props = defineProps({
     }
 });
 
+/**
+ * Emits of the component
+ * @emits update:value: Emits the value of the input.
+ * @emits blur: Emits the blur event.
+ */
 const emit = defineEmits(['update:value', 'blur']);
+
+/**
+ * The error message of the input.
+ */
 const errorMessage = computed(() => unref(props.error));
+
+/**
+ * The value of the input.
+ */
 const dateValue = ref(moment(props.value).format('YYYY-MM-DDTHH:mm'));
 
+/**
+ * @function updateValue
+ * Updates the value of the input.
+ * @param {Event} event - The event object
+ */
 const updateValue = (event: any) => {
     const value = event?.target?.value;
     emit('update:value', value);
 };
 
+/**
+ * @function blur
+ * Emits the blur event.
+ * @param {Event} event - The event object
+ */
 const blur = (event: any) => {
     emit('blur', event);
 };
 
+/**
+ * Watches the value prop and updates the dateValue.
+ * @param {StringOrRef} props.value - The value of the input.
+ * @param {String} newValue - The new value of the input.
+ */
 watch(
     () => props.value,
     (newValue: string) => {

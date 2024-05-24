@@ -14,6 +14,16 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
+/**
+ * Vue component for the password progress bar.
+ * @component CsbPasswordProgressBar
+ * @example <CsbPasswordProgressBar password="password"/>
+ */
+
+/**
+ * Props of the component.
+ * @props password - The password to check.
+ */
 const props = defineProps({
     password: {
         type: String,
@@ -21,9 +31,24 @@ const props = defineProps({
     }
 });
 
+/**
+ * Progress of the password.
+ */
 const progress = ref<number>(0);
+
+/**
+ * Class of the progress.
+ */
 const progressClass = ref<string>('');
+
+/**
+ * Text of the progress.
+ */
 const progressText = ref<string>('Doit contenir au minimum 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial');
+
+/**
+ * Regexes to check the password.
+ */
 const regexes = [
     /.*[A-Z].*/,
     /.*[a-z].*/,
@@ -32,6 +57,12 @@ const regexes = [
     /.{8,}/
 ];
 
+/**
+ * Checks the password.
+ * @function checkPassword
+ * @param password - The password to check.
+ * @returns The strength of the password.
+ */
 function checkPassword(password: string) {
     let count = 0;
     for (const regex of regexes) {
@@ -42,6 +73,11 @@ function checkPassword(password: string) {
     return count;
 }
 
+/**
+ * Watches the password.
+ * @param newValue - The new value of the password.
+ * update the progress bar class based on the password strength.
+ */
 watch(() => props.password, (newValue) => {
     const strength = checkPassword(newValue);
     progress.value = 100 / regexes.length * strength;

@@ -51,28 +51,69 @@ import CsbCard from '@/components/common/CsbCard.vue';
 import { useAuthStore } from '@/stores/auth';
 import CsbStatus from '@/components//common/CsbStatus.vue';
 import { type AdminAccount } from '@/services/types';
+/**
+ * This component displays the account information in a card.
+ * The user can edit the account information, resend the invitation, change the password, or delete the account.
+ * @component AdminAccountCard
+ * @exemple <AdminAccountCard :account="account" />
+ */
 
+/**
+ * Props of the component.
+ * account: the account to display.
+ */
 const props = defineProps({
     account: {
         type: Object as () => AdminAccount,
         required: true
     }
 });
+
+/**
+ * Reference to the emit function for emitting events.
+ */
 const emit = defineEmits([
     'showPasswordModal',
     'showAccountModal',
     'deleteAccount',
     'showInvitationModal'
 ]);
-const user = computed(() => useAuthStore().user);
+
+/**
+ * Reference to a boolean value indicating whether the menu is shown or not.
+ */
 const showMenu = ref<boolean>(false);
+
+/**
+ * Reference to the menu element.
+ */
+const menu = ref<HTMLElement | null>(null);
+
+/**
+ * Reference to the menu icon element.
+ */
+const menuIcon = ref<HTMLElement | null>(null);
+
+/**
+ * Computed property that returns the user object from the auth store.
+ */
+const user = computed(() => useAuthStore().user);
+
+/**
+ * Computed property that returns a boolean value indicating whether the account is pending or expired.
+ */
 const isPendingAccount = computed(
     () => props.account.status === 'pending' || props.account.status === 'expired'
 );
-const adminStatus = computed(() => (props.account.isSuperAdmin ? 'Super Admin' : 'Admin'));
-const menu = ref<HTMLElement | null>(null);
-const menuIcon = ref<HTMLElement | null>(null);
 
+/**
+ * Computed property that returns the admin status string.
+ */
+const adminStatus = computed(() => (props.account.isSuperAdmin ? 'Super Admin' : 'Admin'));
+
+/**
+ * Computed property that returns a boolean value indicating whether the user is authorized to update the account.
+ */
 const isUpdateAuthorized = computed(() => {
     if (user.value.isSuperAdmin) {
         return true;
@@ -81,6 +122,9 @@ const isUpdateAuthorized = computed(() => {
     }
 });
 
+/**
+ * Computed property that returns the status object based on the account status.
+ */
 const status = computed(() => {
     if (props.account.status === 'pending') {
         return {
@@ -103,6 +147,11 @@ const status = computed(() => {
     }
 });
 
+/**
+ * Function that sets the modal to show based on the given parameter.
+ *
+ * @param {string} modal - The modal to show.
+ */
 function setShowModal(modal: string) {
     showMenu.value = false;
     if (modal === 'infos') {
@@ -114,6 +163,11 @@ function setShowModal(modal: string) {
     }
 }
 
+/**
+ * Function that closes the menu when a click event occurs outside the menu or menu icon.
+ *
+ * @param {MouseEvent} event - The click event.
+ */
 function closeMenu(event: MouseEvent) {
     if (
         menu.value &&
@@ -126,11 +180,17 @@ function closeMenu(event: MouseEvent) {
     }
 }
 
+/**
+ * Function that toggles the menu visibility and adds a click event listener to close the menu.
+ */
 function setShowMenu() {
     showMenu.value = !showMenu.value;
     window.addEventListener('click', closeMenu);
 }
 
+/**
+ * Function that deletes the account.
+ */
 function deleteAccount() {
     showMenu.value = false;
     emit('deleteAccount', props.account);

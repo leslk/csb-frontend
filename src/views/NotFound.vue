@@ -3,26 +3,17 @@
         <div class="not-found__content">
             <h1>404</h1>
             <p>Cette page n'existe pas</p>
-            <CsbButton @click="redirectTohome" label="Retour à l'accueil"/>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import CsbButton from '@/components/common/CsbButton.vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-function redirectTohome() {
-    router.push({ name: 'Accueil' });
-}
 </script>
 
 <style scoped lang="scss">
 .not-found {
-    flex-grow: 1;
     display: flex;
+    flex-grow: 1;
     justify-content: center;
     align-items: center;
 

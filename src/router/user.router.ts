@@ -1,16 +1,18 @@
 import UserLayout from '@/layout/UserLayout.vue';
-import SiteContentView from '@/views/SiteContentView.vue';
 import HomeView from '@/views/HomeView.vue';
 import NotFound from '@/views/NotFound.vue';
 import UserTournamentsView from '@/views/UserTournamentsView.vue';
 import UserTournamentView from '@/views/UserTournamentView.vue';
+import UserContactView from '@/views/UserContactView.vue';
+import Logo from '@/assets/csb_logo_yellow.png';
 
 const userRouter = {
     path: '/',
     component: UserLayout,
     redirect: { name: 'Accueil' },
     meta: {
-        title: 'Caen Street Ball'
+        title: 'Caen Street Ball',
+        logo: Logo,
     },
     children: [
         {
@@ -46,9 +48,9 @@ const userRouter = {
             }
         },
         {
-            path: 'site-content',
+            path: '/contact',
             name: 'Contact',
-            component: SiteContentView,
+            component: UserContactView,
             meta: {
                 isInTheMenu: true,
                 title: 'Caen Street Ball - Contact',

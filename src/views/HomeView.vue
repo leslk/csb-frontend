@@ -12,7 +12,7 @@
             />
         </div>
         <div class="home-view-content" v-if="siteContent">
-            <CsbSection class="home-view-tournaments">
+            <CsbSection class="home-view-tournaments" v-if="upcomingTournaments.length > 0">
                 <template #header>
                     <CsbTitle class="home-view-title" title="TOURNOIS" />
                 </template>
@@ -91,19 +91,55 @@ import CsbCarousel from '@/components/common/CsbCarousel.vue';
 import { DateUtils } from '@/services/services';
 import { Slide } from 'vue3-carousel';
 
+/**
+ * Vue component for the home page.
+ * This component displays the main information of the site.
+ * @component HomeView
+ * @exemple <HomeView />
+ */
 
+
+/**
+ * Reference to the site content.
+ */
 const siteContent = ref<SiteContent>();
+
+/**
+ * Reference to the tournaments history images.
+ */
 const tournamentsHistoryImage = ref<string[]>([]);
+
+/**
+ * Reference to the total number of tournaments history images.
+ */
 const tournamentHistoryImageTotal = ref<number>(0);
+
+/**
+ * Number of displayed tournaments history images.
+ */
 const numberOfDisplayedTournamentsHistoryImage = 6;
+
+/**
+ * Reference to the displayed tournaments history images.
+ */
 const displayedTournamentsHistoryImage = ref<string[]>([]);
+
+/**
+ * Reference to the upcoming tournaments.
+ */
 const upcomingTournaments = ref<Tournament[]>([]);
 
+/**
+ * Fetch the site content.
+ */
 async function fetchSiteContent() {
     const response = await CsbSiteContent.getSiteContent();
     siteContent.value = response.data[0];
 }
 
+/**
+ * Fetch the tournaments.
+ */
 async function fetchTournaments() {
     const response = await CsbTournament.getTournaments();
     upcomingTournaments.value = response.data.filter(
@@ -121,10 +157,19 @@ async function fetchTournaments() {
     displayedTournamentsHistoryImage.value = tournamentsHistoryImage.value.slice(0, numberOfDisplayedTournamentsHistoryImage);
 }
 
+/**
+ * Determines whether the screen is small or not.
+ */
 const isSmallScreen = ref(window.innerWidth < 768);
 
+/**
+ * The see more label for the tournaments history images.
+ */
 const SeeMoreLabel = computed(() => displayedTournamentsHistoryImage.value.length === tournamentsHistoryImage.value.length ? 'Voir moins' : 'Voir plus');
 
+/**
+ * The grid member style for the members.
+ */
 const gridMemberStyle = computed(() => {
     if (isSmallScreen.value) {
         return { gridTemplateColumns: '1fr' };
@@ -136,6 +181,9 @@ const gridMemberStyle = computed(() => {
     }
 })
 
+/**
+ * The grid tournament history style for the tournaments history images.
+ */
 const gridTournamentHistoryStyle = computed(() => {
     if (isSmallScreen.value) {
         return { gridTemplateColumns: '1fr' };
@@ -147,10 +195,16 @@ const gridTournamentHistoryStyle = computed(() => {
     }
 })
 
+/**
+ * Handles the window resize event.
+ */
 function handleWindowResize() {
     isSmallScreen.value = window.innerWidth < 768;
 }
 
+/**
+ * Set the displayed tournaments history images.
+ */
 function setDisplayedTournamentsHistoryImage() {
     if (displayedTournamentsHistoryImage.value.length === tournamentsHistoryImage.value.length) {
         displayedTournamentsHistoryImage.value = tournamentsHistoryImage.value.slice(0, numberOfDisplayedTournamentsHistoryImage);
@@ -159,13 +213,18 @@ function setDisplayedTournamentsHistoryImage() {
     }
 }
 
+/**
+ * Listens for the resize event.
+ */
 window.addEventListener('resize', handleWindowResize);
-
 onMounted(async () => {
     await fetchSiteContent();
     await fetchTournaments();
 });
 
+/**
+ * Removes the resize event listener.
+ */
 onUnmounted(() => {
     window.removeEventListener('resize', handleWindowResize);
 });
@@ -173,38 +232,11 @@ onUnmounted(() => {
 
 <style lang="scss">
 .home-view {
-    &-image {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-    }
     &-header {
-        position: relative;
+        @include user-header;
     }
     &-title {
-        font-size: 1.5rem;
-    }
-    &-header-text {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        font-size: 7rem;
-        font-weight: 900;
-        gap: 1rem;
-        color: $primaryColor;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    &-main-title {
-        max-width: 400px;
-        font-size: 5rem;
-        line-height: 1;
-        font-family: 'breakside';
-        text-align: center;
+        font-size: 1.5rem !important;
     }
     &-content {
         text-align: center;

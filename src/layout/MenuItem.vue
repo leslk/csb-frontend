@@ -13,9 +13,23 @@
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 
+/**
+ * This component displays a menu item.
+ * @component MenuItem
+ * @exemple <MenuItem :item="item" />
+ */
+
+/**
+ * Props of the component.
+ * item: the item to display.
+ * showIcon: a boolean value indicating whether to show the icon.
+ */
 const props = defineProps(['item', 'showIcon']);
 const route = useRoute();
 
+/**
+ * @computed isActive - A computed property that returns a boolean value indicating whether the item is active or not.
+ */
 const isActive = computed(() => {
     return route.path.includes(props.item.path);
 });

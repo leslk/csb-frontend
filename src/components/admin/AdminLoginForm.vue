@@ -30,7 +30,21 @@ import CsbButton from '@/components/common/CsbButton.vue';
 import CsbTitle from '@/components/common/CsbTitle.vue';
 import type { PropType } from 'vue';
 
-const props = defineProps({
+/**
+ * Vue component for the admin login form.
+ *
+ * @component
+ * @exemple <AdminLoginForm :emailError="emailError" :passwordError="passwordError" :userCredentials="userCredentials" :forgetPasswordView="forgetPasswordView" @login="login" @showForgetPassword="showForgetPassword" @updateEmail="updateEmail" @updatePassword="updatePassword" />
+ */
+
+ /**
+  * Props of the component
+  * @props emailError: The error message for the email input.
+  * @props passwordError: The error message for the password input.
+  * @props userCredentials: The user credentials.
+  * @props forgetPasswordView: Determines whether the forget password view should be shown or not.
+  */
+defineProps({
     emailError: {
         type: String,
         default: ''
@@ -49,21 +63,46 @@ const props = defineProps({
     }
 });
 
+/**
+ * Emits of the component
+ * @emit login - Event emitted when the login button is clicked.
+ * @emit showForgetPassword - Event emitted when the forget password link is clicked.
+ * @emit updateEmail - Event emitted when the email input is updated.
+ * @emit updatePassword - Event emitted when the password input is updated.
+ */
 const emit = defineEmits(['login', 'showForgetPassword', 'updateEmail', 'updatePassword']);
 
+/**
+ * Updates the email input
+ *
+ * @param {Event} e - The event object
+ */
 function updateEmail(e: Event) {
     emit('updateEmail', e);
 }
 
+/**
+ * Updates the password input
+ *
+ * @param {Event} e - The event object
+ */
 function updatePassword(e: Event) {
     emit('updatePassword', e);
 }
 
+/**
+ * Logs the user in
+ *
+ * @param {Event} e - The event object
+ */
 function login(e: Event) {
     e.preventDefault();
     emit('login');
 }
 
+/**
+ * Shows the forget password view
+ */
 function showForgetPassword() {
     emit('showForgetPassword', true);
 }

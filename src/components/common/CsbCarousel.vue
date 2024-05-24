@@ -12,6 +12,18 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import { computed } from 'vue';
 import { Carousel, Navigation } from 'vue3-carousel';
 
+/**
+ * Vue component for the carousel.
+ * @component CsbCarousel
+ * @example <CsbCarousel :length="3" :gap="1" :wrapAround="true">
+ */
+
+/**
+ * Props of the component.
+ * @prop {Boolean} wrapAround - Determines whether the carousel should wrap around.
+ * @prop {Number} length - The number of items in the carousel.
+ * @prop {Number} gap - The gap between the items.
+ */
 const props = defineProps({
     wrapAround: {
         type: Boolean,
@@ -27,8 +39,14 @@ const props = defineProps({
     },
 });
 
+/**
+ * The gap between the items.
+ */
 const gap = computed(() => isSmallScreen.value ? '0rem' : `${props.gap}rem`);
 
+/**
+ * The breakpoints for the carousel.
+ */
 const breakpoints = computed(() => {
     return {
         0: {
@@ -46,16 +64,28 @@ const breakpoints = computed(() => {
     }
 });
 
+/**
+ * Determines whether the screen is small or not.
+ */
 const isSmallScreen = ref(window.innerWidth < 768);
 
+/**
+ * Handles the resize event.
+ */
 function handleResize() {
     isSmallScreen.value = window.innerWidth < 768;
 }
 
+/**
+ * Listens for the resize event.
+ */
 onMounted(() => {
     window.addEventListener('resize', handleResize);
 });
 
+/**
+ * Removes the resize event listener.
+ */
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize);
 });
