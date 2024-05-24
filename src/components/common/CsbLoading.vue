@@ -1,14 +1,26 @@
 <template>
-    <div v-if="loading" class="csb-loading">
-        <div class="csb-loading-spinner">
-            <i class="fa-solid fa-basketball"></i>
-            <p class="csb-loading-spinner-text">Chargement des données</p>
+    <Transition>
+        <div v-if="loading" class="csb-loading">
+            <div class="csb-loading-spinner">
+                <i class="fa-solid fa-basketball"></i>
+                <p class="csb-loading-spinner-text">Chargement...</p>
+            </div>
         </div>
-    </div>
+    </Transition>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+/**
+ * Vue component for the loading.
+ * @component CsbLoading
+ * @example <CsbLoading :loading="loading" />
+ */
+
+/**
+ * Props of the component
+ * @props loading: Determines whether the loading is active or not.
+ */
+defineProps({
     loading: {
         type: Boolean,
         required: true
@@ -17,23 +29,32 @@ const props = defineProps({
 </script>
 
 <style scoped lang="scss">
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 .csb-loading {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($white, 0.6);
+    background-color: rgba($secondaryColor, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100000;
     &-spinner {
-        color: $secondaryColor;
+        color: $white;
         text-align: center;
         i {
             animation: spinbounce 2s ease-in-out infinite;
-            font-size: 3rem;
+            font-size: 4rem;
         }
         &-text {
             padding-top: 20px;

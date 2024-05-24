@@ -1,13 +1,179 @@
 $lightGrey: #e7e9ee;
 $lighterGrey: #f5f6f8;
-$darkGrey: #B1B1B1;
+$darkGrey: #b1b1b1;
 $darkerGrey: #5d5d5d;
 
+$primaryColor: #f9ee57;
+$secondaryColor: #161617;
 $white: #ffffff;
 
-$primaryColor: #FFFE06;
-$secondaryColor: #00798C;
+$successColor: #00c853;
+$warningColor: #ff6d00;
+$errorColor: #d50000;
 
-$successColor: #00C853;
-$warningColor: #FF6D00;
-$errorColor: #D50000;
+$borderRadius: 5px;
+
+// ------- Keyframes -------
+@keyframes slideToRight {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideToLeft {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// ------- Mixins-------
+
+// Breakpoints for admin dashboard
+@mixin tablet-break-point {
+    @media (max-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin mobile-break-point {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+// Breakpoints for user Site
+@mixin mf-desktop-break-point {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin mf-tablet-break-point {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
+// Layouts
+@mixin form-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+@mixin card-container {
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 0.5rem));
+    gap: 1rem;
+    @include mobile-break-point {
+        grid-template-columns: 1fr;
+        max-width: 100vw;
+    }
+}
+
+@mixin card-header {
+    @include header-layout;
+    position: relative;
+    padding-bottom: 1rem;
+    border-radius: $borderRadius $borderRadius 0 0;
+    border-bottom: 1px solid $lightGrey;
+}
+
+@mixin card-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid $lightGrey;
+    padding-top: 1rem;
+    gap: 1rem;
+}
+
+@mixin card-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@mixin card-icon {
+    margin: auto;
+    font-size: 3rem;
+    color: $darkGrey;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin card-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 1rem;
+}
+
+@mixin header-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin view-layout {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    gap: 3rem;
+}
+@mixin modal-footer {
+    display: flex;
+    gap: 0.625rem;
+    .csb-button:first-child {
+        background-color: lighten($errorColor, 30%);
+    }
+}
+
+@mixin user-header {
+    position: relative;
+    img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 7rem;
+        font-weight: 900;
+        gap: 1rem;
+        color: $primaryColor;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    h1 {
+        max-width: 400px;
+        font-size: 5rem;
+        line-height: 1;
+        font-family: 'breakside';
+        text-align: center;
+    }
+}

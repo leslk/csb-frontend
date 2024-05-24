@@ -18,7 +18,7 @@ defineProps({
     text-align: center;
     padding: 20px;
     border-radius: 10px;
-    color: $darkGrey;
+    color: $darkerGrey;
     margin-top: 20px;
 }
 </style>

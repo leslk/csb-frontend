@@ -23,12 +23,19 @@
 </template>
 
 <script setup lang="ts">
-import Logo from '@/assets/logo.jpeg';
+import Logo from '@/assets/csb_logo.png';
 import MenuItem from '@/layout/MenuItem.vue';
 import  {useRouter}  from 'vue-router';
 import { onBeforeMount, onUnmounted, ref, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useServicesStore } from '@/stores/services';
+
+/**
+ * This component displays the header of the admin page.
+ * The user can navigate through the different pages of the admin section.
+ * @component AdminHeader
+ * @exemple <AdminHeader />
+ */
 
 const router = useRouter(); 
 const toggleMenu = ref<HTMLElement | null>(null);
@@ -51,8 +58,12 @@ function logout() {
     useAuthStore().logout();
     router.push({ name: 'Login' });
 }
+
+/**
+ * @computed adminRoutes - A computed property that returns the routes of the admin page.
+ */
 const adminRoutes = router.options.routes.filter(
-    (route: any) => route.path === '/admin')[0].children?.filter((route: any) => route.name !== 'Login');
+    (route: any) => route.path === '/admin')[0].children?.filter((route: any) => route.meta.isInTheMenu);
     
 
 
@@ -71,7 +82,8 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .header {
-    background-color: $white;
+    background-color: $secondaryColor;
+    color: $white;
     position: fixed;
     padding: 1.25rem 0;
     width: 300px;
@@ -93,8 +105,6 @@ onUnmounted(() => {
         img {
             height: 100%;
             width: 100%;
-            object-fit: cover;
-            border-radius: 50%;
         }
     }
     &-menu {
@@ -111,7 +121,8 @@ onUnmounted(() => {
     @media (max-width: 1024px) {
         width: 100%;
         height: auto;
-        position: relative;
+        position: fixed;
+        z-index: 1000;
         &-main-content {  
             gap: 1.25rem;
         }
@@ -131,10 +142,10 @@ onUnmounted(() => {
         }
         &-main-content {
             z-index: 1000;
-            position: absolute;
+            position: fixed;
             top: 90px;
             left: 0;
-            background-color: $white;
+            background-color: $secondaryColor;
             width: 30%;
             height: calc(100vh - 90px);
         }

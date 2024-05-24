@@ -1,68 +1,104 @@
 import AdminLayout from '@/layout/AdminLayout.vue';
-import HomeView from '@/views/HomeView.vue';
 import AccountsView from '@/views/AccountsView.vue';
 import TournamentsView from '@/views/TournamentsView.vue';
 import SiteContentView from '@/views/SiteContentView.vue';
 import LoginView from '@/views/LoginView.vue';
+import CreatePasswordView from '@/views/CreatePasswordView.vue';
+import ForgetPasswordView from '@/views/ForgetPasswordView.vue';
+import Logo from '@/assets/csb_logo_yellow.png';
+import NotFound from '@/views/NotFound.vue';
 
 const adminRouter = {
     path: '/admin',
     component: AdminLayout,
+    name: 'Admin',
+    redirect: { name: 'Les comptes' },
     meta: {
-        title: 'CSB - Admin'
+        title: 'CSB - Admin',
+        logo: Logo,
     },
     children: [
         {
-            path: '/home',
-            name: 'Accueil',
-            component: HomeView,
-            meta: {
-            title: 'Home',
-            metaIcon: 'fa-solid fa-house',
-            requiresAuth: true
-            }
-        },
-        {
-            path: '/accounts',
-            name: 'Comptes',
+            path: 'accounts',
+            name: 'Les comptes',
             component: AccountsView,
             meta: {
-            title: 'Accounts',
-            metaIcon: 'fa-solid fa-user',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Caen Street Ball Admin - Comptes',
+                metaIcon: 'fa-regular fa-address-card',
+                requiresAuth: true
             }
         },
         {
-            path: '/tournaments',
-            name: 'Tournois',
+            path: 'tournaments',
+            name: 'Les tournois',
             component: TournamentsView,
             meta: {
-            title: 'Tournaments',
-            metaIcon: 'fa-solid fa-trophy',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Caen Street Ball Admin - Tournois',
+                metaIcon: 'fa-solid fa-basketball',
+                requiresAuth: true
             }
         },
         {
-            path: '/site-content',
-            name: 'Contenu du site',
+            path: 'site-content',
+            name: 'Le contenu du site',
             component: SiteContentView,
             meta: {
-            title: 'Site Content',
-            metaIcon: 'fa-solid fa-pager',
-            requiresAuth: true
+                isInTheMenu: true,
+                title: 'Caen Street Ball Admin - Contenu du site',
+                metaIcon: 'fa-solid fa-pager',
+                requiresAuth: true
             }
         },
         {
-            path: '/login',
+            path: 'login',
             name: 'Login',
             component: LoginView,
             meta: {
+                isInTheMenu: false,
                 title: 'Login',
                 requiresAuth: false
             }
-
+        },
+        {
+            path: 'create-password/:id/:token',
+            name: 'create-password',
+            component: CreatePasswordView,
+            meta: {
+                isInTheMenu: false,
+                title: 'Create Password',
+                requiresAuth: false
+            }
+        },
+        {
+            path: 'forget-password/:id/:token',
+            name: 'forget-password',
+            component: ForgetPasswordView,
+            meta: {
+                isInTheMenu: false,
+                title: 'Create Password',
+                requiresAuth: false
+            }
+        },
+        {
+            path: '404',
+            name : 'AdminNotFound',
+            component: NotFound,
+            meta: {
+                title: 'Not Found',
+                isInTheMenu: false,
+            }
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: { name: 'AdminNotFound' },
+            meta: {
+                title: 'Not Found',
+                isInTheMenu: false,
+            }
         }
     ]
-}
+};
 
 export default adminRouter;
