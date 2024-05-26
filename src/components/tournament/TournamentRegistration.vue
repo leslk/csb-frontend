@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import CsbInput from '@/components/common/CsbInput.vue';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { Tournament } from '@/services/types';
 import CsbButton from '@/components/common/CsbButton.vue';
 import { DateUtils } from '@/services/services';
@@ -91,7 +91,7 @@ const props = defineProps({
  * @ref {Ref<string>} status - The status of the registration.
  */
 const status = ref('');
-const registrationText = ref(`Pour vous inscrire au tournoi du <strong>${DateUtils.getDate(props.tournament?.startDate)}</strong> à <strong>${props.tournament?.address} ${props.tournament?.zipCode} ${props.tournament?.city}</strong> au tarif de <strong>${props.tournament?.price} €</strong>, veuillez remplir ce formulaire.`)
+const registrationText = computed(() => `Pour vous inscrire au tournoi du <strong>${DateUtils.getDate(props.tournament?.startDate)}</strong> à <strong>${props.tournament?.address} ${props.tournament?.zipCode} ${props.tournament?.city}</strong> au tarif de <strong>${props.tournament?.price} €</strong>, veuillez remplir ce formulaire.`)
 
 /**
  * Emits of the component
