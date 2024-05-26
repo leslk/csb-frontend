@@ -43,7 +43,7 @@
                         />
                     </div>
                 </div>
-                <CsbEmptyState v-else text="Aucun tournoi en cours" />
+                <CsbEmptyState v-else text="Aucun tournoi terminé" />
             </template>
         </CsbSection>
         <CsbSection>
@@ -61,7 +61,7 @@
                         />
                     </div>
                 </div>
-                <CsbEmptyState v-else text="Aucun tournoi en cours" />
+                <CsbEmptyState v-else text="Aucun tournoi annulé" />
             </template>
         </CsbSection>
     </div>
@@ -235,21 +235,21 @@ function setShowParticipantModal(tournamentToUpdate: TournamentType) {
  * @computed {TournamentType[]} openTournaments - The list of open tournaments.
  */
 const openTournaments = computed(() =>
-    tournaments.value.filter((tournament) => tournament.status === 'open')
+    tournaments.value.filter((tournament) => tournament.status == 'open')
 );
 
 /**
  * @computed {TournamentType[]} closedTournaments - The list of closed tournaments.
  */
 const closedTournaments = computed(() =>
-    tournaments.value.filter((tournament) => tournament.status === 'closed')
+    tournaments.value.filter((tournament) => tournament.status == 'closed')
 );
 
 /**
  * @computed {TournamentType[]} cancelledTournaments - The list of cancelled tournaments.
  */
 const cancelledTournaments = computed(() =>
-    tournaments.value.filter((tournament) => tournament.status === 'cancelled')
+    tournaments.value.filter((tournament) => tournament.status == 'cancelled')
 );
 
 /**
