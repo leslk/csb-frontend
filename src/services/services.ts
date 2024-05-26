@@ -585,6 +585,7 @@ export class DateUtils {
      * @returns The formatted date
      */
     static formatDate(date: string) {
+        moment.locale('fr');
         const targetDate = moment(date);
         const currentDate = moment();
         const currentDateTimestamp = currentDate.valueOf();
@@ -626,6 +627,7 @@ export class DateUtils {
      * @returns The formatted date
      */
     static getTime(date: string) {
+        moment.locale('fr');
         return moment(date).format('HH:mm');
     }
 }
