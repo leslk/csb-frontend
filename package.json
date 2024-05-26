@@ -22,6 +22,7 @@
         "pinia-plugin-persistedstate": "^3.2.1",
         "sass": "^1.71.1",
         "scss": "^0.2.4",
+        "vite-plugin-sitemap": "^0.6.2",
         "vue": "^3.4.15",
         "vue-router": "^4.2.5",
         "vue3-carousel": "^0.3.3",
