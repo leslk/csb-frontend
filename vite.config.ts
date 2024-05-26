@@ -2,14 +2,25 @@ import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import SitemapPlugin from 'vite-plugin-sitemap';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [
+        vue(),
+        SitemapPlugin({
+            hostname: 'https://caen-street-ball.leslie-elkattoussi.com',
+            dynamicRoutes: [
+                '/home-page',
+                '/tournaments/:id',
+                '/contact',
+                '/legale-notice',
+                '/tournaments',
+            ],
+          }),
+    ],
     server: {
-        // Écoute sur toutes les adresses IP
         host: '0.0.0.0',
-        // Spécifiez le port si nécessaire, par défaut c'est 5173
         port: 5173
     },
     css: {
