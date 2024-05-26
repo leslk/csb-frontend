@@ -97,7 +97,7 @@ const passwordRules = {
     confirmPassword: {
         required: helpers.withMessage('Les mots de passe ne correspondent pas', () => {
             if (form.value.confirmPassword.length === 0) {
-                return true;
+                return false;
             }
             return form.value.newPassword === form.value.confirmPassword;
         })
