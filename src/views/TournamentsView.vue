@@ -51,7 +51,7 @@
                 <h2>Tournois annulés</h2>
             </template>
             <template #content>
-                <div class="tournaments-view-tournaments" v-if="closedTournaments.length > 0">
+                <div class="tournaments-view-tournaments" v-if="cancelledTournaments.length > 0">
                     <div v-for="tournament in cancelledTournaments" :key="tournament._id">
                         <TournamentCard
                             :tournament="tournament"
