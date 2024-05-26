@@ -43,11 +43,12 @@
                             <td>{{ participant.lastName }}</td>
                             <td>{{ participant.email }}</td>
                             <td>{{ participant.phoneNumber }}</td>
-                            <i
-                                v-if="isOpenTournament"
-                                class="fa-solid fa-trash tournament-details-participants-delete"
-                                @click="deleteParticipant(participant, tournament._id!)"
-                            />
+                            <td v-if="isOpenTournament">
+                                <i
+                                    class="fa-solid fa-trash tournament-details-participants-delete"
+                                    @click="deleteParticipant(participant, tournament._id!)"
+                                />
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -216,6 +217,7 @@ watch(
         overflow: scroll;
     }
     &-participants {
+        text-align: left;
         border-collapse: collapse;
         border: 1px solid $lightGrey;
         font-family: sans-serif;
@@ -229,8 +231,9 @@ watch(
             white-space: nowrap;
         }
         &-delete {
-            height: 20px;
-            width: 20px;
+            height: 100%;
+            width: 100%;
+            margin: auto;
             cursor: pointer;
             border-radius: 50%;
             display: flex;

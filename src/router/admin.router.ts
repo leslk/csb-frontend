@@ -91,7 +91,7 @@ const adminRouter = {
             }
         },
         {
-            path: '/:pathMatch(.*)*',
+            path: '/admin/:pathMatch(.*)*',
             redirect: { name: 'AdminNotFound' },
             meta: {
                 title: 'Not Found',

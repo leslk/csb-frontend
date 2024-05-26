@@ -24,11 +24,14 @@
                                 <h2>{{ tournament.city.toUpperCase() }}</h2>
                                 <p>{{ DateUtils.getTime(tournament.startDate)}}</p>
                             </div>
-                            <CsbButton
-                                class="user-tournaments-view-tournament__button"
-                                label="S'INSCRIRE"
-                                @click="setTournamentRegistration(tournament)"
-                            />
+                            <div class="user-tournaments-view-tournament__absolute">
+                                <p>{{ `${tournament.price} €` }}</p>
+                                <CsbButton
+                                    class="user-tournaments-view-tournament__button"
+                                    label="S'INSCRIRE"
+                                    @click="setTournamentRegistration(tournament)"
+                                />
+                            </div>
                         </div>
                     </div>
                     <CsbEmptyState v-else text="Aucun tournoi à venir" class="user-tournaments-view-empty-state"/>
@@ -314,11 +317,21 @@ onUnmounted(() => {
                 margin: 0;
             }
         }
-        &__button {
+        &__absolute {
             position: absolute;
             bottom: 1rem;
             left: 50%;
+            width: 100%;
             transform: translate(-50%, 0);
+            p {
+                padding: 1rem;
+                font-size: 2rem;
+                color: $primaryColor;
+                font-weight: bold;
+            }
+        }
+        &__button {
+            margin: auto;
             width: 70%;
         }
     }
