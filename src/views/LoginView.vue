@@ -18,7 +18,7 @@
                     @update-email="userCredentials.email = $event"
                     @update-password="userCredentials.password = $event"
                     @login="login"
-                    @show-forget-password="forgetPasswordView = $event"
+                    @show-forget-password="setShowforgetPasswordView($event)"
                     :userCredentials="userCredentials"
                     :emailError="emailError"
                     :passwordError="passwordError"
@@ -89,6 +89,11 @@ const userCredentials = computed(() => {
     };
 });
 
+function setShowforgetPasswordView(show: boolean) {
+    resetErrors();
+    forgetPasswordView.value = show;
+}
+
 /**
  * Resets the errors.
  */
@@ -123,7 +128,6 @@ async function login() {
         authStore.login(response.data.user);
         router.push({ name: 'Les comptes' });
     } catch (error: any) {
-        console.log(error);
         const errorMessage = ErrorMessage.getErrorMessage(error);
         for (const error of errorMessage.message) {
             if (error.error.includes('EMAIL')) {
