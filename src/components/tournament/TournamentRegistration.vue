@@ -162,6 +162,7 @@ async function sendRegistration() {
         return;
     }
     if (props.tournament) {
+        registrationValidate.value.$reset();
         emit ('sendRegistration',props.tournament._id, form.value);
         resetRegistration();
     }
