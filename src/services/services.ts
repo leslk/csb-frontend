@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useServicesStore } from '@/stores/services';
 import { useAuthStore } from '@/stores/auth';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { type Credentials } from './types';
 import 'moment/dist/locale/fr';
 
@@ -586,15 +586,17 @@ export class DateUtils {
      */
     static formatDate(date: string) {
         moment.locale('fr');
-        const targetDate = moment(date);
-        const currentDate = moment();
+
+        const timeZone = 'Europe/Paris';
+        const targetDate = moment.tz(date, timeZone);
+        const currentDate = moment.tz(timeZone);
         const currentDateTimestamp = currentDate.valueOf();
         const targetDateTimestamp = targetDate.valueOf();
-        // Calcul de la différence entre la date cible et la date actuelle
+        // Calculate the difference between the target date and the current date
         const timeDifference = targetDate.diff(currentDate, 'milliseconds');
         const threeDaysInMilliseconds = 3 * 24 * 60 * 60 * 1000;
 
-        // Si la date est dans les 3 prochains jours
+        // if the target date is in the future and less than 3 days from now
         if (
             targetDateTimestamp > currentDateTimestamp &&
             timeDifference < threeDaysInMilliseconds
