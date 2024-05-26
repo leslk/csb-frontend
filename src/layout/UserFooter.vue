@@ -10,7 +10,7 @@
                         <MenuItem :show-icon="false" :item="item" />
                     </li>
                     <li>
-                        <router-link to="/mentions-legales">
+                        <router-link to="/legale-notice">
                             <div class="menu-item" tabindex="0">
                                 <p>Mentions légales</p>
                             </div>

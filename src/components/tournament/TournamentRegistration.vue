@@ -7,7 +7,7 @@
             </div>
             <p 
                 v-if="!status" 
-                class="tournament-registration-text">{{ `Pour vous inscrire au tournoi du ${DateUtils.getDate(tournament!.startDate)} à ${tournament!.city}, veuillez remplir ce formulaire.`  }}
+                class="tournament-registration-text" v-html="registrationText">
             </p>
             <form class="tournament-registration-content"  v-if="!status">
                 <CsbInput 
@@ -91,6 +91,7 @@ const props = defineProps({
  * @ref {Ref<string>} status - The status of the registration.
  */
 const status = ref('');
+const registrationText = ref(`Pour vous inscrire au tournoi du <strong>${DateUtils.getDate(props.tournament?.startDate)}</strong> à <strong>${props.tournament?.address} ${props.tournament?.zipCode} ${props.tournament?.city}</strong> au tarif de <strong>${props.tournament?.price} €</strong>, veuillez remplir ce formulaire.`)
 
 /**
  * Emits of the component

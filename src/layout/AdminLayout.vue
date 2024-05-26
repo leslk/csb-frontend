@@ -79,6 +79,9 @@ const viewStyle = computed(() => (isAuth.value ? 'view' : 'view no-auth'));
         margin-left: 0;
         padding: 0;
         background: none;
+        ::v-deep(.not-found) {
+            background-color: rgba($white, 0.7);
+        }
     }
     @include tablet-break-point {
         .view {

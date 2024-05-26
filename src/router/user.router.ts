@@ -5,6 +5,7 @@ import UserTournamentsView from '@/views/UserTournamentsView.vue';
 import UserTournamentView from '@/views/UserTournamentView.vue';
 import UserContactView from '@/views/UserContactView.vue';
 import Logo from '@/assets/csb_logo_yellow.png';
+import LegaleNotice from '@/views/LegaleNotice.vue';
 
 const userRouter = {
     path: '/',
@@ -59,7 +60,17 @@ const userRouter = {
             }
         },
         {
-            path: '404',
+            path: '/legale-notice',
+            name: 'MentionsLegales',
+            component: LegaleNotice,
+            meta: {
+                isInTheMenu: false,
+                title: 'Caen Street Ball - Mentions Légales',
+                requiresAuth: false
+            }
+        },
+        {
+            path: '/404',
             name : 'NotFound',
             component: NotFound,
             meta: {
