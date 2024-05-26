@@ -246,7 +246,7 @@ function redirectToTournamentDetails(tournamentId: string) {
  */
 async function sendRegistration(id: string, form: any) {
     try {
-        await TournamentService.addParticipant(id, form);
+        await TournamentService.userAddParticipant(id, form);
         sentStatus.value = 'success';
     } catch (error) {
         sentStatus.value = 'error';

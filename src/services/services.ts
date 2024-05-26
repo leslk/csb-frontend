@@ -455,6 +455,33 @@ export class Tournament {
     }
 
     /**
+     * This method add a participant to the tournament
+     * @param tournamentId The id of the tournament
+     * @param participant The participant to add
+     * @returns The response from the API
+     */
+    static async userAddParticipant(tournamentId: string, participant: any) {
+        const serviceStore = useServicesStore();
+        serviceStore.setLoading(true);
+        try {
+            const response = await axios.put(
+                `${import.meta.env.VITE_API_URL}api/tournaments/${tournamentId}/user-participants`,
+                participant,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            return response;
+        } finally {
+            serviceStore.setLoading(false);
+        }
+    }
+
+
+    /**
      * This method deletes a participant from the tournament
      * @param tournamentId The id of the tournament
      * @param participantId The id of the participant
