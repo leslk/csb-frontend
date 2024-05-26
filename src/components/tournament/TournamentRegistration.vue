@@ -144,6 +144,14 @@ function setTournamentRegistration() {
     emit('close');
 }
 
+function resetRegistration() {
+    form.value = {
+        lastName: '',
+        firstName: '',
+        email: '',
+        phoneNumber: ''
+    };
+}
 /**
  * @function sendRegistration
  * Send the registration for the tournament
@@ -155,6 +163,7 @@ async function sendRegistration() {
     }
     if (props.tournament) {
         emit ('sendRegistration',props.tournament._id, form.value);
+        resetRegistration();
     }
 }
 
