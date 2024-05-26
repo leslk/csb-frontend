@@ -86,7 +86,7 @@ const emit = defineEmits(['close', 'addParticipant']);
 /**
  * Header text
  */
-const headerText = 'Historique des tournois';
+const headerText = 'Ajouter un participant';
 
 /**
  * @ref {Ref<Participant>} participant - The participant to be added
