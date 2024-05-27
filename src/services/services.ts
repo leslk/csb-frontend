@@ -589,7 +589,6 @@ export class DateUtils {
 
         const timeZone = 'Europe/Paris';
         const targetDate = moment.utc(date).tz(timeZone);
-        console.log(targetDate);
         const currentDate = moment.tz(timeZone);
         const currentDateTimestamp = currentDate.valueOf();
         const targetDateTimestamp = targetDate.valueOf();

@@ -205,7 +205,7 @@ async function addHistory() {
  * Close the modal
  */
 const close = () => {
-    if (!tournamentHistory.value.content && !tournamentHistory.value.title && tournamentHistory.value.images.length > 0) {
+    if (!tournamentHistory.value.content && !tournamentHistory.value.title && tournamentHistory.value.images.length > 0 && !tournamentHistory.value._id) {
         for (const image of tournamentHistory.value.images) {
             removeImage(image);
         }
@@ -239,6 +239,12 @@ watch(
         newValue.tournamentHistory?.images.length > 0 &&
         newValue.tournamentHistory?.title ? 'Modifier' : 'Ajouter';
         if (newValue.tournamentHistory) {
+            if (newValue.tournamentHistory.content) {
+                tournamentHistory.value.content = newValue.tournamentHistory.content;
+            }
+            if (newValue.tournamentHistory.title) {
+                tournamentHistory.value.title = newValue.tournamentHistory.title;
+            }
             tournamentHistory.value.images = newValue.tournamentHistory.images;
         }
     },
