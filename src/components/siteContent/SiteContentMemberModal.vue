@@ -218,6 +218,7 @@ async function close() {
         await removeImage(member.value.image);
     }
     emit('close');
+    resetMember();
 }
 
 /**
