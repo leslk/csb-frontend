@@ -175,7 +175,7 @@ function setDisplayedTournaments() {
 async function fetchTournaments() {
     const response = await CsbTournament.getTournaments();
     upcomingTournaments.value = response.data.filter(
-        (tournament: Tournament) => tournament.status === 'open'
+        (tournament: Tournament) => tournament.status === 'open' && tournament.participants.length < tournament.availablePlaces
     ).sort((a: Tournament, b: Tournament) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
     displayedTournaments.value = upcomingTournaments.value.slice(0, numberOfDisplayedTournaments);
     totalTournaments.value = upcomingTournaments.value.length;
