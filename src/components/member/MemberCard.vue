@@ -41,7 +41,8 @@ const imageAtlText = computed(
 <style scoped lang="scss">
 .member-card {
     position: relative;
-    width: 100%;
+    width: 80%;
+    height: 300px;
     margin: 0 auto;
 
     img {
@@ -55,9 +56,12 @@ const imageAtlText = computed(
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.5);
         text-align: left;
-        color: white;
+        color: $primaryColor;
         padding: 0.625rem 1rem;
         width: 100%;
+        h3 {
+           font-weight: 700;
+        }
     }
 
     @include mf-tablet-break-point {

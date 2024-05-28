@@ -55,6 +55,7 @@
                     <CsbTitle class="home-view-title" title="PHOTOS DES TOURNOIS" />
                 </template>
                 <template #content>
+                    <p style="padding-bottom: 2rem;">Afin d’illustrer l’engagement communautaire de Caen Streetball, voici quelques clichés des derniers évènements sportifs mettant en avant les jeunes talents du streetball.<br/> Entre esprit d’équipe, street culture et passion, rejoignez les compétitions amicales, familiales ou des rencontres sportives autour de tournois de streetball !<br> En plus, les entrainements en plein air sont à nouveau de saison... </p>
                     <div class="home-view-tournaments-history" :style="gridTournamentHistoryStyle">
                         <img
                             :src="image"
@@ -175,7 +176,7 @@ const gridMemberStyle = computed(() => {
         return { gridTemplateColumns: '1fr' };
     }
     else if (siteContent.value?.members.length && siteContent.value?.members.length < 3) {
-        return { gridTemplateColumns: `repeat(${siteContent.value.members.length}, 1fr)` };
+        return { gridTemplateColumns: `repeat(${siteContent.value.members.length}, 1fr)`,margin: 'auto' };
     } else {
         return { gridTemplateColumns: 'repeat(3, 1fr)' };
     }

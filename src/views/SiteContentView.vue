@@ -244,7 +244,6 @@ function setShowMemberCardModal(type: string, memberToUpdate: Member) {
 async function fetchSiteContent() {
     const response = await SiteContent.getSiteContent();
     siteContent.value = response.data[0];
-    console.log(siteContent.value);
 }
 
 /**
@@ -319,6 +318,7 @@ async function deleteMember(memberId: string) {
         await SiteContent.updateSiteContent(siteContent.value);
         await fetchSiteContent();
         toast.success('Membre supprimé');
+        resetMember();
     } catch (error) {
         toast.error('Erreur lors de la suppression du membre');
     }
